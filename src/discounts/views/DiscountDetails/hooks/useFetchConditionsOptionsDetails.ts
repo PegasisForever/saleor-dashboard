@@ -1,3 +1,4 @@
+import { parseCataloguePredicate } from "@dashboard/discounts/models/predicateSchemas";
 import { type CataloguePredicateAPI } from "@dashboard/discounts/types";
 import {
   type PromotionDetailsQuery,
@@ -52,7 +53,11 @@ export function getAllConditionsOptionsIdsToFetch(
   }
 
   const allConditionsIds = data.promotion.rules.reduce((acc, rule) => {
-    reduceConditionsLabels(rule.cataloguePredicate, acc);
+    const cataloguePredicate = parseCataloguePredicate(rule.cataloguePredicate);
+
+    if (cataloguePredicate) {
+      reduceConditionsLabels(cataloguePredicate, acc);
+    }
 
     return acc;
   }, initAllConditionsIds);
