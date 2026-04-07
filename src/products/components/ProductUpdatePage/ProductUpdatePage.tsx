@@ -78,6 +78,7 @@ import { type BulkCreateResult } from "../ProductVariantGenerator/types";
 import { ProductVariants } from "../ProductVariants/ProductVariants";
 import ProductUpdateForm from "./form";
 import { messages } from "./messages";
+import { parseEditorJsOutput } from "./parseEditorJsOutput";
 import ProductChannelsListingsDialog from "./ProductChannelsListingsDialog";
 import {
   type ProductUpdateData,
@@ -320,15 +321,17 @@ const ProductUpdatePage = ({
       const newProductDescription = productDescriptionField.value;
 
       // cache may be empty if editor was not used before sending event to app
-      const productDescriptionWithFallback = descriptionCache.current ?? product.description;
+      const productDescriptionWithFallback =
+        descriptionCache.current ?? parseEditorJsOutput(product.description);
 
       try {
         const parsedEditorJs = JSON.parse(newProductDescription) as OutputData;
 
         // Only update if the value has changed
         if (
+          productDescriptionWithFallback &&
           JSON.stringify(parsedEditorJs.blocks) !==
-          JSON.stringify(productDescriptionWithFallback.blocks)
+            JSON.stringify(productDescriptionWithFallback.blocks)
         ) {
           // Update the EditorJS content directly
           if (richTextRef.current?.editorRef?.current) {
