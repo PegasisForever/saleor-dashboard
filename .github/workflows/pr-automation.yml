@@ -207,18 +207,6 @@ jobs:
           deployment_id: ${{ needs.deploy-dashboard-start.outputs.deployment-id }}
           env: ${{ needs.initialize-cloud.outputs.POOL_NAME }}
 
-<<<<<<< update-e2e-test-data-for-refreshed-snapshot
-      - name: Load secrets for prepare-accounts
-        if: ${{ contains(github.event.pull_request.labels.*.name, 'run pw-e2e') }}
-        uses: 1password/load-secrets-action@581a835fb51b8e7ec56b71cf2ffddd7e68bb25e0 # v2.0.0
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          E2E_USER_NAME: "op://Continuous Integration/E2E_USER/username"
-          E2E_USER_PASSWORD: "op://Continuous Integration/E2E_USER/password"
-          E2E_PERMISSIONS_USERS_PASSWORD: "op://Continuous Integration/NEW_E2E_PERMISSIONS_USERS_PASSWORD/password"
-=======
   run-tests:
     if: ${{ contains(github.event.pull_request.labels.*.name, 'run pw-e2e') }}
     runs-on: ubuntu-22.04
@@ -242,7 +230,6 @@ jobs:
       # Needed by ./.github/actions/prepare-accounts and ./.github/actions/run-pw-tests
       - name: Install deps
         run: corepack enable && pnpm install
->>>>>>> main
 
       - name: Prepare accounts
         if: ${{ contains(github.event.pull_request.labels.*.name, 'run pw-e2e') }}
@@ -251,10 +238,10 @@ jobs:
         with:
           BASE_URL: ${{ needs.initialize-cloud.outputs.BASE_URL }}
           API_URL: ${{ needs.initialize-cloud.outputs.API_URL }}
-          E2E_USER_NAME: ${{ env.E2E_USER_NAME }}
-          E2E_USER_PASSWORD: ${{ env.E2E_USER_PASSWORD }}
+          E2E_USER_NAME: ${{ secrets.E2E_USER_NAME }}
+          E2E_USER_PASSWORD: ${{ secrets.E2E_USER_PASSWORD }}
           E2E_ENCODE_PASS: ${{ secrets.E2E_ENCODE_PASS }}
-          E2E_PERMISSIONS_USERS_PASSWORD: ${{ env.E2E_PERMISSIONS_USERS_PASSWORD }}
+          E2E_PERMISSIONS_USERS_PASSWORD: ${{ secrets.E2E_PERMISSIONS_USERS_PASSWORD }}
 
       - name: Load secrets
         uses: 1password/load-secrets-action@92467eb28f72e8255933372f1e0707c567ce2259 # v4.0.0
@@ -263,7 +250,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
           E2E_USER_NAME: "op://Continuous Integration/E2E_USER/username"
           E2E_USER_PASSWORD: "op://Continuous Integration/E2E_USER/password"
-          E2E_PERMISSIONS_USERS_PASSWORD: "op://Continuous Integration/NEW_E2E_PERMISSIONS_USERS_PASSWORD/password"
+          E2E_PERMISSIONS_USERS_PASSWORD: "op://Continuous Integration/E2E_PERMISSIONS_USERS_PASSWORD/password"
           MAILPITURL: "op://Continuous Integration/MAILPITURL_STAGING/password"
 
       - name: Run playwright tests
@@ -294,17 +281,9 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-<<<<<<< update-e2e-test-data-for-refreshed-snapshot
-          # Export loaded secrets as environment variables
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          TESTS_RESULT_PASSWORD: "op://Continuous Integration/TESTS_RESULT_PASSWORD/password"
-=======
           persist-credentials: false
->>>>>>> main
 
       - name: Merge playwright reports
         uses: ./.github/actions/merge-pw-reports
         with:
-          PASSWORD_FOR_DECODING_ARTIFACT: ${{ env.TESTS_RESULT_PASSWORD }}
+          PASSWORD_FOR_DECODING_ARTIFACT: ${{ secrets.TESTS_RESULT_PASSWORD }}
