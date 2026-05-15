@@ -1,4 +1,6 @@
 import { ButtonWithDropdown } from "@dashboard/components/ButtonWithDropdown";
+import useLocalStorage from "@dashboard/hooks/useLocalStorage";
+import { Pin, PinOff } from "lucide-react";
 import { type ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 
@@ -6,6 +8,8 @@ import { modelTypeTabsMessages } from "./messages";
 import styles from "./ModelTypeTabs.module.css";
 
 export const ALL_MODELS_TAB_ID = "__all__";
+
+const PINNED_TABS_STORAGE_KEY = "modelTypeTabs.pinnedIds";
 
 export interface ModelTypeTabItem {
   id: string;
@@ -61,13 +65,32 @@ export const ModelTypeTabs = ({
   const measureTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [visibleCount, setVisibleCount] = useState<number | null>(null);
   const visibleCountRef = useRef<number | null>(null);
+  const [pinnedIds, setPinnedIds] = useLocalStorage<string[]>(PINNED_TABS_STORAGE_KEY, []);
 
   visibleCountRef.current = visibleCount;
 
-  const items: ModelTypeTabItem[] = [
-    { id: ALL_MODELS_TAB_ID, name: intl.formatMessage(modelTypeTabsMessages.allTab) },
-    ...(pageTypes ?? []),
-  ];
+  const pinnedSet = useMemo(() => new Set(pinnedIds), [pinnedIds]);
+  const isPinned = useCallback((id: string) => pinnedSet.has(id), [pinnedSet]);
+  const togglePin = useCallback(
+    (id: string) => {
+      setPinnedIds(prev =>
+        prev.includes(id) ? prev.filter(pinId => pinId !== id) : [...prev, id],
+      );
+    },
+    [setPinnedIds],
+  );
+
+  const items: ModelTypeTabItem[] = useMemo(() => {
+    const all: ModelTypeTabItem = {
+      id: ALL_MODELS_TAB_ID,
+      name: intl.formatMessage(modelTypeTabsMessages.allTab),
+    };
+    const types = pageTypes ?? [];
+    const pinned = types.filter(t => pinnedSet.has(t.id));
+    const unpinned = types.filter(t => !pinnedSet.has(t.id));
+
+    return [all, ...pinned, ...unpinned];
+  }, [intl, pageTypes, pinnedSet]);
   const itemsLength = items.length;
 
   const recompute = useCallback(() => {
@@ -178,20 +201,29 @@ export const ModelTypeTabs = ({
     <div className={styles.row}>
       {/* Hidden measurement layer — always renders all tabs at their natural width. */}
       <div className={styles.measureLayer} aria-hidden>
-        {items.map((item, idx) => (
-          <button
-            key={item.id}
-            type="button"
-            tabIndex={-1}
-            ref={el => {
-              measureTabRefs.current[idx] = el;
-            }}
-            className={styles.tab}
-          >
-            <span className={styles.tabLabel}>{item.name}</span>
-            {renderCount(counts[item.id])}
-          </button>
-        ))}
+        {items.map((item, idx) => {
+          const showPinSlot = item.id === activeId && item.id !== ALL_MODELS_TAB_ID;
+
+          return (
+            <button
+              key={item.id}
+              type="button"
+              tabIndex={-1}
+              ref={el => {
+                measureTabRefs.current[idx] = el;
+              }}
+              className={styles.tab}
+            >
+              <span className={styles.tabLabel}>{item.name}</span>
+              {renderCount(counts[item.id])}
+              {showPinSlot && (
+                <span className={styles.pinButton}>
+                  <Pin size={14} />
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       <div
@@ -203,6 +235,8 @@ export const ModelTypeTabs = ({
       >
         {displayItems.map(item => {
           const isActive = item.id === activeId;
+          const canPin = isActive && item.id !== ALL_MODELS_TAB_ID;
+          const pinned = isPinned(item.id);
 
           return (
             <button
@@ -218,6 +252,30 @@ export const ModelTypeTabs = ({
                 {item.name}
               </span>
               {renderCount(counts[item.id])}
+              {canPin && (
+                <span
+                  role="button"
+                  tabIndex={0}
+                  className={styles.pinButton}
+                  aria-label={intl.formatMessage(
+                    pinned ? modelTypeTabsMessages.unpinTab : modelTypeTabsMessages.pinTab,
+                  )}
+                  data-test-id={`model-type-tab-pin-${item.id}`}
+                  onClick={e => {
+                    e.stopPropagation();
+                    togglePin(item.id);
+                  }}
+                  onKeyDown={e => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      togglePin(item.id);
+                    }
+                  }}
+                >
+                  {pinned ? <PinOff size={14} /> : <Pin size={14} />}
+                </span>
+              )}
             </button>
           );
         })}

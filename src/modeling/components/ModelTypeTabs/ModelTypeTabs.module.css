@@ -69,6 +69,34 @@
   color: var(--mu-colors-text-default1);
 }
 
+.pinButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  padding: 2px;
+  border: none;
+  background: transparent;
+  color: var(--mu-colors-text-default2);
+  cursor: pointer;
+  border-radius: 4px;
+  visibility: hidden;
+}
+
+.tab[aria-selected="true"]:hover .pinButton {
+  visibility: visible;
+}
+
+.pinButton:hover {
+  color: var(--mu-colors-text-default1);
+  background: var(--mu-colors-background-default2);
+}
+
+/* In the hidden measurement layer the pin slot must always take space */
+.measureLayer .pinButton {
+  visibility: hidden;
+}
+
 .rightSlot {
   display: flex;
   align-items: center;
