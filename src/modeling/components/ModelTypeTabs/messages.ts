@@ -6,4 +6,9 @@ export const modelTypeTabsMessages = defineMessages({
     defaultMessage: "All",
     description: "tab name for all models",
   },
+  moreTab: {
+    id: "uq2aqJ",
+    defaultMessage: "More",
+    description: "overflow tab label",
+  },
 });

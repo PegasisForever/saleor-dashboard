@@ -20,9 +20,8 @@ import { Box, Button } from "@saleor/macaw-ui-next";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useLocation } from "react-router";
 
-// Reuse the existing SearchInput so we don't drag in the filter chip-builder.
-import SearchInput from "../../../components/AppLayout/ListFilters/components/SearchInput";
 import { rippleModelTypeTabs } from "../../ripples/modelTypeTabs";
+import { ModelSearchInput } from "../ModelSearchInput/ModelSearchInput";
 import { type ModelTypeTabCount, ModelTypeTabs } from "../ModelTypeTabs/ModelTypeTabs";
 import { PageListDatagrid } from "../PageListDatagrid/PageListDatagrid";
 import { pagesListSearchAndFiltersMessages as messages } from "./messages";
@@ -104,7 +103,7 @@ const PageListPage = ({
           )}
         </Box>
       </TopNav>
-      <Box gridColumn="8" display="flex" flexDirection="column" __minHeight={0}>
+      <Box display="flex" flexDirection="column" __minWidth={0} __minHeight={0}>
         <ModelTypeTabs
           pageTypes={pageTypes}
           activeId={activeTabId}
@@ -121,14 +120,11 @@ const PageListPage = ({
             paddingX={6}
             paddingTop={4}
           >
-            <Box __width="360px">
-              <SearchInput
-                initialSearch={initialSearch}
-                placeholder={intl.formatMessage(messages.searchPlaceholder)}
-                onSearchChange={onSearchChange}
-                showSearchTooltip
-              />
-            </Box>
+            <ModelSearchInput
+              initialSearch={initialSearch}
+              placeholder={intl.formatMessage(messages.searchPlaceholder)}
+              onSearchChange={onSearchChange}
+            />
             <Box display="flex" justifyContent="flex-end">
               {selectedPageIds.length > 0 && (
                 <Box display="flex" gap={4}>

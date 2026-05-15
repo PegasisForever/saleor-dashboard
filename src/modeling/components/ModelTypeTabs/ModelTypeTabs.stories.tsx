@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { ComponentType } from "react";
 import { fn } from "storybook/test";
 
 import { STORYBOOK_CHROMATIC_PARAMS } from "../../../storybook/chromatic";
@@ -75,4 +76,62 @@ export const Loading: Story = {
     activeId: ALL_MODELS_TAB_ID,
     counts: {},
   },
+};
+
+const manyPageTypes = Array.from({ length: 25 }, (_, i) => ({
+  id: `pt-many-${i + 1}`,
+  name: `Model Type ${i + 1}`,
+}));
+
+const manyCounts: Record<string, { value: number; hasMore: boolean }> = {
+  [ALL_MODELS_TAB_ID]: { value: 20, hasMore: true },
+};
+
+manyPageTypes.forEach((pt, i) => {
+  manyCounts[pt.id] = { value: i + 1, hasMore: i % 3 === 0 };
+});
+
+export const ManyTypesOverflow: Story = {
+  args: {
+    pageTypes: manyPageTypes,
+    activeId: ALL_MODELS_TAB_ID,
+    counts: manyCounts,
+  },
+  decorators: [
+    (Story: ComponentType) => (
+      <div style={{ width: 700, border: "1px dashed #ccc" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const ManyTypesActiveInOverflow: Story = {
+  args: {
+    pageTypes: manyPageTypes,
+    activeId: "pt-many-20",
+    counts: manyCounts,
+  },
+  decorators: [
+    (Story: ComponentType) => (
+      <div style={{ width: 700, border: "1px dashed #ccc" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+export const ManyTypesNarrow: Story = {
+  args: {
+    pageTypes: manyPageTypes,
+    activeId: ALL_MODELS_TAB_ID,
+    counts: manyCounts,
+  },
+  decorators: [
+    (Story: ComponentType) => (
+      <div style={{ width: 400, border: "1px dashed #ccc" }}>
+        <Story />
+      </div>
+    ),
+  ],
 };

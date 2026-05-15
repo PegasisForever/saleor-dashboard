@@ -10,13 +10,8 @@
   gap: 0;
   flex: 1 1 auto;
   min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
+  overflow: hidden;
   padding: 0 24px;
-}
-
-.strip::-webkit-scrollbar {
-  display: none;
 }
 
 .tab {
@@ -68,4 +63,12 @@
   align-items: center;
   flex-shrink: 0;
   padding: 0 24px;
+}
+
+.moreSlot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0 16px;
 }

@@ -1,4 +1,5 @@
-import { type ReactNode, useEffect, useRef } from "react";
+import { ButtonWithDropdown } from "@dashboard/components/ButtonWithDropdown";
+import { type ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useIntl } from "react-intl";
 
 import { modelTypeTabsMessages } from "./messages";
@@ -25,15 +26,28 @@ export interface ModelTypeTabsProps {
   rightSlot?: ReactNode;
 }
 
-const renderCount = (count: ModelTypeTabCount | undefined) => {
+const formatCount = (count: ModelTypeTabCount | undefined) => {
   if (!count) {
     return null;
   }
 
   const label = count.hasMore ? `${count.value}+` : `${count.value}`;
 
-  return <span className={styles.count}>({label})</span>;
+  return ` (${label})`;
 };
+
+const renderCount = (count: ModelTypeTabCount | undefined) => {
+  const label = formatCount(count);
+
+  if (!label) {
+    return null;
+  }
+
+  return <span className={styles.count}>{label}</span>;
+};
+
+// Reserved horizontal budget for the More button + its surrounding slot padding.
+const MORE_BUTTON_RESERVED_WIDTH = 140;
 
 export const ModelTypeTabs = ({
   pageTypes,
@@ -44,21 +58,141 @@ export const ModelTypeTabs = ({
 }: ModelTypeTabsProps) => {
   const intl = useIntl();
   const stripRef = useRef<HTMLDivElement>(null);
-  const activeRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    activeRef.current?.scrollIntoView({ block: "nearest", inline: "center" });
-  }, [activeId]);
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const widthsRef = useRef<number[]>([]);
+  const [visibleCount, setVisibleCount] = useState<number | null>(null);
 
   const items: ModelTypeTabItem[] = [
     { id: ALL_MODELS_TAB_ID, name: intl.formatMessage(modelTypeTabsMessages.allTab) },
     ...(pageTypes ?? []),
   ];
+  const itemsLength = items.length;
+
+  const recompute = useCallback(() => {
+    const strip = stripRef.current;
+    const widths = widthsRef.current;
+
+    if (!strip || widths.length === 0) {
+      return;
+    }
+
+    const containerWidth = strip.clientWidth;
+    const total = widths.reduce((a, b) => a + b, 0);
+
+    if (total <= containerWidth) {
+      setVisibleCount(widths.length);
+
+      return;
+    }
+
+    let running = 0;
+    let count = 0;
+
+    for (const w of widths) {
+      if (running + w + MORE_BUTTON_RESERVED_WIDTH > containerWidth) {
+        break;
+      }
+
+      running += w;
+      count++;
+    }
+
+    setVisibleCount(Math.max(1, count));
+  }, []);
+
+  const isInitialMountRef = useRef(true);
+
+  // When items change (post-mount), drop into measuring mode so the next render captures fresh widths.
+  useLayoutEffect(() => {
+    if (isInitialMountRef.current) {
+      isInitialMountRef.current = false;
+
+      return;
+    }
+
+    widthsRef.current = [];
+    tabRefs.current = [];
+    setVisibleCount(null);
+  }, [itemsLength]);
+
+  // After the measuring render commits, capture widths once, then compute.
+  useLayoutEffect(() => {
+    if (visibleCount !== null) {
+      return;
+    }
+
+    const captured = tabRefs.current.map(el => el?.offsetWidth ?? 0);
+
+    if (captured.length === 0 || captured.length !== itemsLength) {
+      return;
+    }
+
+    widthsRef.current = captured;
+    recompute();
+  }, [visibleCount, itemsLength, recompute]);
+
+  useLayoutEffect(() => {
+    if (!stripRef.current || typeof ResizeObserver === "undefined") {
+      return;
+    }
+
+    const observer = new ResizeObserver(() => recompute());
+
+    observer.observe(stripRef.current);
+
+    return () => observer.disconnect();
+  }, [recompute]);
+
+  // Promote the active tab into the visible set if it would otherwise be hidden.
+  const activeIndex = items.findIndex(it => it.id === activeId);
+  let displayItems = items;
+  let overflowItems: ModelTypeTabItem[] = [];
+
+  if (visibleCount !== null && visibleCount < items.length) {
+    const visibleCap = visibleCount;
+    const indices = items.map((_, i) => i);
+
+    if (activeIndex >= visibleCap) {
+      // Swap active into the last visible slot.
+      const visibleIndices = [...indices.slice(0, visibleCap - 1), activeIndex];
+      const overflowIndices = indices.filter(i => !visibleIndices.includes(i));
+
+      displayItems = visibleIndices.map(i => items[i]);
+      overflowItems = overflowIndices.map(i => items[i]);
+    } else {
+      displayItems = items.slice(0, visibleCap);
+      overflowItems = items.slice(visibleCap);
+    }
+  }
+
+  const showMore = overflowItems.length > 0;
+  // Hide while measuring to avoid a flash of all-tabs-visible on first render.
+  const measuring = visibleCount === null;
+
+  const overflowOptions = useMemo(
+    () =>
+      overflowItems.map(item => {
+        const countLabel = formatCount(counts[item.id])?.trim();
+
+        return {
+          label: countLabel ? `${item.name} ${countLabel}` : item.name,
+          testId: `model-type-tab-${item.id}`,
+          onSelect: () => onTabChange(item.id),
+        };
+      }),
+    [overflowItems, counts, onTabChange],
+  );
 
   return (
     <div className={styles.row}>
-      <div role="tablist" ref={stripRef} className={styles.strip} data-test-id="model-type-tabs">
-        {items.map(item => {
+      <div
+        role="tablist"
+        ref={stripRef}
+        className={styles.strip}
+        data-test-id="model-type-tabs"
+        style={measuring ? { visibility: "hidden" } : undefined}
+      >
+        {(measuring ? items : displayItems).map((item, idx) => {
           const isActive = item.id === activeId;
 
           return (
@@ -67,7 +201,11 @@ export const ModelTypeTabs = ({
               type="button"
               role="tab"
               aria-selected={isActive}
-              ref={isActive ? activeRef : undefined}
+              ref={el => {
+                if (measuring) {
+                  tabRefs.current[idx] = el;
+                }
+              }}
               className={styles.tab}
               onClick={() => onTabChange(item.id)}
               data-test-id={`model-type-tab-${item.id}`}
@@ -80,6 +218,17 @@ export const ModelTypeTabs = ({
           );
         })}
       </div>
+      {showMore && (
+        <div className={styles.moreSlot}>
+          <ButtonWithDropdown
+            variant="secondary"
+            options={overflowOptions}
+            testId="model-type-tabs-more"
+          >
+            {intl.formatMessage(modelTypeTabsMessages.moreTab)}
+          </ButtonWithDropdown>
+        </div>
+      )}
       {rightSlot && <div className={styles.rightSlot}>{rightSlot}</div>}
     </div>
   );
