@@ -31,6 +31,7 @@ import createMetadataCreateHandler from "@dashboard/utils/handlers/metadataCreat
 import { mapEdgesToItems } from "@dashboard/utils/maps";
 import { getParsedDataForJsonStringField } from "@dashboard/utils/richText/misc";
 import { useIntl } from "react-intl";
+import { useLocation } from "react-router";
 
 import { useAssignAttributeValueDialogFilterChangeHandlers } from "../../components/AssignAttributeValueDialog/useAssignAttributeValueDialogFilterChangeHandlers";
 import PageDetailsPage from "../components/PageDetailsPage";
@@ -44,6 +45,7 @@ interface PageCreateProps {
 
 const PageCreate = ({ params }: PageCreateProps) => {
   const navigate = useNavigator();
+  const location = useLocation<{ prevLocation?: { pathname: string; search: string } }>();
   const notify = useNotifier();
   const intl = useIntl();
   const [updateMetadata] = useUpdateMetadataMutation({});
@@ -107,7 +109,11 @@ const PageCreate = ({ params }: PageCreateProps) => {
             defaultMessage: "Page created",
           }),
         });
-        navigate(pageUrl(data.pageCreate.page.id));
+        navigate(pageUrl(data.pageCreate.page.id), {
+          state: location.state?.prevLocation
+            ? { prevLocation: location.state.prevLocation }
+            : undefined,
+        });
       }
     },
   });

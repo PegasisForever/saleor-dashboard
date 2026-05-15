@@ -9,6 +9,7 @@ import {
   usePageListQuery,
   usePageTypeListQuery,
 } from "@dashboard/graphql";
+import { getPrevLocationState } from "@dashboard/hooks/useBackLinkWithState";
 import useListSettings from "@dashboard/hooks/useListSettings";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { useNotifier } from "@dashboard/hooks/useNotifier";
@@ -28,6 +29,7 @@ import { getSortParams } from "@dashboard/utils/sort";
 import isEqual from "lodash/isEqual";
 import { useCallback, useEffect, useMemo } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useLocation } from "react-router";
 
 import {
   ALL_MODELS_TAB_ID,
@@ -57,6 +59,7 @@ const normalizePageTypes = (value: string | string[] | undefined): string[] => {
 
 const PageList = ({ params }: PageListProps) => {
   const navigate = useNavigator();
+  const location = useLocation();
   const notify = useNotifier();
   const intl = useIntl();
   const { updateListSettings, settings } = useListSettings(ListViews.PAGES_LIST);
@@ -292,13 +295,15 @@ const PageList = ({ params }: PageListProps) => {
 
   const handlePageCreate = useCallback(() => {
     if (activeTabId !== ALL_MODELS_TAB_ID) {
-      navigate(pageCreateUrl({ "page-type-id": activeTabId }));
+      navigate(pageCreateUrl({ "page-type-id": activeTabId }), {
+        state: getPrevLocationState(location),
+      });
 
       return;
     }
 
     openModal("create-page");
-  }, [activeTabId, navigate, openModal]);
+  }, [activeTabId, navigate, openModal, location]);
 
   const activePageType = useMemo(
     () => pageTypes?.find(pt => pt.id === activeTabId),
@@ -412,6 +417,7 @@ const PageList = ({ params }: PageListProps) => {
             pageCreateUrl({
               "page-type-id": pageTypeId,
             }),
+            { state: getPrevLocationState(location) },
           )
         }
       />
