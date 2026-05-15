@@ -14,6 +14,7 @@ import useNavigator from "@dashboard/hooks/useNavigator";
 import { sectionNames } from "@dashboard/intl";
 import { type Pages } from "@dashboard/modeling/types";
 import { type PageListUrlSortField, pageUrl } from "@dashboard/modeling/urls";
+import { Ripple } from "@dashboard/ripples/components/Ripple";
 import { type PageListProps, type SortPage } from "@dashboard/types";
 import { Box, Button } from "@saleor/macaw-ui-next";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -21,6 +22,7 @@ import { useLocation } from "react-router";
 
 // Reuse the existing SearchInput so we don't drag in the filter chip-builder.
 import SearchInput from "../../../components/AppLayout/ListFilters/components/SearchInput";
+import { rippleModelTypeTabs } from "../../ripples/modelTypeTabs";
 import { type ModelTypeTabCount, ModelTypeTabs } from "../ModelTypeTabs/ModelTypeTabs";
 import { PageListDatagrid } from "../PageListDatagrid/PageListDatagrid";
 import { pagesListSearchAndFiltersMessages as messages } from "./messages";
@@ -108,6 +110,7 @@ const PageListPage = ({
           activeId={activeTabId}
           counts={tabCounts}
           onTabChange={onTabChange}
+          rightSlot={<Ripple model={rippleModelTypeTabs} />}
         />
         <DashboardCard>
           <Box

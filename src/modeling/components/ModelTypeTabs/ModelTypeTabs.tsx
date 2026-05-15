@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 import { useIntl } from "react-intl";
 
 import { modelTypeTabsMessages } from "./messages";
@@ -21,6 +21,8 @@ export interface ModelTypeTabsProps {
   activeId: string;
   counts: Record<string, ModelTypeTabCount | undefined>;
   onTabChange: (id: string) => void;
+  /** Optional slot anchored to the right of the strip, sharing the bottom border. */
+  rightSlot?: ReactNode;
 }
 
 const renderCount = (count: ModelTypeTabCount | undefined) => {
@@ -33,7 +35,13 @@ const renderCount = (count: ModelTypeTabCount | undefined) => {
   return <span className={styles.count}>({label})</span>;
 };
 
-export const ModelTypeTabs = ({ pageTypes, activeId, counts, onTabChange }: ModelTypeTabsProps) => {
+export const ModelTypeTabs = ({
+  pageTypes,
+  activeId,
+  counts,
+  onTabChange,
+  rightSlot,
+}: ModelTypeTabsProps) => {
   const intl = useIntl();
   const stripRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef<HTMLButtonElement>(null);
@@ -48,28 +56,31 @@ export const ModelTypeTabs = ({ pageTypes, activeId, counts, onTabChange }: Mode
   ];
 
   return (
-    <div role="tablist" ref={stripRef} className={styles.strip} data-test-id="model-type-tabs">
-      {items.map(item => {
-        const isActive = item.id === activeId;
+    <div className={styles.row}>
+      <div role="tablist" ref={stripRef} className={styles.strip} data-test-id="model-type-tabs">
+        {items.map(item => {
+          const isActive = item.id === activeId;
 
-        return (
-          <button
-            key={item.id}
-            type="button"
-            role="tab"
-            aria-selected={isActive}
-            ref={isActive ? activeRef : undefined}
-            className={styles.tab}
-            onClick={() => onTabChange(item.id)}
-            data-test-id={`model-type-tab-${item.id}`}
-          >
-            <span className={styles.tabLabel} title={item.name}>
-              {item.name}
-            </span>
-            {renderCount(counts[item.id])}
-          </button>
-        );
-      })}
+          return (
+            <button
+              key={item.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              ref={isActive ? activeRef : undefined}
+              className={styles.tab}
+              onClick={() => onTabChange(item.id)}
+              data-test-id={`model-type-tab-${item.id}`}
+            >
+              <span className={styles.tabLabel} title={item.name}>
+                {item.name}
+              </span>
+              {renderCount(counts[item.id])}
+            </button>
+          );
+        })}
+      </div>
+      {rightSlot && <div className={styles.rightSlot}>{rightSlot}</div>}
     </div>
   );
 };

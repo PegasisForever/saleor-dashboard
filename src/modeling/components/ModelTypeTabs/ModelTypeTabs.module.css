@@ -1,10 +1,18 @@
+.row {
+  display: flex;
+  align-items: stretch;
+  border-bottom: 1px solid var(--mu-colors-border-default1);
+  min-width: 0;
+}
+
 .strip {
   display: flex;
   gap: 0;
+  flex: 1 1 auto;
+  min-width: 0;
   overflow-x: auto;
   scrollbar-width: none;
   padding: 0 24px;
-  border-bottom: 1px solid var(--mu-colors-border-default1);
 }
 
 .strip::-webkit-scrollbar {
@@ -53,4 +61,11 @@
 
 .tab[aria-selected="true"] .count {
   color: var(--mu-colors-text-default1);
+}
+
+.rightSlot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0 24px;
 }

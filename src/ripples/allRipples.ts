@@ -2,6 +2,7 @@ import { rippleAttributeValuesSearch } from "@dashboard/attributes/ripples/attri
 import { checkoutAutocompleteSettings } from "@dashboard/channels/ripples/checkoutAutocompleteSettings";
 import { rippleCloudEnvLink } from "@dashboard/components/Sidebar/ripples/cloudEnvLink";
 import { rippleAppProblems } from "@dashboard/extensions/ripples/appProblems";
+import { rippleModelTypeTabs } from "@dashboard/modeling/ripples/modelTypeTabs";
 import { ripplePagesAreModels } from "@dashboard/modeling/ripples/pagesAreModels";
 import { rippleRefreshedOrderSections } from "@dashboard/orders/ripples/newOrderSummary";
 import { rippleNewRefundReasons } from "@dashboard/orders/ripples/newRefundReasons";
@@ -19,6 +20,7 @@ export const allRipples: Ripple[] = [
 
   // Modelling / pages
   ripplePagesAreModels,
+  rippleModelTypeTabs,
 
   // Orders
   rippleNewRefundReasons,
