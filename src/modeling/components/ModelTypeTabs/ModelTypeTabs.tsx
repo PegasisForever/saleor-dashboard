@@ -23,14 +23,14 @@ export interface ModelTypeTabsProps {
   onTabChange: (id: string) => void;
 }
 
-const renderBadge = (count: ModelTypeTabCount | undefined) => {
+const renderCount = (count: ModelTypeTabCount | undefined) => {
   if (!count) {
     return null;
   }
 
   const label = count.hasMore ? `${count.value}+` : `${count.value}`;
 
-  return <span className={styles.badge}>{label}</span>;
+  return <span className={styles.count}>({label})</span>;
 };
 
 export const ModelTypeTabs = ({ pageTypes, activeId, counts, onTabChange }: ModelTypeTabsProps) => {
@@ -63,8 +63,10 @@ export const ModelTypeTabs = ({ pageTypes, activeId, counts, onTabChange }: Mode
             onClick={() => onTabChange(item.id)}
             data-test-id={`model-type-tab-${item.id}`}
           >
-            <span>{item.name}</span>
-            {renderBadge(counts[item.id])}
+            <span className={styles.tabLabel} title={item.name}>
+              {item.name}
+            </span>
+            {renderCount(counts[item.id])}
           </button>
         );
       })}

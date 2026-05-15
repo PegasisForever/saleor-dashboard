@@ -1,18 +1,22 @@
-import { OrderDirection, PageSortField, usePageListQuery } from "@dashboard/graphql";
+import {
+  OrderDirection,
+  type PageListQuery,
+  PageSortField,
+  type PageSortingInput,
+  usePageListQuery,
+} from "@dashboard/graphql";
 import { useCallback, useRef, useState } from "react";
 
 import { type ModelTypeTabCount } from "../../components/ModelTypeTabs/ModelTypeTabs";
 
 // Variables shape shared with the active tab's canonical query so Apollo cache entries overlap
 // when the user lands on /models/ without sort/search overrides.
-const DEFAULT_TAB_SORT = {
+const DEFAULT_TAB_SORT: PageSortingInput = {
   field: PageSortField.TITLE,
   direction: OrderDirection.ASC,
 };
 
-const computeCount = (
-  data: ReturnType<typeof usePageListQuery>["data"],
-): ModelTypeTabCount | undefined => {
+const computeCount = (data: PageListQuery | undefined): ModelTypeTabCount | undefined => {
   if (!data?.pages) {
     return undefined;
   }

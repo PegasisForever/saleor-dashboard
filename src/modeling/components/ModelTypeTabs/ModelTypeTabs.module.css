@@ -1,9 +1,10 @@
 .strip {
   display: flex;
-  gap: 4px;
+  gap: 0;
   overflow-x: auto;
   scrollbar-width: none;
-  padding: 4px 24px 0;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--mu-colors-border-default1);
 }
 
 .strip::-webkit-scrollbar {
@@ -13,9 +14,10 @@
 .tab {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   flex-shrink: 0;
-  padding: 8px 12px;
+  max-width: 220px;
+  padding: 12px 16px;
   margin-bottom: -1px;
   background: transparent;
   border: none;
@@ -30,30 +32,25 @@
     border-color 0.15s ease;
 }
 
+.tabLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .tab:hover {
   color: var(--mu-colors-text-default1);
 }
 
 .tab[aria-selected="true"] {
   color: var(--mu-colors-text-default1);
-  border-bottom-color: var(--mu-colors-border-default1);
-  font-weight: 500;
+  border-bottom-color: var(--mu-colors-text-default1);
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  padding: 0 6px;
-  height: 18px;
-  border-radius: 9px;
-  background-color: var(--mu-colors-background-default2);
+.count {
   color: var(--mu-colors-text-default2);
-  font-size: 12px;
-  font-weight: 500;
+  font-variant-numeric: tabular-nums;
 }
 
-.tab[aria-selected="true"] .badge {
-  color: var(--mu-colors-text-buttonDefaultPrimary);
+.tab[aria-selected="true"] .count {
+  color: var(--mu-colors-text-default1);
 }

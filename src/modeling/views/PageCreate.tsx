@@ -110,6 +110,8 @@ const PageCreate = ({ params }: PageCreateProps) => {
           }),
         });
         navigate(pageUrl(data.pageCreate.page.id), {
+          // Pass-through state, to preserve where view was opened from
+          // So "back" button can properly redirect to model list with type of this model
           state: location.state?.prevLocation
             ? { prevLocation: location.state.prevLocation }
             : undefined,
