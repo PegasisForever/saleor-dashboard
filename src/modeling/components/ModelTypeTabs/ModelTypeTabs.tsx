@@ -58,9 +58,11 @@ export const ModelTypeTabs = ({
 }: ModelTypeTabsProps) => {
   const intl = useIntl();
   const stripRef = useRef<HTMLDivElement>(null);
-  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const widthsRef = useRef<number[]>([]);
+  const measureTabRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const [visibleCount, setVisibleCount] = useState<number | null>(null);
+  const visibleCountRef = useRef<number | null>(null);
+
+  visibleCountRef.current = visibleCount;
 
   const items: ModelTypeTabItem[] = [
     { id: ALL_MODELS_TAB_ID, name: intl.formatMessage(modelTypeTabsMessages.allTab) },
@@ -70,26 +72,40 @@ export const ModelTypeTabs = ({
 
   const recompute = useCallback(() => {
     const strip = stripRef.current;
-    const widths = widthsRef.current;
 
-    if (!strip || widths.length === 0) {
+    if (!strip) {
       return;
     }
 
-    const containerWidth = strip.clientWidth;
+    const widths = measureTabRefs.current.slice(0, itemsLength).map(el => el?.offsetWidth ?? 0);
+
+    if (widths.length !== itemsLength || widths.some(w => w === 0)) {
+      return;
+    }
+
+    const style = window.getComputedStyle(strip);
+    const horizontalPadding =
+      parseFloat(style.paddingLeft || "0") + parseFloat(style.paddingRight || "0");
+    const available = strip.clientWidth - horizontalPadding;
     const total = widths.reduce((a, b) => a + b, 0);
 
-    if (total <= containerWidth) {
-      setVisibleCount(widths.length);
+    if (total <= available) {
+      setVisibleCount(prev => (prev === widths.length ? prev : widths.length));
 
       return;
     }
+
+    // If the More button is already mounted, clientWidth already excludes its slot.
+    // Otherwise we need to reserve space for the slot the next render will introduce.
+    const moreAlreadyMounted =
+      visibleCountRef.current !== null && visibleCountRef.current < widths.length;
+    const reserve = moreAlreadyMounted ? 0 : MORE_BUTTON_RESERVED_WIDTH;
 
     let running = 0;
     let count = 0;
 
     for (const w of widths) {
-      if (running + w + MORE_BUTTON_RESERVED_WIDTH > containerWidth) {
+      if (running + w + reserve > available) {
         break;
       }
 
@@ -97,39 +113,15 @@ export const ModelTypeTabs = ({
       count++;
     }
 
-    setVisibleCount(Math.max(1, count));
-  }, []);
+    const next = Math.max(1, count);
 
-  const isInitialMountRef = useRef(true);
-
-  // When items change (post-mount), drop into measuring mode so the next render captures fresh widths.
-  useLayoutEffect(() => {
-    if (isInitialMountRef.current) {
-      isInitialMountRef.current = false;
-
-      return;
-    }
-
-    widthsRef.current = [];
-    tabRefs.current = [];
-    setVisibleCount(null);
+    setVisibleCount(prev => (prev === next ? prev : next));
   }, [itemsLength]);
 
-  // After the measuring render commits, capture widths once, then compute.
+  // Recompute after every commit — picks up tab label changes (e.g. counts arriving async).
   useLayoutEffect(() => {
-    if (visibleCount !== null) {
-      return;
-    }
-
-    const captured = tabRefs.current.map(el => el?.offsetWidth ?? 0);
-
-    if (captured.length === 0 || captured.length !== itemsLength) {
-      return;
-    }
-
-    widthsRef.current = captured;
     recompute();
-  }, [visibleCount, itemsLength, recompute]);
+  });
 
   useLayoutEffect(() => {
     if (!stripRef.current || typeof ResizeObserver === "undefined") {
@@ -153,7 +145,6 @@ export const ModelTypeTabs = ({
     const indices = items.map((_, i) => i);
 
     if (activeIndex >= visibleCap) {
-      // Swap active into the last visible slot.
       const visibleIndices = [...indices.slice(0, visibleCap - 1), activeIndex];
       const overflowIndices = indices.filter(i => !visibleIndices.includes(i));
 
@@ -166,7 +157,7 @@ export const ModelTypeTabs = ({
   }
 
   const showMore = overflowItems.length > 0;
-  // Hide while measuring to avoid a flash of all-tabs-visible on first render.
+  // Hide the visible strip while we haven't measured yet to avoid a flash of all-tabs.
   const measuring = visibleCount === null;
 
   const overflowOptions = useMemo(
@@ -185,6 +176,24 @@ export const ModelTypeTabs = ({
 
   return (
     <div className={styles.row}>
+      {/* Hidden measurement layer — always renders all tabs at their natural width. */}
+      <div className={styles.measureLayer} aria-hidden>
+        {items.map((item, idx) => (
+          <button
+            key={item.id}
+            type="button"
+            tabIndex={-1}
+            ref={el => {
+              measureTabRefs.current[idx] = el;
+            }}
+            className={styles.tab}
+          >
+            <span className={styles.tabLabel}>{item.name}</span>
+            {renderCount(counts[item.id])}
+          </button>
+        ))}
+      </div>
+
       <div
         role="tablist"
         ref={stripRef}
@@ -192,7 +201,7 @@ export const ModelTypeTabs = ({
         data-test-id="model-type-tabs"
         style={measuring ? { visibility: "hidden" } : undefined}
       >
-        {(measuring ? items : displayItems).map((item, idx) => {
+        {displayItems.map(item => {
           const isActive = item.id === activeId;
 
           return (
@@ -201,11 +210,6 @@ export const ModelTypeTabs = ({
               type="button"
               role="tab"
               aria-selected={isActive}
-              ref={el => {
-                if (measuring) {
-                  tabRefs.current[idx] = el;
-                }
-              }}
               className={styles.tab}
               onClick={() => onTabChange(item.id)}
               data-test-id={`model-type-tab-${item.id}`}

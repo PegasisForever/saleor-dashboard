@@ -1,8 +1,19 @@
 .row {
+  position: relative;
   display: flex;
   align-items: stretch;
   border-bottom: 1px solid var(--mu-colors-border-default1);
   min-width: 0;
+}
+
+.measureLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
 .strip {
