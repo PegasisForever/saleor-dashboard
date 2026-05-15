@@ -364,6 +364,10 @@
   "/zFGgP": {
     "string": "+{count} more"
   },
+  "/zb21Y": {
+    "context": "tab name for all models",
+    "string": "All"
+  },
   "0+sGhF": {
     "context": "Suffix for show-more button when hidden problems include active ones",
     "string": ", including {active} active"
@@ -4336,6 +4340,10 @@
   "MKtgZB": {
     "string": "Only staff users can access the dashboard"
   },
+  "ML+YsS": {
+    "context": "button",
+    "string": "Create {typeName}"
+  },
   "MNZY28": {
     "context": "table column header",
     "string": "Channel threshold"
@@ -5831,10 +5839,6 @@
   "UcrXYE": {
     "context": "Description for scheduled status when publication date is in the future",
     "string": "Publication scheduled"
-  },
-  "UgCuqX": {
-    "context": "tab name",
-    "string": "All models"
   },
   "Uh3NX/": {
     "context": "remove failed installation dialog content",
