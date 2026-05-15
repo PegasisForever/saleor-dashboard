@@ -73,28 +73,32 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-left: 4px;
-  padding: 2px;
+  width: 0;
+  height: 18px;
+  margin-left: 0;
+  padding: 0;
   border: none;
   background: transparent;
   color: var(--mu-colors-text-default2);
   cursor: pointer;
   border-radius: 4px;
-  visibility: hidden;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    width 0.18s ease,
+    opacity 0.18s ease,
+    margin-left 0.18s ease;
 }
 
 .tab[aria-selected="true"]:hover .pinButton {
-  visibility: visible;
+  width: 18px;
+  margin-left: 4px;
+  opacity: 1;
 }
 
 .pinButton:hover {
   color: var(--mu-colors-text-default1);
   background: var(--mu-colors-background-default2);
-}
-
-/* In the hidden measurement layer the pin slot must always take space */
-.measureLayer .pinButton {
-  visibility: hidden;
 }
 
 .rightSlot {

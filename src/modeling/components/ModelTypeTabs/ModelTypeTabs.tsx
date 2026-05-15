@@ -201,29 +201,20 @@ export const ModelTypeTabs = ({
     <div className={styles.row}>
       {/* Hidden measurement layer — always renders all tabs at their natural width. */}
       <div className={styles.measureLayer} aria-hidden>
-        {items.map((item, idx) => {
-          const showPinSlot = item.id === activeId && item.id !== ALL_MODELS_TAB_ID;
-
-          return (
-            <button
-              key={item.id}
-              type="button"
-              tabIndex={-1}
-              ref={el => {
-                measureTabRefs.current[idx] = el;
-              }}
-              className={styles.tab}
-            >
-              <span className={styles.tabLabel}>{item.name}</span>
-              {renderCount(counts[item.id])}
-              {showPinSlot && (
-                <span className={styles.pinButton}>
-                  <Pin size={14} />
-                </span>
-              )}
-            </button>
-          );
-        })}
+        {items.map((item, idx) => (
+          <button
+            key={item.id}
+            type="button"
+            tabIndex={-1}
+            ref={el => {
+              measureTabRefs.current[idx] = el;
+            }}
+            className={styles.tab}
+          >
+            <span className={styles.tabLabel}>{item.name}</span>
+            {renderCount(counts[item.id])}
+          </button>
+        ))}
       </div>
 
       <div
