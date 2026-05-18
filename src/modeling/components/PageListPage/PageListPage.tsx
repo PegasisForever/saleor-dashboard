@@ -85,23 +85,21 @@ const PageListPage = ({
 
   return (
     <ListPageLayout>
-      <TopNav title={intl.formatMessage(sectionNames.models)} isAlignToRight={false} withoutBorder>
-        <Box __flex={1} display="flex" justifyContent="flex-end" alignItems="center" gap={2}>
-          {extensionMenuItems.length > 0 && <TopNav.Menu items={extensionMenuItems} />}
-          {extensionCreateButtonItems.length > 0 ? (
-            <ButtonGroupWithDropdown
-              options={extensionCreateButtonItems}
-              onClick={onPageCreate}
-              data-test-id="create-page"
-            >
-              {createLabel}
-            </ButtonGroupWithDropdown>
-          ) : (
-            <Button onClick={onPageCreate} variant="primary" data-test-id="create-page">
-              {createLabel}
-            </Button>
-          )}
-        </Box>
+      <TopNav title={intl.formatMessage(sectionNames.models)} withoutBorder>
+        {extensionMenuItems.length > 0 && <TopNav.Menu items={extensionMenuItems} />}
+        {extensionCreateButtonItems.length > 0 ? (
+          <ButtonGroupWithDropdown
+            options={extensionCreateButtonItems}
+            onClick={onPageCreate}
+            data-test-id="create-page"
+          >
+            {createLabel}
+          </ButtonGroupWithDropdown>
+        ) : (
+          <Button onClick={onPageCreate} variant="primary" data-test-id="create-page">
+            {createLabel}
+          </Button>
+        )}
       </TopNav>
       <Box display="flex" flexDirection="column" __minWidth={0} __minHeight={0}>
         <ModelTypeTabs
