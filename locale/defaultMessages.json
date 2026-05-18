@@ -303,6 +303,10 @@
   "/jJLYy": {
     "string": "Transactions"
   },
+  "/js4TV": {
+    "context": "aria label for pinning a tab",
+    "string": "Pin tab"
+  },
   "/kWzY1": {
     "string": "Are you sure you want to delete this address from users address book?"
   },
@@ -8467,6 +8471,10 @@
   "jd/LWa": {
     "string": "Voucher applies to all countries"
   },
+  "jg1Kcw": {
+    "context": "aria label for unpinning a tab",
+    "string": "Unpin tab"
+  },
   "jg8M0x": {
     "context": "sub-header for line-level discounts in summary",
     "string": "Lines"
@@ -10547,6 +10555,10 @@
   },
   "uoKAmI": {
     "string": "Add new order"
+  },
+  "uq2aqJ": {
+    "context": "overflow tab label",
+    "string": "More"
   },
   "uqxjSR": {
     "context": "column picker section header",
