@@ -8856,6 +8856,10 @@
     "context": "header",
     "string": "Group members"
   },
+  "lHCpM4": {
+    "context": "empty state shown when search returns no results",
+    "string": "No models match \"{query}\""
+  },
   "lHccsy": {
     "context": "table head",
     "string": "Variant Name"
