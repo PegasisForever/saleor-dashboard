@@ -16,6 +16,7 @@ import {
   useUpdatePrivateMetadataMutation,
 } from "@dashboard/graphql";
 import { getSearchFetchMoreProps } from "@dashboard/hooks/makeTopLevelSearch/utils";
+import { useLastCreatedEntityTypeStorage } from "@dashboard/hooks/useLastCreatedEntityTypeStorage";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { useNotifier } from "@dashboard/hooks/useNotifier";
 import { getMutationErrors } from "@dashboard/misc";
@@ -50,6 +51,7 @@ const PageCreate = ({ params }: PageCreateProps) => {
   const intl = useIntl();
   const [updateMetadata] = useUpdateMetadataMutation({});
   const [updatePrivateMetadata] = useUpdatePrivateMetadataMutation({});
+  const [, setLastCreatedModelTypeId] = useLastCreatedEntityTypeStorage("MODEL");
   const selectedPageTypeId = params["page-type-id"];
 
   const handleSelectPageTypeId = (pageTypeId: string) =>
@@ -150,9 +152,15 @@ const PageCreate = ({ params }: PageCreateProps) => {
       },
     });
 
+    const mutationErrors = getMutationErrors(result);
+
+    if (mutationErrors.length === 0 && formData.pageType?.id) {
+      setLastCreatedModelTypeId(formData.pageType.id);
+    }
+
     return {
       id: result.data.pageCreate.page?.id || null,
-      errors: getMutationErrors(result),
+      errors: mutationErrors,
     };
   };
   const handleSubmit = createMetadataCreateHandler(

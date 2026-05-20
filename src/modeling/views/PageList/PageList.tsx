@@ -10,6 +10,7 @@ import {
   usePageTypeListQuery,
 } from "@dashboard/graphql";
 import { getPrevLocationState } from "@dashboard/hooks/useBackLinkWithState";
+import { useLastCreatedEntityTypeStorage } from "@dashboard/hooks/useLastCreatedEntityTypeStorage";
 import useListSettings from "@dashboard/hooks/useListSettings";
 import useNavigator from "@dashboard/hooks/useNavigator";
 import { useNotifier } from "@dashboard/hooks/useNotifier";
@@ -310,6 +311,17 @@ const PageList = ({ params }: PageListProps) => {
     [pageTypes, activeTabId],
   );
 
+  const [lastCreatedModelTypeId] = useLastCreatedEntityTypeStorage("MODEL");
+  const defaultPickerOption = useMemo(() => {
+    if (!lastCreatedModelTypeId || !pageTypes) {
+      return null;
+    }
+
+    const match = pageTypes.find(pt => pt.id === lastCreatedModelTypeId);
+
+    return match ? { value: match.id, label: match.name } : null;
+  }, [lastCreatedModelTypeId, pageTypes]);
+
   return (
     <PaginatorContext.Provider value={paginationValues}>
       {fetchers}
@@ -409,6 +421,7 @@ const PageList = ({ params }: PageListProps) => {
         confirmButtonState="success"
         open={params.action === "create-page"}
         pageTypes={mapNodeToChoice(mapEdgesToItems(searchDialogPageTypesOpts?.data?.search))}
+        defaultOption={defaultPickerOption}
         fetchPageTypes={searchDialogPageTypes}
         fetchMorePageTypes={fetchMoreDialogPageTypes}
         onClose={closeModal}
