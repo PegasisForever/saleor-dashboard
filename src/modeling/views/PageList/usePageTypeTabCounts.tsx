@@ -5,7 +5,7 @@ import {
   type PageSortingInput,
   usePageListQuery,
 } from "@dashboard/graphql";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { type ModelTypeTabCount } from "../../components/ModelTypeTabs/ModelTypeTabs";
 
@@ -50,16 +50,13 @@ const TabCountFetcher = ({ pageTypeId, pageSize, onCount, tabId }: TabCountFetch
     },
   });
 
-  const lastReported = useRef<ModelTypeTabCount | undefined>(undefined);
   const count = computeCount(data);
 
-  if (
-    count &&
-    (lastReported.current?.value !== count.value || lastReported.current?.hasMore !== count.hasMore)
-  ) {
-    lastReported.current = count;
-    onCount(tabId, count);
-  }
+  useEffect(() => {
+    if (count) {
+      onCount(tabId, count);
+    }
+  }, [tabId, count?.value, count?.hasMore, onCount]);
 
   return null;
 };
