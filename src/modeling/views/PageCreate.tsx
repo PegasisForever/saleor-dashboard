@@ -44,6 +44,21 @@ interface PageCreateProps {
   params: PageCreateUrlQueryParams;
 }
 
+// The list URL captured as prevLocation may still carry `?action=create-page`
+// from when the picker dialog was opened. Without this, navigating back to the
+// list would re-open the picker.
+const stripCreateActionParam = (search: string): string => {
+  const params = new URLSearchParams(search);
+
+  if (params.get("action") === "create-page") {
+    params.delete("action");
+  }
+
+  const result = params.toString();
+
+  return result ? `?${result}` : "";
+};
+
 const PageCreate = ({ params }: PageCreateProps) => {
   const navigate = useNavigator();
   const location = useLocation<{ prevLocation?: { pathname: string; search: string } }>();
@@ -111,11 +126,21 @@ const PageCreate = ({ params }: PageCreateProps) => {
             defaultMessage: "Page created",
           }),
         });
+
+        const prevLocation = location.state?.prevLocation;
+
         navigate(pageUrl(data.pageCreate.page.id), {
           // Pass-through state, to preserve where view was opened from
-          // So "back" button can properly redirect to model list with type of this model
-          state: location.state?.prevLocation
-            ? { prevLocation: location.state.prevLocation }
+          // So "back" button can properly redirect to model list with type of this model.
+          // Strip `action=create-page` from the captured search so the model-type
+          // picker dialog doesn't re-open when the user navigates back to the list.
+          state: prevLocation
+            ? {
+                prevLocation: {
+                  ...prevLocation,
+                  search: stripCreateActionParam(prevLocation.search),
+                },
+              }
             : undefined,
         });
       }
