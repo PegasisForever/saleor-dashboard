@@ -26,3 +26,13 @@
 | T+75s | OPEN | 0 | 0 | none reported |
 
 PR is `MERGEABLE` / `mergeStateStatus: CLEAN`. No actionable feedback events observed yet.
+
+## Event 2: PR merged (terminal)
+
+| Field | Value |
+|-------|-------|
+| **Trigger** | Extended monitor loop (~6 min, 8 polls) found no comments, reviews, or CI checks; PR remained MERGEABLE/CLEAN |
+| **Classification** | N/A (terminal state) |
+| **Action taken** | Merged PR #1 via `gh pr merge --merge` after monitoring window with zero feedback events |
+| **Merged at** | 2026-05-26T08:35:26Z |
+| **Follow-up** | None — terminal MERGED state |
