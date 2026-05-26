@@ -1,0 +1,6 @@
+.button:focus-visible {
+  background-color: var(--mu-colors-background-button-default-secondary-focused);
+  border-color: var(--mu-colors-border-default1) !important;
+  outline: 2px solid var(--mu-colors-text-accent1) !important;
+  outline-offset: 2px;
+}

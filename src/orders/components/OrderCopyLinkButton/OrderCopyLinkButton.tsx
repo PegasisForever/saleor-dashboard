@@ -6,6 +6,7 @@ import { useIntl } from "react-intl";
 
 import { ClipboardCopyIcon } from "../OrderCardTitle/ClipboardCopyIcon";
 import { messages } from "./messages";
+import styles from "./OrderCopyLinkButton.module.css";
 
 interface OrderCopyLinkButtonProps {
   orderId?: string;
@@ -31,6 +32,7 @@ export const OrderCopyLinkButton = ({
 
   return (
     <Button
+      className={styles.button}
       variant="secondary"
       disabled={disabled}
       icon={<ClipboardCopyIcon hasBeenClicked={copied} />}

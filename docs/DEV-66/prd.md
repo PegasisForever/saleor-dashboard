@@ -33,5 +33,6 @@ Store staff often need to share a direct link to a specific order with teammates
 - [ ] `aria-label` and `title` use `messages.copyOrderLink` ("Copy order link")
 - [ ] `data-test-id="copy-order-link"` is present on the button
 - [ ] When `orderId` is empty, the button is not rendered
+- [ ] Keyboard focus on the copy-link button shows a visible focus indicator using the `text-accent1` outline ring (≥3:1 non-text contrast vs page background)
 - [ ] Storybook stories exist for states: `Default`, `Hover`, `Focus`, `Active`, `Disabled`, `Loading`, `Error`, `Empty` under `Orders/OrderCopyLinkButton`
 - [ ] A published Storybook URL is recorded in `docs/DEV-66/ui-design.md`
