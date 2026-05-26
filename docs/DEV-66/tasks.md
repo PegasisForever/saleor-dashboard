@@ -83,7 +83,7 @@ Optional strict-narrowing fix while editing the component (runtime-safe today, s
 
 ## T-cd5300d3: Extract copy-order-link i18n messages into locale catalogs
 
-- Status: pending
+- Status: done
 - Priority: medium
 - Blocked by: none
 - Discovered from: —
@@ -122,6 +122,6 @@ export const messages = defineMessages({
 
 ### Acceptance
 
-- [ ] `pnpm run extract-messages` completes without error
-- [ ] `locale/` catalogs include entries for message ids `BLmn1V` and `Hztpse` (or equivalent keys matching those ids in generated locale files)
-- [ ] `git diff locale/` is non-empty and only adds/updates strings for the new copy-order-link messages (no unrelated locale churn reverted)
+- [x] `pnpm run extract-messages` completes without error
+- [x] `locale/` catalogs include entries for message ids `BLmn1V` and `Hztpse` (or equivalent keys matching those ids in generated locale files)
+- [x] `git diff locale/` is non-empty and only adds/updates strings for the new copy-order-link messages (no unrelated locale churn reverted)
