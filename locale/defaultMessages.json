@@ -2337,6 +2337,10 @@
     "context": "fulfill order, button",
     "string": "Fulfill"
   },
+  "BLmn1V": {
+    "context": "button",
+    "string": "Copy order link"
+  },
   "BM1JiJ": {
     "context": "error message",
     "string": "This order cannot be cancelled"
@@ -3597,6 +3601,10 @@
   },
   "HyMpO2": {
     "string": "Percentage"
+  },
+  "Hztpse": {
+    "context": "copy order link error",
+    "string": "Failed to copy order link"
   },
   "I+1KzL": {
     "context": "tab name",
