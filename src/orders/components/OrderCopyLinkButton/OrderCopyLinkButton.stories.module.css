@@ -1,15 +1,16 @@
 .storyHover button {
-  background-color: var(--mu-colors-background-accent1-hovered);
+  background-color: var(--mu-colors-background-button-default-secondary-hovered);
 }
 
 .storyFocus button {
-  /* Macaw Button resets outline; !important + valid token keeps focus ring visible */
-  outline: 2px solid var(--mu-colors-border-default1-focused) !important;
-  outline-offset: 2px;
+  /* Mirror macaw secondary Button :focus-visible — border change, not outline */
+  background-color: var(--mu-colors-background-button-default-secondary-focused);
+  border-color: var(--mu-colors-border-default1-focused) !important;
+  outline: none !important;
 }
 
 .storyActive button {
-  background-color: var(--mu-colors-background-accent1-pressed);
+  background-color: var(--mu-colors-background-button-default-secondary-pressed);
 }
 
 .storyError {
