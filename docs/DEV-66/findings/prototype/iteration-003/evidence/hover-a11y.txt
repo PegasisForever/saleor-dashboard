@@ -1,0 +1,190 @@
+uid=6_0 RootWebArea "Orders / OrderCopyLinkButton - Hover ⋅ Storybook" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--hover"
+  uid=6_1 banner "Storybook"
+    uid=6_2 heading "Storybook" level="1"
+    uid=6_3 link "Skip to content" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--hover#storybook-preview-wrapper"
+      uid=6_4 StaticText "Skip to content"
+    uid=6_5 link "Storybook" description="Storybook" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/"
+      uid=6_6 image "Storybook"
+    uid=6_7 switch "Settings" expandable
+    uid=6_8 StaticText "Search for components"
+    uid=6_9 search
+      uid=6_10 combobox "Search for components" expandable haspopup="listbox"
+        uid=6_11 searchbox "Search for components" autocomplete="list"
+        uid=6_12 button "Tag filters" expandable haspopup="dialog"
+    uid=6_13 generic
+      uid=6_14 navigation "Stories"
+        uid=6_15 heading "Stories" level="2"
+        uid=6_16 button "Collapse" expandable expanded
+        uid=6_17 button "Expand all"
+        uid=6_18 button "AttributeListDatagrid" expandable
+        uid=6_19 button "Collapse" expandable expanded
+        uid=6_20 button "Expand all"
+        uid=6_21 button "NewPasswordPage" expandable
+        uid=6_22 button "Collapse" expandable expanded
+        uid=6_23 button "Expand all"
+        uid=6_24 button "CategoryListDatagrid" expandable
+        uid=6_25 button "CategoryProductListDatagrid" expandable
+        uid=6_26 button "Collapse" expandable expanded
+        uid=6_27 button "Expand all"
+        uid=6_28 button "CollectionListDatagrid" expandable
+        uid=6_29 button "CollectionProducts" expandable
+        uid=6_30 button "Collapse" expandable expanded
+        uid=6_31 button "Expand all"
+        uid=6_32 button "AppLayout" expandable
+        uid=6_33 button "Dialogs" expandable
+        uid=6_34 button "Button" expandable
+        uid=6_35 button "CardMenu" expandable
+        uid=6_36 button "CardTitle" expandable
+        uid=6_37 button "Checkbox" expandable
+        uid=6_38 button "Chip" expandable
+        uid=6_39 button "CollectionWithDividers" expandable
+        uid=6_40 button "ColorPicker" expandable
+        uid=6_41 button "ControlledCheckbox" expandable
+        uid=6_42 button "Datagrid" expandable
+        uid=6_43 button "HookFormInput" expandable
+        uid=6_44 button "IconButtonTableCell" expandable
+        uid=6_45 button "MediaWithFallback" expandable
+        uid=6_46 button "ResponsiveTable" expandable
+        uid=6_47 button "RichTextEditor" expandable
+        uid=6_48 button "SortableHandle" expandable
+        uid=6_49 button "SortableTableBody" expandable
+        uid=6_50 button "SortableTableRow" expandable
+        uid=6_51 button "Tab" expandable
+        uid=6_52 button "AvatarImage" expandable
+        uid=6_53 button "TableCellAvatar" expandable
+        uid=6_54 button "TableCellHeader" expandable
+        uid=6_55 button "FilterTab" expandable
+        uid=6_56 button "FilterTabs" expandable
+        uid=6_57 button "TableHead" expandable
+        uid=6_58 button "TablePagination" expandable
+        uid=6_59 button "TableRowLink" expandable
+        uid=6_60 button "Timeline" expandable
+        uid=6_61 button "ModelsPicker" expandable
+        uid=6_62 button "Collapse" expandable expanded
+        uid=6_63 button "Expand all"
+        uid=6_64 button "ConfigurationPage" expandable
+        uid=6_65 button "Collapse" expandable expanded
+        uid=6_66 button "Expand all"
+        uid=6_67 button "CustomerDetails" expandable
+        uid=6_68 button "CustomerListDatagrid" expandable
+        uid=6_69 button "Collapse" expandable expanded
+        uid=6_70 button "Expand all"
+        uid=6_71 button "DiscountListDatagrid" expandable
+        uid=6_72 button "RulesList" expandable
+        uid=6_73 button "VoucherCodesDatagrid" expandable
+        uid=6_74 button "VoucherListDatagrid" expandable
+        uid=6_75 button "Collapse" expandable expanded
+        uid=6_76 button "Expand all"
+        uid=6_77 button "AppAlerts" expandable
+        uid=6_78 button "InstallCustomExtension" expandable
+        uid=6_79 button "AppProblems" expandable
+        uid=6_80 button "InstalledExtensions" expandable
+        uid=6_81 button "Collapse" expandable expanded
+        uid=6_82 button "Expand all"
+        uid=6_83 button "GiftCardsListDatagrid" expandable
+        uid=6_84 button "GiftCardTagInput" expandable
+        uid=6_85 button "Collapse" expandable expanded
+        uid=6_86 button "Expand all"
+        uid=6_87 button "HomeWidgetTabs" expandable
+        uid=6_88 button "Collapse" expandable expanded
+        uid=6_89 button "Expand all"
+        uid=6_90 button "Legacy Icon Showcase" expandable
+        uid=6_91 button "Collapse" expandable expanded
+        uid=6_92 button "Expand all"
+        uid=6_93 button "PageListDatagrid" expandable
+        uid=6_94 button "Collapse" expandable expanded
+        uid=6_95 button "Expand all"
+        uid=6_96 button "OrderCardTitle" expandable
+        uid=6_97 button "OrderCopyLinkButton" expandable expanded
+        uid=6_98 link "Default" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--default"
+          uid=6_99 StaticText "Default"
+        uid=6_100 link "Hover" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--hover"
+          uid=6_101 StaticText "Hover"
+        uid=6_102 link "Skip to content" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--hover#storybook-preview-wrapper"
+          uid=6_103 StaticText "Skip to content"
+        uid=6_104 link "Focus" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--focus"
+          uid=6_105 StaticText "Focus"
+        uid=6_106 link "Active" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--active"
+          uid=6_107 StaticText "Active"
+        uid=6_108 link "Disabled" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--disabled"
+          uid=6_109 StaticText "Disabled"
+        uid=6_110 link "Loading" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--loading"
+          uid=6_111 StaticText "Loading"
+        uid=6_112 link "Error" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--error"
+          uid=6_113 StaticText "Error"
+        uid=6_114 link "Empty" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--empty"
+          uid=6_115 StaticText "Empty"
+        uid=6_116 button "OrderDetailsDatagrid" expandable
+        uid=6_117 button "OrderDiscountModal" expandable
+        uid=6_118 button "OrderLineDiscountModal" expandable
+        uid=6_119 button "OrderDraftDetailsDatagrid" expandable
+        uid=6_120 button "OrderDraftListDatagrid" expandable
+        uid=6_121 button "OrderFulfillmentCard" expandable
+        uid=6_122 button "OrderHistory" expandable
+        uid=6_123 button "OrderListDatagrid" expandable
+        uid=6_124 button "OrderReturnPage" expandable
+        uid=6_125 button "OrderTransaction" expandable
+        uid=6_126 button "Collapse" expandable expanded
+        uid=6_127 button "Expand all"
+        uid=6_128 button "PermissionGroupListDatagrid" expandable
+        uid=6_129 button "Collapse" expandable expanded
+        uid=6_130 button "Expand all"
+        uid=6_131 button "ProductListDatagrid" expandable
+        uid=6_132 button "ProductOrganization" expandable
+        uid=6_133 button "ProductVariantNavigation" expandable
+        uid=6_134 button "ProductVariants" expandable
+        uid=6_135 button "Collapse" expandable expanded
+        uid=6_136 button "Expand all"
+        uid=6_137 button "Ripple" expandable
+        uid=6_138 button "Collapse" expandable expanded
+        uid=6_139 button "Expand all"
+        uid=6_140 button "ShippingZonesListDatagrid" expandable
+        uid=6_141 button "Collapse" expandable expanded
+        uid=6_142 button "Expand all"
+        uid=6_143 button "StaffListDatagrid" expandable
+        uid=6_144 button "Collapse" expandable expanded
+        uid=6_145 button "Expand all"
+        uid=6_146 button "TaxAppLabel" expandable
+        uid=6_147 button "Collapse" expandable expanded
+        uid=6_148 button "Expand all"
+        uid=6_149 button "TranslationsButton" expandable
+  uid=6_150 region "Toolbar"
+    uid=6_151 heading "Toolbar" level="2"
+    uid=6_152 button "Reload story"
+    uid=6_153 switch "Grid visibility"
+    uid=6_154 button "Preview background" expandable haspopup="listbox"
+    uid=6_155 switch "Measure tool"
+    uid=6_156 switch "Outline tool"
+    uid=6_157 button "Viewport size" expandable haspopup="listbox"
+    uid=6_158 button "Macaw UI theme Light" expandable haspopup="listbox"
+    uid=6_159 switch "Change zoom level" expandable
+    uid=6_160 button "Enter full screen" keyshortcuts="alt+F"
+    uid=6_161 button "Share" expandable
+  uid=6_162 main "Main preview area"
+    uid=6_163 heading "Main preview area" level="2"
+    uid=6_164 link "Skip to sidebar" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/?path=/story/orders-ordercopylinkbutton--hover#orders-ordercopylinkbutton--hover"
+      uid=6_165 StaticText "Skip to sidebar"
+    uid=6_166 Iframe "storybook-preview-iframe"
+      uid=6_167 RootWebArea "orders-ordercopylinkbutton--hover" url="http://local-deploy:11000/c4afff6b-ce38-4250-86c6-57fc0458832b/iframe.html?id=orders-ordercopylinkbutton--hover&viewMode=story&globals="
+        uid=6_168 main
+          uid=6_169 button "Copy order link" description="Copy order link"
+  uid=6_170 region "Addon panel"
+    uid=6_171 heading "Addon panel" level="2"
+    uid=6_172 button "Move addon panel to right" keyshortcuts="alt+D"
+    uid=6_173 button "Hide addon panel" keyshortcuts="alt+A"
+    uid=6_174 tab "Controls" selectable selected
+    uid=6_175 tab "Actions" selectable
+    uid=6_176 tab "Interactions" selectable
+    uid=6_177 button "Reset controls"
+    uid=6_178 StaticText "Name"
+    uid=6_179 StaticText "Description"
+    uid=6_180 StaticText "Default"
+    uid=6_181 StaticText "Control"
+    uid=6_182 StaticText "orderId"
+    uid=6_183 StaticText "string"
+    uid=6_184 StaticText "-"
+    uid=6_185 StaticText "-"
+    uid=6_186 StaticText "disabled"
+    uid=6_187 StaticText "boolean"
+    uid=6_188 StaticText "false"
+    uid=6_189 StaticText "-"
