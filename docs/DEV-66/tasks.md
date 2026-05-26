@@ -3,13 +3,15 @@
 Prototype loop shipped the production UI (component, helper, TopNav integration, Storybook matrix, focus styles). Remaining work is pre-merge verification: unit/component tests and locale extraction flagged in iteration-005 consistency review.
 
 ## T-5d103224: Add tests for order copy-link URL builder and button
-- Status: pending
+
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: —
 - Supersedes: —
 
 ### Context
+
 Absolute URL shape (client-only clipboard write):
 
 - Relative path: `orderPath(encodeURIComponent(orderId))` → `/orders/{id}`
@@ -70,6 +72,7 @@ Optional strict-narrowing fix while editing the component (runtime-safe today, s
 [Source: ./docs/DEV-66/findings/prototype/iteration-005/consistency.md#F-005]
 
 ### Acceptance
+
 - [ ] `src/orders/utils/getOrderAbsoluteUrl.test.ts` exists; `pnpm run test:quiet src/orders/utils/getOrderAbsoluteUrl.test.ts` passes
 - [ ] Test with default mount (`/`): URL is `http://localhost/orders/{encodeURIComponent(orderId)}` for a sample order id
 - [ ] Test with `window.__SALEOR_CONFIG__.APP_MOUNT_URI: "/dashboard/"`: URL includes `/dashboard/` segment before `orders/…`
@@ -79,6 +82,7 @@ Optional strict-narrowing fix while editing the component (runtime-safe today, s
 - [ ] Rendering with `orderId=""` does not expose `data-test-id="copy-order-link"` in the document
 
 ## T-cd5300d3: Extract copy-order-link i18n messages into locale catalogs
+
 - Status: pending
 - Priority: medium
 - Blocked by: none
@@ -86,6 +90,7 @@ Optional strict-narrowing fix while editing the component (runtime-safe today, s
 - Supersedes: —
 
 ### Context
+
 Pre-merge convention:
 
 - Pre-merge: `pnpm run lint`, `check-types`, `test:quiet`, `knip`
@@ -116,6 +121,7 @@ export const messages = defineMessages({
 [Source: ./docs/DEV-66/ui-design.md#States covered]
 
 ### Acceptance
+
 - [ ] `pnpm run extract-messages` completes without error
 - [ ] `locale/` catalogs include entries for message ids `BLmn1V` and `Hztpse` (or equivalent keys matching those ids in generated locale files)
 - [ ] `git diff locale/` is non-empty and only adds/updates strings for the new copy-order-link messages (no unrelated locale churn reverted)

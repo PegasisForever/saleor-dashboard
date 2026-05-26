@@ -21,6 +21,10 @@ export const OrderCopyLinkButton = ({
   const [copied, copy] = useClipboard();
 
   const handleCopy = useCallback(() => {
+    if (!orderId) {
+      return;
+    }
+
     copy(getOrderAbsoluteUrl(orderId));
   }, [copy, orderId]);
 
