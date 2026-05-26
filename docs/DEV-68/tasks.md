@@ -1,13 +1,15 @@
 # DEV-68 Tasks
 
 ## T-f8e2a914: Wire copy-link button into OrderDetailsPage with tests and i18n extraction
-- Status: pending
+
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: —
 - Supersedes: —
 
 ### Context
+
 The prototype loop shipped `OrderCopyLinkButton`, `getAbsoluteOrderUrl`, and Storybook state stories. Production integration into `OrderDetailsPage` and automated tests were explicitly deferred:
 
 > - File: `./src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx` — render `<OrderCopyLinkButton orderId={order.id} />` before metadata button (integration task)
@@ -99,6 +101,7 @@ jest.mock("@dashboard/hooks/useClipboard", () => ({
 [Source: src/orders/components/OrderCustomer/OrderCustomer.test.tsx — clipboard mock ~L26–30]
 
 ### Acceptance
+
 - [ ] `OrderDetailsPage.tsx` imports `OrderCopyLinkButton` and renders `<OrderCopyLinkButton orderId={order.id} />` as the first TopNav action child, immediately before the existing metadata `Button` (`data-test-id="show-order-metadata"`)
 - [ ] `OrderDetailsPage.test.tsx` (new file) renders `OrderDetailsPage` with an `OrderFixture` order and asserts `screen.getByTestId("copy-order-link")` is in the document
 - [ ] The same test asserts `copy-order-link` precedes `show-order-metadata` in DOM order (`compareDocumentPosition` or `within(TopNav).getAllByRole('button')` index check)

@@ -1,8 +1,9 @@
 import { TopNav } from "@dashboard/components/AppLayout/TopNav";
 import { iconSize, iconStrokeWidth } from "@dashboard/components/icons";
 import { Button, vars } from "@saleor/macaw-ui-next";
-import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
+import type { Decorator, Meta, StoryFn, StoryObj } from "@storybook/react-vite";
 import { Code } from "lucide-react";
+import { type ComponentProps } from "react";
 
 import { OrderCopyLinkButton } from "./OrderCopyLinkButton";
 
@@ -34,7 +35,7 @@ const createStateDecorator = (state: StoryState): Decorator => {
   const className = STORY_STATE_CLASS[state];
   const buttonStyles = STORY_STATE_STYLES[state];
 
-  const StateDecorator: Decorator = Story => (
+  const StateDecorator: Decorator = (Story: StoryFn) => (
     <>
       <style>{`
         .${className} [data-test-id="copy-order-link"] {
@@ -95,7 +96,7 @@ export const Copied: Story = {
 };
 
 export const InTopNav: Story = {
-  render: args => (
+  render: (args: ComponentProps<typeof OrderCopyLinkButton>) => (
     <TopNav href="/orders" title="Order #1234">
       <OrderCopyLinkButton {...args} />
       <Button
