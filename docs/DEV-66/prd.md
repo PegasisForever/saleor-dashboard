@@ -26,7 +26,7 @@ Store staff often need to share a direct link to a specific order with teammates
 
 ## Acceptance criteria
 
-- [ ] On the confirmed order details page, a copy-link button appears in `TopNav` immediately before the metadata (`Code`) button
+- [ ] On the non-draft order details page (`OrderDetailsPage`), a copy-link button appears in `TopNav` immediately before the metadata (`Code`) button
 - [ ] Clicking the button writes the absolute order URL to the clipboard, built as `urlJoin(window.location.origin, getAppMountUriForRedirect(), orderPath(encodeURIComponent(orderId)))`
 - [ ] After a successful copy, the button icon switches from copy to check for approximately two seconds (`useClipboard` behavior)
 - [ ] The button uses `variant="secondary"`, `ClipboardCopyIcon`, and `useClipboard` — no duplicate clipboard utilities

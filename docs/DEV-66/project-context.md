@@ -39,4 +39,4 @@
 - Backend / Saleor API changes for this dashboard ticket
 - New clipboard primitives when `useClipboard` and `ClipboardCopyIcon` exist
 - Toast on copy in orders domain (orders copy UIs use icon swap; gift cards use toast — DEV-66 follows orders pattern)
-- Draft order TopNav (ticket targets confirmed order details only)
+- Draft order TopNav (ticket targets non-draft `OrderDetailsPage` only; draft uses `OrderDraftPage`)

@@ -102,7 +102,7 @@ export const Error: Story = {
 export const Empty: Story = {
   render: () => (
     <StoryWrapper>
-      <p className={storyStyles.storyEmpty}>No order selected — copy button is not rendered.</p>
+      <OrderCopyLinkButton orderId="" />
     </StoryWrapper>
   ),
 };

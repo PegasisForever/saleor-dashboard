@@ -2,7 +2,7 @@
 
 ## Storybook URL
 
-http://localhost:11000/6e802f28-fca3-4baf-8ca0-26869cb7cece
+http://localhost:11000/a5bd5886-e69d-4862-8574-577c53cb6b4f
 
 ## Screens / surfaces
 
@@ -26,12 +26,12 @@ http://localhost:11000/6e802f28-fca3-4baf-8ca0-26869cb7cece
 - States covered (`OrderCopyLinkButton.stories.tsx`):
   - `default` — `Default` story: idle copy icon
   - `hover` — `Hover` story: story-only `.storyHover` forces hover background
-  - `focus` — `Focus` story: story-only `.storyFocus` forces focus ring
+  - `focus` — `Focus` story: story-only `.storyFocus` forces focus ring via `outline` with `!important` and `--mu-colors-border-default1-focused` (Macaw token; overrides Button outline reset)
   - `active` — `Active` story: story-only `.storyActive` forces pressed background
   - `disabled` — `Disabled` story: `disabled={true}`
   - `loading` — `Loading` story: disabled + reduced opacity (clipboard is synchronous; loading is a visual placeholder for future async guards)
   - `error` — `Error` story: button + `messages.copyOrderLinkFailed` alert text (clipboard failure is not yet surfaced in production UI; story documents intended failure affordance)
-  - `empty` — `Empty` story: explanatory text when no `orderId` (component returns `null`)
+  - `empty` — `Empty` story: mounts `<OrderCopyLinkButton orderId="" />`; component returns `null` (empty canvas)
 
 ## Mobile considerations
 

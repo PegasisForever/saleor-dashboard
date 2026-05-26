@@ -8,7 +8,7 @@ import { ClipboardCopyIcon } from "../OrderCardTitle/ClipboardCopyIcon";
 import { messages } from "./messages";
 
 interface OrderCopyLinkButtonProps {
-  orderId: string;
+  orderId?: string;
   disabled?: boolean;
 }
 

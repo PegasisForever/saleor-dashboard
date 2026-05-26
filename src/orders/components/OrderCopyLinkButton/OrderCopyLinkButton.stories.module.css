@@ -1,14 +1,15 @@
 .storyHover button {
-  background-color: var(--mu-colors-background-accent-1);
+  background-color: var(--mu-colors-background-accent1-hovered);
 }
 
 .storyFocus button {
-  outline: 2px solid var(--mu-colors-border-focus-1);
+  /* Macaw Button resets outline; !important + valid token keeps focus ring visible */
+  outline: 2px solid var(--mu-colors-border-default1-focused) !important;
   outline-offset: 2px;
 }
 
 .storyActive button {
-  background-color: var(--mu-colors-background-accent-2);
+  background-color: var(--mu-colors-background-accent1-pressed);
 }
 
 .storyError {
@@ -19,13 +20,8 @@
 }
 
 .storyErrorMessage {
-  color: var(--mu-colors-text-critical-1);
+  color: var(--mu-colors-text-critical1);
   font-size: 12px;
-}
-
-.storyEmpty {
-  color: var(--mu-colors-text-default-2);
-  font-size: 14px;
 }
 
 .storyLoading button {
