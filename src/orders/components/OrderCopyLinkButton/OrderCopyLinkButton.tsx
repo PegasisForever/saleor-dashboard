@@ -9,14 +9,18 @@ import { orderCopyLinkMessages } from "./messages";
 interface OrderCopyLinkButtonProps {
   orderId: string;
   disabled?: boolean;
+  /** Storybook-only: persist copied icon/label without clipboard timeout. */
+  showCopiedState?: boolean;
 }
 
 export const OrderCopyLinkButton = ({
   orderId,
   disabled = false,
+  showCopiedState = false,
 }: OrderCopyLinkButtonProps): JSX.Element => {
   const intl = useIntl();
-  const [copied, copy] = useClipboard();
+  const [hookCopied, copy] = useClipboard();
+  const copied = showCopiedState || hookCopied;
 
   const label = intl.formatMessage(
     copied ? orderCopyLinkMessages.linkCopied : orderCopyLinkMessages.copyOrderLink,

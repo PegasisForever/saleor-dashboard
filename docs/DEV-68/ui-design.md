@@ -2,7 +2,7 @@
 
 ## Storybook URL
 
-http://localhost:11000/cd1b4221-7a8c-48ef-b513-90534169536d
+http://localhost:11000/46f89b12-5406-409a-82aa-e290df36a193
 
 ## Screens / surfaces
 
@@ -35,14 +35,14 @@ http://localhost:11000/cd1b4221-7a8c-48ef-b513-90534169536d
 
 ### State visual spec
 
-| State    | Token / behavior                                                                      | Contrast target                          |
-| -------- | ------------------------------------------------------------------------------------- | ---------------------------------------- |
-| Default  | `Button variant="secondary"`, `ClipboardCopyIcon` CopyIcon, `color: default2`         | Icon vs button bg ≥ 3:1                  |
-| Hover    | Macaw secondary hover background (`vars.colors.background.default1Hovered` on button) | ≥ 3:1 for icon                           |
-| Focus    | Macaw focus ring on button (outline/box-shadow from macaw-ui-next)                    | Focus ring ≥ 3:1 vs adjacent bg          |
-| Active   | Macaw secondary pressed state (`vars.colors.background.default1Pressed` on button)    | ≥ 3:1 for icon                           |
-| Disabled | Macaw disabled opacity + `pointer-events: none`                                       | Meets disabled contrast per macaw tokens |
-| Copied   | `ClipboardCopyIcon` CheckIcon + `aria-label`/`title` = "Link copied"                  | Check icon vs button bg ≥ 3:1            |
+| State    | Token / behavior                                                                                                     | Contrast target                          |
+| -------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
+| Default  | `Button variant="secondary"`, `ClipboardCopyIcon` CopyIcon, `color: default2`                                        | Icon vs button bg ≥ 3:1                  |
+| Hover    | Macaw secondary hover background (`vars.colors.background.default1Hovered` on button)                                | ≥ 3:1 for icon                           |
+| Focus    | `buttonDefaultSecondaryFocused` background + 2px `text.default1` outline (decorator mirrors `:focus-visible` intent) | Focus ring ≥ 3:1 vs adjacent bg          |
+| Active   | Macaw secondary pressed state (`vars.colors.background.default1Pressed` on button)                                   | ≥ 3:1 for icon                           |
+| Disabled | Macaw disabled opacity + `pointer-events: none`                                                                      | Meets disabled contrast per macaw tokens |
+| Copied   | `ClipboardCopyIcon` CheckIcon + `aria-label`/`title` = "Link copied"                                                 | Check icon vs button bg ≥ 3:1            |
 
 ## Mobile considerations
 
@@ -61,5 +61,6 @@ http://localhost:11000/cd1b4221-7a8c-48ef-b513-90534169536d
 - **Placement:** Copy button renders immediately left of metadata button, matching ticket wording and keeping share action adjacent to other order-level actions (`InTopNav` story)
 - **Feedback:** Icon toggle via existing `useClipboard` / `ClipboardCopyIcon` — consistent with tracking number and PSP reference copy patterns; no toast (Alternatives considered: toast like gift cards — rejected to match orders domain conventions)
 - **URL shape:** Absolute URL without query params via `getAbsoluteOrderUrl(orderId)` — avoids sharing modal-deep-link URLs
-- **Storybook pseudo-states:** `Hover` and `Active` stories use macaw-token `createStateDecorator` so settled renders stay visually distinct from `Default`; production `Button` still applies native `:hover` / `:active` via macaw-ui-next
+- **Storybook pseudo-states:** `Hover`, `Active`, and `Focus` stories use macaw-token `createStateDecorator` so settled renders stay visually distinct from `Default`; production `Button` still applies native pseudo-classes via macaw-ui-next
+- **Copied story:** Uses `showCopiedState` arg (not clipboard `play`) so settled render shows check icon + `orderCopyLinkMessages.linkCopied` without the 2s `useClipboard` timeout resetting the story
 - **Icon sizing:** Reuses `ClipboardCopyIcon` at 16px inside secondary TopNav button (existing component; metadata uses 20px Code icon — acceptable minor size delta per ticket mandate to reuse copy-icon component)

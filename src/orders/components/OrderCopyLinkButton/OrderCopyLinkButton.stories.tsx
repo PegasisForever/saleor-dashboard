@@ -3,32 +3,42 @@ import { iconSize, iconStrokeWidth } from "@dashboard/components/icons";
 import { Button, vars } from "@saleor/macaw-ui-next";
 import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import { Code } from "lucide-react";
-import { userEvent, within } from "storybook/test";
 
 import { OrderCopyLinkButton } from "./OrderCopyLinkButton";
 
 const STORY_STATE_CLASS = {
   hover: "order-copy-link-story-hover",
   active: "order-copy-link-story-active",
+  focus: "order-copy-link-story-focus",
 } as const;
 
+type StoryState = keyof typeof STORY_STATE_CLASS;
+
+const STORY_STATE_STYLES: Record<StoryState, string> = {
+  hover: `background-color: ${vars.colors.background.default1Hovered} !important;`,
+  active: `background-color: ${vars.colors.background.default1Pressed} !important;`,
+  focus: `
+    background-color: ${vars.colors.background.buttonDefaultSecondaryFocused} !important;
+    outline: 2px solid ${vars.colors.text.default1} !important;
+    outline-offset: 2px !important;
+    box-shadow: none !important;
+  `,
+};
+
 /**
- * Storybook cannot persist :hover / :active pseudo-classes after play functions
- * complete. These decorators apply macaw secondary-button state tokens so
- * settled Storybook renders match production interaction styling.
+ * Storybook cannot persist :hover / :active / :focus-visible pseudo-classes after
+ * play functions complete. These decorators apply macaw secondary-button state tokens
+ * so settled Storybook renders match production interaction styling.
  */
-const createStateDecorator = (state: keyof typeof STORY_STATE_CLASS): Decorator => {
+const createStateDecorator = (state: StoryState): Decorator => {
   const className = STORY_STATE_CLASS[state];
-  const backgroundColor =
-    state === "hover"
-      ? vars.colors.background.default1Hovered
-      : vars.colors.background.default1Pressed;
+  const buttonStyles = STORY_STATE_STYLES[state];
 
   const StateDecorator: Decorator = Story => (
     <>
       <style>{`
         .${className} [data-test-id="copy-order-link"] {
-          background-color: ${backgroundColor} !important;
+          ${buttonStyles}
         }
       `}</style>
       <div className={className}>
@@ -65,12 +75,7 @@ export const Hover: Story = {
 };
 
 export const Focus: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole("button", { name: "Copy order link" });
-
-    button.focus();
-  },
+  decorators: [createStateDecorator("focus")],
 };
 
 export const Active: Story = {
@@ -84,17 +89,8 @@ export const Disabled: Story = {
 };
 
 export const Copied: Story = {
-  play: async ({ canvasElement }) => {
-    Object.assign(navigator, {
-      clipboard: {
-        writeText: async () => Promise.resolve(),
-      },
-    });
-
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole("button", { name: "Copy order link" });
-
-    await userEvent.click(button);
+  args: {
+    showCopiedState: true,
   },
 };
 
