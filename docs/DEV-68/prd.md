@@ -32,4 +32,5 @@ Merchants and staff frequently share a direct link to a specific order with team
 - [ ] The button exposes accessible name text from `orderCopyLinkMessages.copyOrderLink` (default: "Copy order link") and updates to `orderCopyLinkMessages.linkCopied` (default: "Link copied") while in the copied state
 - [ ] The button has `data-test-id="copy-order-link"`
 - [ ] The button is keyboard-focusable and activatable; disabled state prevents copy action
-- [ ] Component Storybook stories cover `Default`, `Hover`, `Focus`, `Active`, `Disabled`, and `Copied` states with visually distinct rendering
+- [ ] Component Storybook stories cover `Default`, `Hover`, `Focus`, `Active`, `Disabled`, and `Copied` states with visually distinct rendering at settled Storybook load (no reliance on transient `play` hover/active simulation)
+- [ ] Storybook `InTopNav` story shows copy button immediately left of the metadata button in a TopNav composition matching production placement
