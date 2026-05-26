@@ -3,10 +3,11 @@
 }
 
 .storyFocus button {
-  /* Mirror macaw secondary Button :focus-visible — border change, not outline */
+  /* Secondary focused fill matches macaw; ring uses text-accent1 for ≥3:1 focus-indicator contrast */
   background-color: var(--mu-colors-background-button-default-secondary-focused);
-  border-color: var(--mu-colors-border-default1-focused) !important;
-  outline: none !important;
+  border-color: var(--mu-colors-border-default1) !important;
+  outline: 2px solid var(--mu-colors-text-accent1) !important;
+  outline-offset: 2px;
 }
 
 .storyActive button {

@@ -2,7 +2,7 @@
 
 ## Storybook URL
 
-http://localhost:11000/c4afff6b-ce38-4250-86c6-57fc0458832b
+http://localhost:11000/3334d95e-a6f1-4139-8bfc-1e8274ced517
 
 ## Screens / surfaces
 
@@ -26,7 +26,7 @@ http://localhost:11000/c4afff6b-ce38-4250-86c6-57fc0458832b
 - States covered (`OrderCopyLinkButton.stories.tsx`):
   - `default` — `Default` story: idle copy icon
   - `hover` — `Hover` story: story-only `.storyHover` forces `--mu-colors-background-button-default-secondary-hovered` (matches macaw secondary `:hover`)
-  - `focus` — `Focus` story: story-only `.storyFocus` forces macaw secondary `:focus-visible` treatment — `--mu-colors-background-button-default-secondary-focused` + `--mu-colors-border-default1-focused` border (no outline)
+  - `focus` — `Focus` story: story-only `.storyFocus` forces macaw secondary focused fill (`--mu-colors-background-button-default-secondary-focused`) plus a `text-accent1` outline ring (2px, 2px offset) for ≥3:1 focus-indicator contrast; macaw `--mu-colors-border-default1-focused` alone measures 1.76:1 vs page and is not used as the focus affordance
   - `active` — `Active` story: story-only `.storyActive` forces `--mu-colors-background-button-default-secondary-pressed` (matches macaw secondary `:active`)
   - `disabled` — `Disabled` story: `disabled={true}`
   - `loading` — `Loading` story: disabled + reduced opacity (clipboard is synchronous; loading is a visual placeholder for future async guards)
@@ -51,4 +51,4 @@ http://localhost:11000/c4afff6b-ce38-4250-86c6-57fc0458832b
 - **Reuse `ClipboardCopyIcon`** — Same 16px copy/check toggle as tracking number copy; ticket explicitly requires existing copy-icon component.
 - **Placement before metadata** — Copy is a frequent action; metadata remains adjacent to menu as today.
 - **Absolute URL helper** — `getOrderAbsoluteUrl` in `src/orders/utils/getOrderAbsoluteUrl.ts` centralizes mount-uri + origin handling (same pattern as staff password redirect links).
-- **Story pseudo-states mirror macaw secondary Button** — Hover/Active/Focus stories use `--mu-colors-background-button-default-secondary-*` and border-focused tokens (not accent1 backgrounds or outline ring) so Storybook states match production macaw `Button variant="secondary"` interaction colors and pass WCAG non-text contrast. Alternatives considered: accent1 hover tokens — rejected after iteration-002 review measured 1.11:1 icon contrast.
+- **Story pseudo-states mirror macaw secondary Button fills** — Hover/Active use `--mu-colors-background-button-default-secondary-hovered/pressed` (not accent1 backgrounds; iteration-002 measured 1.11:1 icon contrast on accent1). Focus uses the same secondary focused fill plus a story-only `text-accent1` outline ring because macaw `--mu-colors-border-default1-focused` measures 1.76:1 vs page (iteration-003 BLOCKER); the ring is the declared focus affordance and meets WCAG 2.4.11 non-text contrast. Alternatives considered: keep border-default1-focused only — rejected after iteration-003 measured sub-threshold focus indicator.

@@ -29,7 +29,7 @@ N/A — client-only clipboard write. URL shape:
 - File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx` — new TopNav copy button; `orderId` optional to match call site
 - File: `src/orders/components/OrderCopyLinkButton/messages.ts` — `messages.copyOrderLink`, `messages.copyOrderLinkFailed`
 - File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` — state matrix stories
-- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.module.css` — story-only pseudo-state styles (`.storyHover`, `.storyFocus`, `.storyActive`) using macaw secondary Button tokens (`--mu-colors-background-button-default-secondary-*`, `--mu-colors-border-default1-focused`) to match production interaction colors and meet WCAG non-text contrast
+- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.module.css` — story-only pseudo-state styles (`.storyHover`, `.storyFocus`, `.storyActive`): Hover/Active use macaw secondary background tokens; Focus adds `--mu-colors-text-accent1` outline ring (≥3:1 focus-indicator contrast) atop `--mu-colors-background-button-default-secondary-focused` because `--mu-colors-border-default1-focused` alone fails WCAG 2.4.11 (1.76:1 vs page, iteration-003)
 - File: `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx` — render `<OrderCopyLinkButton orderId={order?.id} />` before metadata button
 
 ## Dependencies
