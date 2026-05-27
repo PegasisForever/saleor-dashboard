@@ -1,6 +1,6 @@
 ## T-75622180: Extend Playwright E2E for clipboard payload and 2s revert
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-002 (correctness-order-copy-link-button/F-001, correctness-order-copy-link-button/F-002)
@@ -27,9 +27,9 @@ Location: `playwright/tests/orders.spec.ts:155-178`
 Evidence:
 
 ```typescript
-  await ordersPage.copyOrderLinkButton.click();
-  await expect(ordersPage.copyOrderLinkButton).toHaveAttribute("aria-label", "Order link copied");
-  await expect(ordersPage.copyOrderLinkButton.locator(".lucide-check")).toBeVisible();
+await ordersPage.copyOrderLinkButton.click();
+await expect(ordersPage.copyOrderLinkButton).toHaveAttribute("aria-label", "Order link copied");
+await expect(ordersPage.copyOrderLinkButton.locator(".lucide-check")).toBeVisible();
 ```
 
 Unit tests mock `useClipboard` (`OrderCopyLinkButton.test.tsx:8-32`), so the only automated path that could catch a regression where UI feedback fires but the wrong string is written is missing.
@@ -150,10 +150,10 @@ export const OrderCopyLinkButton = ({
 Existing unit test asserts live region when `copied=true` but does not cover repeat-copy re-announcement:
 
 ```typescript
-    const liveRegion = container.querySelector("[aria-live='polite']");
+const liveRegion = container.querySelector("[aria-live='polite']");
 
-    expect(liveRegion).toBeInTheDocument();
-    expect(liveRegion).toHaveTextContent("Order link copied");
+expect(liveRegion).toBeInTheDocument();
+expect(liveRegion).toHaveTextContent("Order link copied");
 ```
 
 [Source: src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx:75-78]
