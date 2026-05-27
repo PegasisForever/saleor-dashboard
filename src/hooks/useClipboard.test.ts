@@ -130,6 +130,48 @@ describe("useClipboard", () => {
     expect(result.current[0]).toBe(true);
   });
 
+  it("should keep copied true until 2s after the last copy when copying twice within 2s", async () => {
+    // Arrange
+    mockWriteText.mockResolvedValue(undefined);
+
+    const { result } = renderHook(() => useClipboard());
+    const [, copy] = result.current;
+
+    // Act - first copy
+    await act(async () => {
+      copy("first text");
+      await Promise.resolve();
+    });
+
+    expect(result.current[0]).toBe(true);
+
+    // Act - second copy within 2s window (before first timer fires)
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    await act(async () => {
+      copy("second text");
+      await Promise.resolve();
+    });
+
+    expect(result.current[0]).toBe(true);
+
+    // Assert - still true 1.5s after second copy (would fail if first timer orphaned)
+    act(() => {
+      jest.advanceTimersByTime(1500);
+    });
+
+    expect(result.current[0]).toBe(true);
+
+    // Assert - resets 2s after the second copy
+    act(() => {
+      jest.advanceTimersByTime(500);
+    });
+
+    expect(result.current[0]).toBe(false);
+  });
+
   it("should handle clipboard write rejection and log warning", async () => {
     // Arrange
     const mockError = new Error("Clipboard permission denied");
