@@ -1,0 +1,13 @@
+.button:focus-visible {
+  outline: 2px solid var(--mu-colors-text-default1) !important;
+  outline-offset: 2px;
+}
+
+.button:active:not(:disabled) {
+  background-color: var(--mu-colors-background-default2) !important;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
