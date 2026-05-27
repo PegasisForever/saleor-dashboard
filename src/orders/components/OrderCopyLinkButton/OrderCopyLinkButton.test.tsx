@@ -60,7 +60,7 @@ describe("OrderCopyLinkButton", () => {
     mockUseClipboard.mockReturnValue([true, jest.fn()]);
 
     // Act
-    render(
+    const { container } = render(
       <Wrapper>
         <OrderCopyLinkButton />
       </Wrapper>,
@@ -71,6 +71,11 @@ describe("OrderCopyLinkButton", () => {
     const checkIcon = button.querySelector(".lucide-check");
 
     expect(checkIcon).toBeInTheDocument();
+
+    const liveRegion = container.querySelector("[aria-live='polite']");
+
+    expect(liveRegion).toBeInTheDocument();
+    expect(liveRegion).toHaveTextContent("Order link copied");
   });
 
   it("shows copy icon and default label when link has not been copied", () => {
@@ -78,7 +83,7 @@ describe("OrderCopyLinkButton", () => {
     mockUseClipboard.mockReturnValue([false, jest.fn()]);
 
     // Act
-    render(
+    const { container } = render(
       <Wrapper>
         <OrderCopyLinkButton />
       </Wrapper>,
@@ -89,5 +94,6 @@ describe("OrderCopyLinkButton", () => {
     const copyIcon = button.querySelector(".lucide-copy");
 
     expect(copyIcon).toBeInTheDocument();
+    expect(container.querySelector("[aria-live='polite']")).not.toBeInTheDocument();
   });
 });

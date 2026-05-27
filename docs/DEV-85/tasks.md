@@ -82,7 +82,7 @@ expect(result.current[0]).toBe(true);
 
 ## T-f8cfd2f7: Add aria-live screen reader feedback for copy success
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-001 (desktop-ux-order-copy-link-button/F-001)
@@ -144,11 +144,11 @@ export const OrderCopyLinkButtonContent = ({
 
 ### Acceptance
 
-- [ ] When `copied === true`, `OrderCopyLinkButtonContent` renders a visually hidden element with `aria-live="polite"` whose text is `messages.orderLinkCopied` (via react-intl)
-- [ ] When `copied === false`, the live region does not announce stale success text (empty or absent content)
-- [ ] `OrderCopyLinkButton.test.tsx` asserts the live region exists and contains "Order link copied" when the mocked hook returns `[true, …]`
-- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` exits 0
-- [ ] `pnpm run lint` and `pnpm run check-types` exit 0 with no new errors in touched files
+- [x] When `copied === true`, `OrderCopyLinkButtonContent` renders a visually hidden element with `aria-live="polite"` whose text is `messages.orderLinkCopied` (via react-intl)
+- [x] When `copied === false`, the live region does not announce stale success text (empty or absent content)
+- [x] `OrderCopyLinkButton.test.tsx` asserts the live region exists and contains "Order link copied" when the mocked hook returns `[true, …]`
+- [x] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` exits 0
+- [x] `pnpm run lint` and `pnpm run check-types` exit 0 with no new errors in touched files
 
 ## T-d1daf9c7: Add OrderDetailsPage TopNav placement integration test
 
