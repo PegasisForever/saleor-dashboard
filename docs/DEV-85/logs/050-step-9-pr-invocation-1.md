@@ -7,7 +7,7 @@ status: DONE
 
 ## Summary
 
-Invocation 1 Phase A: consolidated pipeline artifacts into `summary.md`, filed two out-of-scope Linear tickets (DEV-86 useClipboard hardening, DEV-87 TopNav back-button a11y), pushed to GitHub, and opened PR #6. Phase B (Copilot + CI gate) started after commit; this log written before final gate outcome — see findings file for gate events.
+Invocation 1: Phase A opened PR #6 with summary + OOS tickets (DEV-86, DEV-87). Phase B cleared gate — no CI on repo (auto-pass), Copilot left one small finding (clipboard API guard) direct-fixed in `5d5462f27`. Posted Linear merge-decision question; Phase C blocking on human reply or PR activity.
 
 ## Decisions made independently
 
@@ -29,6 +29,7 @@ Invocation 1 Phase A: consolidated pipeline artifacts into `summary.md`, filed t
 
 ## Considered then dropped
 
+- **Loop-back on Copilot clipboard guard:** Rubric lists "error-handling logic" as substantive, but finding is a ~4-line guard fulfilling existing PRD AC ("console warning only, no unhandled rejection") in a file already modified by this PR — classified **small** and direct-fixed.
 - **Third OOS ticket for Macaw 44px touch targets:** Prototype iteration-001/002 UI reviews mention org-wide design-system follow-up. Dropped because no open production bug in this PR's diff — reviewers explicitly said no single-component regression fix required.
 - **Filing separate tickets per useClipboard WARNING:** Would hit anti-spam with three tickets on one hook. Bundled into DEV-86 checklist instead.
 - **Cleanup before PR open:** Prompt explicitly forbids Phase A cleanup; artifacts remain for loop-back agents.

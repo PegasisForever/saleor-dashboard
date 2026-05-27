@@ -5,13 +5,13 @@ trigger: phase-a-open-pr
 
 ## Summary
 
-Phase A (invocation 1): Wrote `docs/DEV-85/summary.md`, filed OOS Linear tickets DEV-86 and DEV-87, pushed branch `pegaswarm/dev-85-featorders-copy-link-button-in-order-details-topnav`, opened PR #6. Phase B gate not yet started in this findings snapshot.
+Phase A + Phase B (invocation 1): Opened PR #6, filed OOS tickets DEV-86/DEV-87, cleared gate (Copilot trivial fix + no CI). Posted Linear merge-decision question; Phase C monitor active.
 
-## Event
+## Events
 
-| Field | Value |
-|-------|-------|
-| Trigger | First invocation — open PR |
-| Classification | N/A (pipeline open action) |
-| Action | Created https://github.com/PegasisForever/saleor-dashboard/pull/6; linked DEV-86/DEV-87 in summary + PR body |
-| Follow-up | Phase B: Copilot review + CI gate |
+| #   | Trigger                                          | Classification | Action                                                                                                                               |
+| --- | ------------------------------------------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| 1   | Phase A open PR                                  | N/A            | Created PR #6; DEV-86/DEV-87 filed                                                                                                   |
+| 2   | CI probe (60s)                                   | N/A            | `statusCheckRollup` empty → `ciGreen=true` (no CI on repo)                                                                           |
+| 3   | Copilot review (`copilot-pull-request-reviewer`) | **Small**      | Guard `navigator.clipboard?.writeText` in `useClipboard.ts` + unit test; pushed `5d5462f27`; resolved thread `PRRT_kwDOSmR6s86FPmMz` |
+| 4   | Gate cleared                                     | N/A            | Posted Linear merge-decision thread `linear:a24643a6-e275-4c63-8599-ea4dade5fa33:c:b2e9d261-b649-4f36-ba2c-6c943ad4e46e`             |
