@@ -1,5 +1,5 @@
 import { type TransactionActionEnum } from "@dashboard/graphql";
-import { getAppMountUriForRedirect, stringifyQs } from "@dashboard/utils/urls";
+import { stringifyQs } from "@dashboard/utils/urls";
 import { stringify } from "qs";
 import urlJoin from "url-join";
 
@@ -190,9 +190,6 @@ export const orderDraftListUrl = (params?: OrderDraftListUrlQueryParams): string
 };
 
 export const orderPath = (id: string) => urlJoin(orderSectionUrl, id);
-
-export const getOrderShareableUrl = (orderId: string): string =>
-  urlJoin(window.location.origin, getAppMountUriForRedirect(), orderPath(orderId));
 
 export type OrderUrlDialog =
   | "add-order-line"
