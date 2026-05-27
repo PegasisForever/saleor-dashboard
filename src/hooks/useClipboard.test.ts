@@ -130,6 +130,33 @@ describe("useClipboard", () => {
     expect(result.current[0]).toBe(true);
   });
 
+  it("should increment copyGeneration on each successful copy even when copied stays true", async () => {
+    // Arrange
+    mockWriteText.mockResolvedValue(undefined);
+
+    const { result } = renderHook(() => useClipboard());
+    const [, copy] = result.current;
+
+    // Act - first copy
+    await act(async () => {
+      copy("first text");
+      await Promise.resolve();
+    });
+
+    // Assert
+    expect(result.current[2]).toBe(1);
+
+    // Act - second copy within 2s window
+    await act(async () => {
+      copy("second text");
+      await Promise.resolve();
+    });
+
+    // Assert
+    expect(result.current[0]).toBe(true);
+    expect(result.current[2]).toBe(2);
+  });
+
   it("should keep copied true until 2s after the last copy when copying twice within 2s", async () => {
     // Arrange
     mockWriteText.mockResolvedValue(undefined);

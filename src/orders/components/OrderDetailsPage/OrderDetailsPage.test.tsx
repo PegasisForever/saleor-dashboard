@@ -85,7 +85,7 @@ const defaultProps = {
 
 describe("OrderDetailsPage", () => {
   beforeEach(() => {
-    mockUseClipboard.mockReturnValue([false, jest.fn()]);
+    mockUseClipboard.mockReturnValue([false, jest.fn(), 0]);
   });
 
   it("renders copy-order-link immediately before show-order-metadata in TopNav", () => {

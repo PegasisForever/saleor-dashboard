@@ -26,7 +26,7 @@ jest.mock("./AddressTextError", () => ({
 const mockCopy = jest.fn();
 
 jest.mock("@dashboard/hooks/useClipboard", () => ({
-  useClipboard: () => [false, mockCopy],
+  useClipboard: () => [false, mockCopy, 0],
 }));
 
 jest.mock("@dashboard/components/Card", () => ({

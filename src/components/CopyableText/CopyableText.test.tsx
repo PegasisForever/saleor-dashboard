@@ -15,7 +15,7 @@ describe("CopyableText", () => {
     const user = userEvent.setup();
     const mockCopy = jest.fn();
 
-    mockUseClipboard.mockReturnValue([false, mockCopy]);
+    mockUseClipboard.mockReturnValue([false, mockCopy, 0]);
 
     const textToCopy = "order-123-abc";
 
@@ -36,7 +36,7 @@ describe("CopyableText", () => {
 
   it("shows check icon after text is copied", () => {
     // Arrange
-    mockUseClipboard.mockReturnValue([true, jest.fn()]);
+    mockUseClipboard.mockReturnValue([true, jest.fn(), 1]);
 
     // Act
     render(
@@ -54,7 +54,7 @@ describe("CopyableText", () => {
 
   it("shows copy icon when text has not been copied", () => {
     // Arrange
-    mockUseClipboard.mockReturnValue([false, jest.fn()]);
+    mockUseClipboard.mockReturnValue([false, jest.fn(), 0]);
 
     // Act
     render(

@@ -9,12 +9,14 @@ import styles from "./OrderCopyLinkButtonContent.module.css";
 
 interface OrderCopyLinkButtonContentProps {
   copied: boolean;
+  copyGeneration?: number;
   disabled?: boolean;
   onCopy?: () => void;
 }
 
 export const OrderCopyLinkButtonContent = ({
   copied,
+  copyGeneration = 0,
   disabled = false,
   onCopy,
 }: OrderCopyLinkButtonContentProps): JSX.Element => {
@@ -43,7 +45,7 @@ export const OrderCopyLinkButtonContent = ({
         marginRight={3}
       />
       {copied ? (
-        <span aria-live="polite" className={styles.visuallyHidden}>
+        <span key={copyGeneration} aria-live="polite" className={styles.visuallyHidden}>
           {intl.formatMessage(messages.orderLinkCopied)}
         </span>
       ) : null}
