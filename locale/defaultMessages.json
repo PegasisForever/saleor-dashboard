@@ -3170,6 +3170,10 @@
     "context": "assign products to shipping rate and save, button",
     "string": "Assign and save"
   },
+  "FzcMi0": {
+    "context": "order details top nav copy link success feedback",
+    "string": "Order link copied"
+  },
   "Fzky6q": {
     "context": "dialog header",
     "string": "Reset password"
@@ -7250,6 +7254,10 @@
   "bqAJCT": {
     "context": "section header",
     "string": "Refund Order"
+  },
+  "bqtu1/": {
+    "context": "order details top nav copy link button",
+    "string": "Copy order link"
   },
   "brkxbY": {
     "string": "There are no transactions to refund"

@@ -1,14 +1,16 @@
 ## T-04b2dd15: Add OrderCopyLinkButton unit tests and sync i18n catalog
-- Status: pending
+
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: —
 - Supersedes: —
 
 ### Context
+
 The prototype loop shipped the full copy-link feature (container, presentational layer, TopNav integration, Storybook state coverage, and `ClipboardCopyIcon` sizing props). The tech plan explicitly defers unit-test coverage to the integration pass:
 
-> | Missing unit test for `OrderCopyLinkButton`               | Add test in integration pass mirroring `CopyableText.test.tsx` pattern                             |
+> | Missing unit test for `OrderCopyLinkButton` | Add test in integration pass mirroring `CopyableText.test.tsx` pattern |
 
 [Source: ./docs/DEV-85/tech-plan.md#risks]
 
@@ -84,13 +86,14 @@ describe("CopyableText", () => {
 
 Tech-plan risk mitigation also requires syncing extracted messages before merge:
 
-> | Message ID lint (`formatjs/enforce-id`)                   | Run `pnpm run extract-messages` during integration to normalize hash IDs                           |
+> | Message ID lint (`formatjs/enforce-id`) | Run `pnpm run extract-messages` during integration to normalize hash IDs |
 
 [Source: ./docs/DEV-85/tech-plan.md#risks]
 
 Messages already defined in co-located `messages.ts` (`copyOrderLink` id `bqtu1/`, `orderLinkCopied` id `FzcMi0`) but not yet present in `locale/` JSON catalogs.
 
 ### Acceptance
+
 - [ ] `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` exists with Arrange/Act/Assert structure and mocks `@dashboard/hooks/useClipboard` (same pattern as `CopyableText.test.tsx`)
 - [ ] Clicking the button calls `mockCopy` with `window.location.href` when `url` prop is omitted
 - [ ] Clicking the button calls `mockCopy` with the explicit `url` prop when provided
