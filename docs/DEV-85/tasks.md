@@ -1,3 +1,171 @@
+## T-75622180: Extend Playwright E2E for clipboard payload and 2s revert
+
+- Status: pending
+- Priority: high
+- Blocked by: none
+- Discovered from: deep-review pass-002 (correctness-order-copy-link-button/F-001, correctness-order-copy-link-button/F-002)
+- Supersedes: —
+
+### Context
+
+PRD AC2 requires writing the current page URL to the clipboard:
+
+> - [ ] Clicking the copy button writes `window.location.href` to the system clipboard
+
+PRD AC3 requires the copied state to revert after 2 seconds:
+
+> - [ ] After a successful copy, the button icon shows a check mark (via `ClipboardCopyIcon`) for 2 seconds, then reverts to the copy icon
+
+[Source: ./docs/DEV-85/prd.md#acceptance-criteria]
+
+**Finding correctness-order-copy-link-button/F-001:** PRD AC2 requires clicking the copy button to write `window.location.href` to the system clipboard. `TC: SALEOR_218` clicks the button and asserts post-click UI feedback (`aria-label`, check icon) but never reads clipboard contents or compares them to the current page URL.
+
+Suggested fix: After click, grant clipboard permissions if needed and assert `await page.evaluate(() => navigator.clipboard.readText())` equals `page.url()` (or the expected order-details URL).
+
+Location: `playwright/tests/orders.spec.ts:155-178`
+
+Evidence:
+
+```typescript
+  await ordersPage.copyOrderLinkButton.click();
+  await expect(ordersPage.copyOrderLinkButton).toHaveAttribute("aria-label", "Order link copied");
+  await expect(ordersPage.copyOrderLinkButton.locator(".lucide-check")).toBeVisible();
+```
+
+Unit tests mock `useClipboard` (`OrderCopyLinkButton.test.tsx:8-32`), so the only automated path that could catch a regression where UI feedback fires but the wrong string is written is missing.
+
+**Finding correctness-order-copy-link-button/F-002:** PRD AC3 requires the check icon and copied label to persist for 2 seconds, then revert. Hook behavior is tested in `useClipboard.test.ts:59-80` and rapid re-copy in `:133-173`, but E2E stops immediately after the copied-state assertion with no timer wait or revert check.
+
+Suggested fix: After copied-state assertions, advance time or `waitForTimeout(2100)` and assert default label/icon restored.
+
+Location: `playwright/tests/orders.spec.ts:155-178`, `src/hooks/useClipboard.ts:19-22`
+
+Evidence: E2E ends at line 178 with no `waitForTimeout(2000)` or assertion that `aria-label` returns to `"Copy order link"` and `.lucide-copy` reappears. A UI-only regression that never resets `copied` would not be caught by E2E.
+
+Existing E2E test to extend:
+
+```typescript
+test("TC: SALEOR_218 Copy order link button on order details TopNav #e2e #order", async ({
+  page,
+}) => {
+  await ordersPage.goToExistingOrderPage(ORDERS.orderToMarkAsPaidAndFulfill.id);
+  // ... visibility + DOM order assertions ...
+  await ordersPage.copyOrderLinkButton.click();
+  await expect(ordersPage.copyOrderLinkButton).toHaveAttribute("aria-label", "Order link copied");
+  await expect(ordersPage.copyOrderLinkButton.locator(".lucide-check")).toBeVisible();
+});
+```
+
+[Source: playwright/tests/orders.spec.ts:155-178]
+
+Page object locators already exist:
+
+```typescript
+    readonly copyOrderLinkButton = page.getByTestId("copy-order-link"),
+    readonly showOrderMetadataButton = page.getByTestId("show-order-metadata"),
+```
+
+[Source: playwright/pages/ordersPage.ts:62-63]
+
+Follow existing orders E2E patterns: `test.use({ permissionName: "admin" })`, `ORDERS` fixtures from `@data/e2eTestData`, `ordersPage.goToExistingOrderPage(...)`.
+
+### Acceptance
+
+- [ ] `TC: SALEOR_218` grants clipboard read/write permissions (via test fixture or `context.grantPermissions`) before clicking the copy button
+- [ ] After click, test asserts `await page.evaluate(() => navigator.clipboard.readText())` equals `page.url()`
+- [ ] After copied-state assertions (`aria-label` "Order link copied", `.lucide-check` visible), test waits ≥2100ms and asserts `aria-label` returns to "Copy order link" and `.lucide-copy` is visible
+- [ ] Existing visibility and DOM-order assertions in `TC: SALEOR_218` remain intact
+- [ ] Playwright test passes when run against a configured backend (follow repo's existing E2E invocation pattern)
+
+## T-d6760a1f: Re-announce copy success to screen readers on rapid re-copy
+
+- Status: pending
+- Priority: high
+- Blocked by: none
+- Discovered from: deep-review pass-002 (desktop-ux-order-copy-link-button/F-001)
+- Supersedes: —
+
+### Context
+
+UI design documents the intended screen-reader flow for each successful copy:
+
+> - Screen-reader flow: "Copy order link, button" → after click → "Order link copied, button"
+
+[Source: ./docs/DEV-85/ui-design.md#accessibility]
+
+**Finding desktop-ux-order-copy-link-button/F-001:** The timer fix correctly keeps `copied === true` through rapid re-copies, but the `aria-live="polite"` region mounts with static text `messages.orderLinkCopied` and is not remounted or mutated on a second successful copy within the 2s window. Because `aria-label`/`title` are already "Order link copied", assistive tech receives no DOM delta on the second tap. UI design explicitly promises the screen-reader flow `"Copy order link, button" → after click → "Order link copied, button"` for each successful copy action; repeat taps during the feedback window are silent to SR users even though visual feedback (check icon) persists.
+
+Suggested fix: Add a monotonic `copyGeneration` counter (ref) incremented on each successful copy; use it as `key` on the live-region span or briefly unmount/remount the region (`copied` flash) to force a polite announcement on every success, including repeat taps within 2s.
+
+Location: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButtonContent.tsx:45-49` + `src/hooks/useClipboard.ts:16-17`
+
+Evidence:
+
+```tsx
+// OrderCopyLinkButtonContent.tsx — live region only when copied; same text every time
+{
+  copied ? (
+    <span aria-live="polite" className={styles.visuallyHidden}>
+      {intl.formatMessage(messages.orderLinkCopied)}
+    </span>
+  ) : null;
+}
+
+// useClipboard.ts — second copy within 2s leaves copied at true (no false→true transition)
+clear();
+setCopyStatus(true);
+```
+
+Current presentational implementation (gap: no remount key or generation counter):
+
+```typescript
+      {copied ? (
+        <span aria-live="polite" className={styles.visuallyHidden}>
+          {intl.formatMessage(messages.orderLinkCopied)}
+        </span>
+      ) : null}
+```
+
+[Source: src/orders/components/OrderCopyLinkButton/OrderCopyLinkButtonContent.tsx:45-49]
+
+Container wiring passes `copied` from `useClipboard` only:
+
+```typescript
+export const OrderCopyLinkButton = ({
+  url,
+  disabled = false,
+}: OrderCopyLinkButtonProps): JSX.Element => {
+  const [copied, copy] = useClipboard();
+
+  const handleCopy = useCallback(() => {
+    copy(url ?? window.location.href);
+  }, [copy, url]);
+
+  return <OrderCopyLinkButtonContent copied={copied} disabled={disabled} onCopy={handleCopy} />;
+};
+```
+
+[Source: src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx]
+
+Existing unit test asserts live region when `copied=true` but does not cover repeat-copy re-announcement:
+
+```typescript
+    const liveRegion = container.querySelector("[aria-live='polite']");
+
+    expect(liveRegion).toBeInTheDocument();
+    expect(liveRegion).toHaveTextContent("Order link copied");
+```
+
+[Source: src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx:75-78]
+
+### Acceptance
+
+- [ ] Each successful clipboard write increments a monotonic generation counter (e.g., `copyGeneration`) even when `copied` was already `true`
+- [ ] The `aria-live="polite"` live region uses the generation counter as a React `key` (or equivalent remount pattern) so a second copy within the 2s window produces a DOM mutation assistive tech can announce
+- [ ] `OrderCopyLinkButton.test.tsx` includes a test that simulates two successful copies within 2s and asserts the live region remounts (e.g., generation key changes or node identity differs)
+- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` exits 0
+- [ ] `pnpm run lint` and `pnpm run check-types` exit 0 with no new errors in touched files
+
 ## T-b01c9816: Fix useClipboard orphan timer on rapid re-copy
 
 - Status: done
