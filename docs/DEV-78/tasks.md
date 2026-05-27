@@ -63,7 +63,7 @@ Original PRD AC#3 (superseded for encoding — loop-back requires parity with `o
 
 ## T-3b7d1e5f: Remove merge-artifact locale entries and unused CSS module
 
-- Status: pending
+- Status: done
 - Priority: medium
 - Blocked by: none
 - Discovered from: —
@@ -112,9 +112,9 @@ Orphan entries still present in `locale/defaultMessages.json`:
 
 ### Acceptance
 
-- [ ] `GyfpSu` and `l+hZ1x` entries are removed from `locale/defaultMessages.json`; `BLmn1V` and `ThVxK6` remain unchanged
-- [ ] `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` is deleted
-- [ ] `pnpm run knip` reports no new unused-file findings for paths under `OrderCopyLinkButton/`
+- [x] `GyfpSu` and `l+hZ1x` entries are removed from `locale/defaultMessages.json`; `BLmn1V` and `ThVxK6` remain unchanged
+- [x] `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` is deleted
+- [x] `pnpm run knip` reports no new unused-file findings for paths under `OrderCopyLinkButton/`
 
 ---
 
