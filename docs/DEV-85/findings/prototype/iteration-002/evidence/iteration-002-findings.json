@@ -1,0 +1,200 @@
+[
+  {
+    "stateName": "default",
+    "storyUrl": "http://local-deploy:11000/348e26e0-70be-420f-9890-0f733b21134b/iframe.html?id=orders-ordercopylinkbutton--default&viewMode=story",
+    "screenshotPath": "docs/DEV-85/findings/prototype/iteration-002/evidence/default.png",
+    "contrastMeasurements": [
+      { "element": "copy-button-icon-0", "elementType": "non-text", "ratio": 4.08, "threshold": 3, "pass": true },
+      { "element": "copy-button-aria-label-proxy", "elementType": "text", "ratio": 14.86, "threshold": 4.5, "pass": true }
+    ],
+    "touchTargets": [
+      { "element": "Copy order link", "width": 32, "height": 32, "pass44": false, "role": "button" }
+    ],
+    "neighborComparisons": [],
+    "lighthouseA11yScore": 100,
+    "defects": [
+      {
+        "type": "touch-target",
+        "description": "Copy button renders at 32×32 px, below the 44×44 px WCAG 2.5.5 target-size recommendation.",
+        "evidence": "default-measurements.json touchTargets[0]; default.png"
+      }
+    ]
+  },
+  {
+    "stateName": "hover",
+    "storyUrl": "http://local-deploy:11000/348e26e0-70be-420f-9890-0f733b21134b/iframe.html?id=orders-ordercopylinkbutton--hover&viewMode=story",
+    "screenshotPath": "docs/DEV-85/findings/prototype/iteration-002/evidence/hover.png",
+    "contrastMeasurements": [
+      { "element": "copy-button-icon-0", "elementType": "non-text", "ratio": 3.81, "threshold": 3, "pass": true },
+      { "element": "copy-button-aria-label-proxy", "elementType": "text", "ratio": 13.87, "threshold": 4.5, "pass": true }
+    ],
+    "touchTargets": [
+      { "element": "Copy order link", "width": 32, "height": 32, "pass44": false, "role": "button" }
+    ],
+    "neighborComparisons": [],
+    "lighthouseA11yScore": 100,
+    "defects": [
+      {
+        "type": "touch-target",
+        "description": "Hover-state copy button remains 32×32 px (below 44×44 px target size).",
+        "evidence": "hover-measurements.json; hover.png shows secondary hover background applied via story preview CSS"
+      },
+      {
+        "type": "contrast-regression",
+        "description": "Icon contrast drops from 4.08:1 (default) to 3.81:1 on hover background; still passes non-text 3:1 threshold but closer to boundary.",
+        "evidence": "hover-measurements.json contrastMeasurements[0]"
+      }
+    ]
+  },
+  {
+    "stateName": "focus",
+    "storyUrl": "http://local-deploy:11000/348e26e0-70be-420f-9890-0f733b21134b/iframe.html?id=orders-ordercopylinkbutton--focus&viewMode=story",
+    "screenshotPath": "docs/DEV-85/findings/prototype/iteration-002/evidence/focus.png",
+    "contrastMeasurements": [
+      { "element": "copy-button-icon-0", "elementType": "non-text", "ratio": 3.81, "threshold": 3, "pass": true },
+      { "element": "copy-button-aria-label-proxy", "elementType": "text", "ratio": 13.87, "threshold": 4.5, "pass": true }
+    ],
+    "touchTargets": [
+      { "element": "Copy order link", "width": 32, "height": 32, "pass44": false, "role": "button" }
+    ],
+    "neighborComparisons": [],
+    "lighthouseA11yScore": 100,
+    "defects": [
+      {
+        "type": "touch-target",
+        "description": "Focus-state copy button remains 32×32 px (below 44×44 px target size).",
+        "evidence": "focus-measurements.json; focus.png"
+      },
+      {
+        "type": "contrast-spec-mismatch",
+        "description": "ui-design.md claims icon contrast on focused button surface ≥4.5:1; measured icon ratio is 3.81:1 (passes non-text 3:1 only).",
+        "evidence": "focus-measurements.json contrastMeasurements[0]; docs/DEV-85/ui-design.md Accessibility section"
+      }
+    ]
+  },
+  {
+    "stateName": "active",
+    "storyUrl": "http://local-deploy:11000/348e26e0-70be-420f-9890-0f733b21134b/iframe.html?id=orders-ordercopylinkbutton--active&viewMode=story",
+    "screenshotPath": "docs/DEV-85/findings/prototype/iteration-002/evidence/active.png",
+    "contrastMeasurements": [
+      { "element": "copy-button-icon-0", "elementType": "non-text", "ratio": 3.02, "threshold": 3, "pass": true },
+      { "element": "copy-button-aria-label-proxy", "elementType": "text", "ratio": 10.98, "threshold": 4.5, "pass": true }
+    ],
+    "touchTargets": [
+      { "element": "Copy order link", "width": 32, "height": 32, "pass44": false, "role": "button" }
+    ],
+    "neighborComparisons": [],
+    "lighthouseA11yScore": 100,
+    "defects": [
+      {
+        "type": "touch-target",
+        "description": "Active/pressed copy button remains 32×32 px (below 44×44 px target size).",
+        "evidence": "active-measurements.json; active.png"
+      },
+      {
+        "type": "contrast-borderline",
+        "description": "Icon contrast on pressed background is 3.02:1 — passes non-text 3:1 threshold with minimal margin (0.02).",
+        "evidence": "active-measurements.json contrastMeasurements[0]"
+      }
+    ]
+  },
+  {
+    "stateName": "disabled",
+    "storyUrl": "http://local-deploy:11000/348e26e0-70be-420f-9890-0f733b21134b/iframe.html?id=orders-ordercopylinkbutton--disabled&viewMode=story",
+    "screenshotPath": "docs/DEV-85/findings/prototype/iteration-002/evidence/disabled.png",
+    "contrastMeasurements": [],
+    "touchTargets": [
+      { "element": "Copy order link", "width": 32, "height": 32, "pass44": false, "role": "button" }
+    ],
+    "neighborComparisons": [],
+    "lighthouseA11yScore": 100,
+    "defects": [
+      {
+        "type": "touch-target",
+        "description": "Disabled copy button remains 32×32 px (below 44×44 px target size).",
+        "evidence": "disabled-measurements.json; disabled-a11y.txt confirms disabled state exposed to assistive tech"
+      }
+    ]
+  },
+  {
+    "stateName": "error",
+    "storyUrl": "http://local-deploy:11000/348e26e0-70be-420f-9890-0f733b21134b/iframe.html?id=orders-ordercopylinkbutton--error&viewMode=story",
+    "screenshotPath": "docs/DEV-85/findings/prototype/iteration-002/evidence/error.png",
+    "contrastMeasurements": [],
+    "touchTargets": [
+      { "element": "Copy order link", "width": 32, "height": 32, "pass44": false, "role": "button" }
+    ],
+    "neighborComparisons": [],
+    "lighthouseA11yScore": 100,
+    "defects": [
+      {
+        "type": "touch-target",
+        "description": "Error-state copy button remains 32×32 px (below 44×44 px target size).",
+        "evidence": "error-measurements.json; error.png"
+      },
+      {
+        "type": "observation",
+        "description": "Error story is visually identical to Default (copy icon, 'Copy order link') — matches ui-design.md intentional no-error-affordance behavior.",
+        "evidence": "error.png vs default.png; ui-design.md error state row"
+      }
+    ]
+  },
+  {
+    "stateName": "copied",
+    "storyUrl": "http://local-deploy:11000/348e26e0-70be-420f-9890-0f733b21134b/iframe.html?id=orders-ordercopylinkbutton--copied&viewMode=story",
+    "screenshotPath": "docs/DEV-85/findings/prototype/iteration-002/evidence/copied.png",
+    "contrastMeasurements": [
+      { "element": "copy-button-icon-0", "elementType": "non-text", "ratio": 4.08, "threshold": 3, "pass": true },
+      { "element": "copy-button-aria-label-proxy", "elementType": "text", "ratio": 14.86, "threshold": 4.5, "pass": true }
+    ],
+    "touchTargets": [
+      { "element": "Order link copied", "width": 32, "height": 32, "pass44": false, "role": "button" }
+    ],
+    "neighborComparisons": [],
+    "lighthouseA11yScore": 100,
+    "defects": [
+      {
+        "type": "touch-target",
+        "description": "Copied-state button remains 32×32 px (below 44×44 px target size).",
+        "evidence": "copied-measurements.json; copied-a11y.txt shows aria-label updated to 'Order link copied'"
+      }
+    ]
+  },
+  {
+    "stateName": "inOrderDetailsTopNav",
+    "storyUrl": "http://local-deploy:11000/348e26e0-70be-420f-9890-0f733b21134b/iframe.html?id=orders-ordercopylinkbutton--in-order-details-top-nav&viewMode=story",
+    "screenshotPath": "docs/DEV-85/findings/prototype/iteration-002/evidence/inOrderDetailsTopNav.png",
+    "contrastMeasurements": [
+      { "element": "copy-button-icon-0", "elementType": "non-text", "ratio": 4.08, "threshold": 3, "pass": true },
+      { "element": "copy-button-aria-label-proxy", "elementType": "text", "ratio": 14.86, "threshold": 4.5, "pass": true }
+    ],
+    "touchTargets": [
+      { "element": "a", "width": 40, "height": 40, "pass44": false, "role": "a" },
+      { "element": "app-header-back-button", "width": 40, "height": 40, "pass44": false, "role": "button" },
+      { "element": "Copy order link", "width": 32, "height": 32, "pass44": false, "role": "button" },
+      { "element": "Edit order metadata", "width": 32, "height": 32, "pass44": false, "role": "button" }
+    ],
+    "neighborComparisons": [
+      { "element": "Edit order metadata", "width": 32, "height": 32, "note": "Metadata neighbor icon button in TopNav composition — same 32×32 px as copy button" },
+      { "element": "app-header-back-button", "width": 40, "height": 40, "note": "Back navigation icon button in TopNav — 40×40 px, larger than copy/metadata but still below 44×44 px" }
+    ],
+    "lighthouseA11yScore": 87,
+    "defects": [
+      {
+        "type": "touch-target",
+        "description": "Copy button (32×32) and metadata neighbor (32×32) both below 44×44 px; consistent with established TopNav icon-button sizing per ui-design.md.",
+        "evidence": "inOrderDetailsTopNav-measurements.json touchTargets; neighborComparisons"
+      },
+      {
+        "type": "a11y-composition",
+        "description": "Lighthouse a11y score 87 due to unnamed back link/button in TopNav (button-name, link-name audits fail on app-header-back-button). Pre-existing TopNav issue, not introduced by copy button.",
+        "evidence": "lighthouse-inOrderDetailsTopNav/report.json audits button-name & link-name; inOrderDetailsTopNav-a11y.txt uid=16_3 button has no accessible name"
+      },
+      {
+        "type": "story-coverage",
+        "description": "Composition story omits overflow menu (⋮) shown in ui-design.md wireframe — overflow neighbor comparison not possible in this story.",
+        "evidence": "OrderCopyLinkButton.stories.tsx InOrderDetailsTopNav render; ui-design.md layout diagram"
+      }
+    ]
+  }
+]

@@ -1,0 +1,3 @@
+uid=12_0 RootWebArea "orders-ordercopylinkbutton--error" url="http://local-deploy:11000/348e26e0-70be-420f-9890-0f733b21134b/iframe.html?id=orders-ordercopylinkbutton--error&viewMode=story"
+  uid=12_1 main
+    uid=12_2 button "Copy order link" description="Copy order link"
