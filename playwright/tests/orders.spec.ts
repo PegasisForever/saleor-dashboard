@@ -152,6 +152,32 @@ test("TC: SALEOR_78 Capture partial amounts by manual transactions and fulfill o
   );
 });
 
+test("TC: SALEOR_218 Copy order link button on order details TopNav #e2e #order", async ({
+  page,
+}) => {
+  await ordersPage.goToExistingOrderPage(ORDERS.orderToMarkAsPaidAndFulfill.id);
+
+  await expect(ordersPage.copyOrderLinkButton).toBeVisible();
+  await expect(ordersPage.showOrderMetadataButton).toBeVisible();
+
+  const copyPrecedesMetadata = await page.evaluate(() => {
+    const copyButton = document.querySelector('[data-test-id="copy-order-link"]');
+    const metadataButton = document.querySelector('[data-test-id="show-order-metadata"]');
+
+    return (
+      copyButton !== null &&
+      metadataButton !== null &&
+      !!(copyButton.compareDocumentPosition(metadataButton) & Node.DOCUMENT_POSITION_FOLLOWING)
+    );
+  });
+
+  expect(copyPrecedesMetadata).toBe(true);
+
+  await ordersPage.copyOrderLinkButton.click();
+  await expect(ordersPage.copyOrderLinkButton).toHaveAttribute("aria-label", "Order link copied");
+  await expect(ordersPage.copyOrderLinkButton.locator(".lucide-check")).toBeVisible();
+});
+
 test("TC: SALEOR_79 Mark order as paid and fulfill it with regular flow #e2e #order", async () => {
   await ordersPage.goToExistingOrderPage(ORDERS.orderToMarkAsPaidAndFulfill.id);
   await ordersPage.clickMarkAsPaidButton();
