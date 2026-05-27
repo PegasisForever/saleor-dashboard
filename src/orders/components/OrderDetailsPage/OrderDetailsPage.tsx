@@ -24,6 +24,7 @@ import {
 import { useBackLinkWithState } from "@dashboard/hooks/useBackLinkWithState";
 import { type SubmitPromise } from "@dashboard/hooks/useForm";
 import useNavigator from "@dashboard/hooks/useNavigator";
+import { OrderCopyLinkButton } from "@dashboard/orders/components/OrderCopyLinkButton/OrderCopyLinkButton";
 import { defaultGraphiQLQuery } from "@dashboard/orders/queries";
 import { orderShouldUseTransactions } from "@dashboard/orders/types";
 import { orderListUrl } from "@dashboard/orders/urls";
@@ -207,6 +208,7 @@ const OrderDetailsPage = (props: OrderDetailsPageProps) => {
         return (
           <DetailPageLayout>
             <TopNav href={backLinkUrl} title={<Title order={order} />}>
+              <OrderCopyLinkButton orderId={order.id} />
               <Button
                 variant="secondary"
                 icon={<Code size={iconSize.medium} strokeWidth={iconStrokeWidth} />}

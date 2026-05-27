@@ -58,7 +58,7 @@ export const Default: Story = {
 
 export const Hover: Story = {
   render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} previewState="hover" />,
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const button = getButton(canvasElement);
 
     await expect(button).toHaveAttribute("title", "Copy order link");
@@ -67,7 +67,7 @@ export const Hover: Story = {
 
 export const Focus: Story = {
   render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} previewState="focus" />,
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const button = getButton(canvasElement);
 
     await expect(button).toHaveAttribute("title", "Copy order link");
@@ -76,7 +76,7 @@ export const Focus: Story = {
 
 export const Active: Story = {
   render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} previewState="active" />,
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const button = getButton(canvasElement);
 
     await expect(button).toBeVisible();
@@ -85,7 +85,7 @@ export const Active: Story = {
 
 export const Disabled: Story = {
   render: () => <TopNavShell orderId="" disabled />,
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const button = getButton(canvasElement);
 
     await expect(button).toBeDisabled();
@@ -94,7 +94,7 @@ export const Disabled: Story = {
 
 export const Copied: Story = {
   render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} previewState="copied" />,
-  play: async ({ canvasElement }) => {
+  play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     const button = getButton(canvasElement);
 
     await expect(button).toHaveAttribute("title", "Order link copied");
