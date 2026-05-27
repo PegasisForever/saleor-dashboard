@@ -1,0 +1,7 @@
+uid=7_0 RootWebArea "orders-ordercopylinkbutton--active" url="http://local-deploy:11000/3707029a-aa19-4e82-a21f-d1df94121785/iframe.html?id=orders-ordercopylinkbutton--active&viewMode=story"
+  uid=7_1 main
+    uid=7_2 link url="http://local-deploy:11000/orders"
+      uid=7_3 button
+    uid=7_4 StaticText "Order #1234"
+    uid=7_5 button "Copy order link" description="Copy order link"
+    uid=7_6 button "Edit order metadata"
