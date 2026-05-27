@@ -1,5 +1,25 @@
 # DEV-78 Tasks
 
+## T-c4e9f1a2: Fix OrderCopyLinkButton.stories.tsx TypeScript errors (iter-002 F-001)
+
+- Status: done
+- Priority: high
+- Blocked by: none
+- Discovered from: shallow review iteration-002 F-001
+- Supersedes: —
+
+### Context
+
+Shallow review iteration 002 flagged four `TS7006` implicit-`any` errors in `OrderCopyLinkButton.stories.tsx` (decorator `Story` parameter and custom `render` `args` on Hover/Focus/Active stories). Iteration 2 fixed test-file type errors but deferred stories typing.
+
+Repo pattern: import `StoryFn` and annotate decorator `(Story: StoryFn) => …`; type `render` args with `ComponentProps<typeof OrderCopyLinkButton>` (see `ProductListDatagrid.stories.tsx`).
+
+### Acceptance
+
+- [x] `OrderCopyLinkButton.stories.tsx` imports `StoryFn` and types decorator `Story` parameter
+- [x] Hover, Focus, and Active story `render` functions type `args` explicitly
+- [x] `pnpm run check-types` passes with zero errors in changed files
+
 ## T-986e6e35: Add tests and extract i18n for OrderCopyLinkButton
 
 - Status: done

@@ -1,7 +1,8 @@
 import { iconSize, iconStrokeWidthBySize } from "@dashboard/components/icons";
 import { ClipboardCopyIcon } from "@dashboard/orders/components/OrderCardTitle/ClipboardCopyIcon";
 import { Button } from "@saleor/macaw-ui-next";
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryFn, StoryObj } from "@storybook/react-vite";
+import type { ComponentProps } from "react";
 import { useIntl } from "react-intl";
 
 import { orderCopyLinkButtonMessages } from "./messages";
@@ -30,7 +31,7 @@ const meta: Meta<typeof OrderCopyLinkButton> = {
     layout: "centered",
   },
   decorators: [
-    Story => {
+    (Story: StoryFn) => {
       mockClipboard();
 
       return <Story />;
@@ -40,11 +41,12 @@ const meta: Meta<typeof OrderCopyLinkButton> = {
 
 export default meta;
 type Story = StoryObj<typeof OrderCopyLinkButton>;
+type OrderCopyLinkButtonStoryArgs = ComponentProps<typeof OrderCopyLinkButton>;
 
 export const Default: Story = {};
 
 export const Hover: Story = {
-  render: args => (
+  render: (args: OrderCopyLinkButtonStoryArgs) => (
     <div data-state="hover">
       <OrderCopyLinkButton {...args} />
     </div>
@@ -52,7 +54,7 @@ export const Hover: Story = {
 };
 
 export const Focus: Story = {
-  render: args => (
+  render: (args: OrderCopyLinkButtonStoryArgs) => (
     <div data-state="focus">
       <OrderCopyLinkButton {...args} />
     </div>
@@ -60,7 +62,7 @@ export const Focus: Story = {
 };
 
 export const Active: Story = {
-  render: args => (
+  render: (args: OrderCopyLinkButtonStoryArgs) => (
     <div data-state="active">
       <OrderCopyLinkButton {...args} />
     </div>
