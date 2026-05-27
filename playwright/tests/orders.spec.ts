@@ -154,7 +154,10 @@ test("TC: SALEOR_78 Capture partial amounts by manual transactions and fulfill o
 
 test("TC: SALEOR_218 Copy order link button on order details TopNav #e2e #order", async ({
   page,
+  context,
 }) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+
   await ordersPage.goToExistingOrderPage(ORDERS.orderToMarkAsPaidAndFulfill.id);
 
   await expect(ordersPage.copyOrderLinkButton).toBeVisible();
@@ -176,6 +179,14 @@ test("TC: SALEOR_218 Copy order link button on order details TopNav #e2e #order"
   await ordersPage.copyOrderLinkButton.click();
   await expect(ordersPage.copyOrderLinkButton).toHaveAttribute("aria-label", "Order link copied");
   await expect(ordersPage.copyOrderLinkButton.locator(".lucide-check")).toBeVisible();
+
+  const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
+
+  expect(clipboardText).toBe(page.url());
+
+  await page.waitForTimeout(2100);
+  await expect(ordersPage.copyOrderLinkButton).toHaveAttribute("aria-label", "Copy order link");
+  await expect(ordersPage.copyOrderLinkButton.locator(".lucide-copy")).toBeVisible();
 });
 
 test("TC: SALEOR_79 Mark order as paid and fulfill it with regular flow #e2e #order", async () => {
