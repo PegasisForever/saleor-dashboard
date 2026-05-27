@@ -4,6 +4,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { OrderCopyLinkButton } from "./OrderCopyLinkButton";
+import { OrderCopyLinkButtonContent } from "./OrderCopyLinkButtonContent";
 
 jest.mock("@dashboard/hooks/useClipboard");
 
@@ -15,7 +16,7 @@ describe("OrderCopyLinkButton", () => {
     const user = userEvent.setup();
     const mockCopy = jest.fn();
 
-    mockUseClipboard.mockReturnValue([false, mockCopy]);
+    mockUseClipboard.mockReturnValue([false, mockCopy, 0]);
 
     render(
       <Wrapper>
@@ -38,7 +39,7 @@ describe("OrderCopyLinkButton", () => {
     const mockCopy = jest.fn();
     const orderUrl = "https://example.com/dashboard/orders/abc123";
 
-    mockUseClipboard.mockReturnValue([false, mockCopy]);
+    mockUseClipboard.mockReturnValue([false, mockCopy, 0]);
 
     render(
       <Wrapper>
@@ -57,7 +58,7 @@ describe("OrderCopyLinkButton", () => {
 
   it("shows check icon and copied label after link is copied", () => {
     // Arrange
-    mockUseClipboard.mockReturnValue([true, jest.fn()]);
+    mockUseClipboard.mockReturnValue([true, jest.fn(), 1]);
 
     // Act
     const { container } = render(
@@ -80,7 +81,7 @@ describe("OrderCopyLinkButton", () => {
 
   it("shows copy icon and default label when link has not been copied", () => {
     // Arrange
-    mockUseClipboard.mockReturnValue([false, jest.fn()]);
+    mockUseClipboard.mockReturnValue([false, jest.fn(), 0]);
 
     // Act
     const { container } = render(
@@ -95,5 +96,32 @@ describe("OrderCopyLinkButton", () => {
 
     expect(copyIcon).toBeInTheDocument();
     expect(container.querySelector("[aria-live='polite']")).not.toBeInTheDocument();
+  });
+
+  it("remounts live region when copyGeneration increments during rapid re-copy", () => {
+    // Arrange
+    const onCopy = jest.fn();
+    const { container, rerender } = render(
+      <Wrapper>
+        <OrderCopyLinkButtonContent copied copyGeneration={1} onCopy={onCopy} />
+      </Wrapper>,
+    );
+
+    const liveRegionAfterFirstCopy = container.querySelector("[aria-live='polite']");
+
+    expect(liveRegionAfterFirstCopy).toHaveTextContent("Order link copied");
+
+    // Act - second successful copy within 2s (copied stays true, generation bumps)
+    rerender(
+      <Wrapper>
+        <OrderCopyLinkButtonContent copied copyGeneration={2} onCopy={onCopy} />
+      </Wrapper>,
+    );
+
+    // Assert
+    const liveRegionAfterSecondCopy = container.querySelector("[aria-live='polite']");
+
+    expect(liveRegionAfterSecondCopy).toHaveTextContent("Order link copied");
+    expect(liveRegionAfterSecondCopy).not.toBe(liveRegionAfterFirstCopy);
   });
 });

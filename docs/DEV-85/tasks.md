@@ -79,7 +79,7 @@ Follow existing orders E2E patterns: `test.use({ permissionName: "admin" })`, `O
 
 ## T-d6760a1f: Re-announce copy success to screen readers on rapid re-copy
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-002 (desktop-ux-order-copy-link-button/F-001)
