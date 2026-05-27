@@ -1,0 +1,8 @@
+uid=3_0 RootWebArea "orders-ordercopylinkbutton--default" url="http://local-deploy:11000/b29d7b77-62e3-42f7-920c-ac93e11fcb29/iframe.html?id=orders-ordercopylinkbutton--default&viewMode=story&globals="
+  uid=3_1 main
+    uid=3_2 link url="http://local-deploy:11000/orders"
+      uid=3_3 button
+    uid=3_4 StaticText "Order #42"
+    uid=3_5 button "Copy order link" description="Copy order link"
+    uid=3_6 button "Edit order metadata"
+    uid=3_7 button expandable haspopup="menu"
