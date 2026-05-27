@@ -1,11 +1,13 @@
 ## T-f7e2b890: Integrate OrderCopyLinkButton into order details TopNav with tests
-- Status: pending
+
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: —
 - Supersedes: —
 
 ### Context
+
 The prototype loop shipped the copy-link component slice but not production integration. Consistency review F-004 confirms `OrderDetailsPage.tsx` has no `OrderCopyLinkButton` import and the planned test file is absent.
 
 From the PRD acceptance criteria still requiring production wiring:
@@ -85,6 +87,7 @@ Follow existing order-component test patterns (e.g. mock heavy child components,
 i18n hygiene (consistency F-006): run `pnpm run extract-messages` so `messages.copyOrderLink` / `messages.orderLinkCopied` sync to locale catalogs.
 
 ### Acceptance
+
 - [ ] `OrderDetailsPage.tsx` imports and renders `<OrderCopyLinkButton orderId={order.id} />` as the first TopNav action child, immediately before the metadata button (`data-test-id="show-order-metadata"`) and before `TopNav.Menu`
 - [ ] `OrderDetailsPage.test.tsx` exists and asserts the copy button (`data-test-id="copy-order-link"`) appears in the DOM before the metadata button when the page renders with a loaded order
 - [ ] `OrderCopyLinkButton.test.tsx` asserts clicking the button calls the mocked `useClipboard` copy function with `getShareableOrderUrl(orderId)` and that `orderId=""` renders a disabled button with no copy call on click
