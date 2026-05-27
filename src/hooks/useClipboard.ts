@@ -11,6 +11,12 @@ export function useClipboard(): [boolean, (text: string) => void, number] {
     }
   };
   const copy = (text: string): void => {
+    if (!navigator.clipboard?.writeText) {
+      console.warn("Failed to use clipboard, ensure browser permission is enabled.");
+
+      return;
+    }
+
     navigator.clipboard
       .writeText(text)
       .then(() => {
