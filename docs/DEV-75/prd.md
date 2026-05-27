@@ -12,7 +12,7 @@ Support staff sharing a direct link to an order from the order details page. Tod
   - Visual feedback on successful copy (check icon via existing `ClipboardCopyIcon`, 2s reset per `useClipboard`)
   - Accessible label and tooltip via i18n messages (`messages.copyOrderLink`, `messages.orderLinkCopied`)
   - Keyboard activation (Enter/Space) with visible focus ring
-  - Storybook TopNav shell demonstrates placement and all visual states for prototype review
+  - Storybook TopNav shell demonstrates placement and all visual states; `OrderDetailsPage` wiring is in scope for the same feature delivery (not deferred)
 - Out of scope:
   - Copying deep links with dialog/query params (e.g. open metadata modal)
   - Toast on clipboard failure (matches existing `useClipboard` behavior)

@@ -24,9 +24,9 @@ N/A — client-only clipboard write via `navigator.clipboard.writeText`.
 
 ## Affected components
 
-- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx` — icon button with optional `previewState` for Storybook static renders
-- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` — `:focus-visible`, `:active`, and `.buttonPreview*` mirror classes for Storybook states
-- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` — six distinct static state stories + TopNav shell (removed duplicate `InTopNav` export)
+- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx` — icon button with `orderId`, optional `disabled`, and optional `previewState` for Storybook static renders
+- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` — `:focus-visible`, `:active`, and `.buttonPreview*` mirror classes (hover uses `--mu-box-shadow-default-hovered`)
+- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` — six distinct static state stories, each rendering inside shared `TopNavShell` wrapper
 - File: `src/orders/components/OrderCopyLinkButton/messages.ts` — `copyOrderLink`, `orderLinkCopied` i18n messages
 - File: `src/orders/components/OrderCopyLinkButton/getOrderAbsoluteUrl.ts` — absolute URL builder using `orderPath(encodeURIComponent(orderId))` + mount URI
 - File: `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx` — import and render `<OrderCopyLinkButton orderId={order.id} />` before metadata button

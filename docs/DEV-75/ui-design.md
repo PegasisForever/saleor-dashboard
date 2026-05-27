@@ -2,7 +2,7 @@
 
 ## Storybook URL
 
-http://localhost:11000/3707029a-aa19-4e82-a21f-d1df94121785
+http://localhost:11000/36769da2-37de-4179-b663-4eb10cdbeb13
 
 Primary stories under **Orders / OrderCopyLinkButton** (`OrderCopyLinkButton.stories.tsx`).
 
@@ -29,14 +29,14 @@ Primary stories under **Orders / OrderCopyLinkButton** (`OrderCopyLinkButton.sto
   - Success → icon toggles Copy → Check for ~2s; `title` / `aria-label` switch to `messages.orderLinkCopied`
 - States covered: `default`, `hover`, `focus`, `active`, `disabled`, `copied` (loading / error / empty N/A — sync clipboard, no empty surface)
 
-| State    | Visual                                 | Token / mechanism                                                                                       |
-| -------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| default  | Secondary icon button, Copy icon       | macaw `Button variant="secondary"`                                                                      |
-| hover    | Elevated shadow on button              | macaw secondary hover `box-shadow`; static Storybook via `previewState="hover"` + `.buttonPreviewHover` |
-| focus    | 2px outline + 4px focus ring           | `--mu-colors-text-default1` outline + box-shadow (≥3:1 vs `--mu-colors-background-default1`)            |
-| active   | Slight scale-down (0.98)               | CSS `:active` on production module; static Storybook via `previewState="active"`                        |
-| disabled | Non-interactive, reduced affordance    | macaw disabled + `disabled` attribute                                                                   |
-| copied   | Check icon + "Order link copied" label | `ClipboardCopyIcon` + `messages.orderLinkCopied`; static Storybook via `previewState="copied"`          |
+| State    | Visual                                 | Token / mechanism                                                                                      |
+| -------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| default  | Secondary icon button, Copy icon       | macaw `Button variant="secondary"`                                                                     |
+| hover    | Elevated shadow on button              | `--mu-box-shadow-default-hovered`; static Storybook via `previewState="hover"` + `.buttonPreviewHover` |
+| focus    | 2px outline + 4px focus ring           | `--mu-colors-text-default1` outline + box-shadow (≥3:1 vs `--mu-colors-background-default1`)           |
+| active   | Slight scale-down (0.98)               | CSS `:active` on production module; static Storybook via `previewState="active"`                       |
+| disabled | Non-interactive, reduced affordance    | macaw disabled + `disabled` attribute                                                                  |
+| copied   | Check icon + "Order link copied" label | `ClipboardCopyIcon` + `messages.orderLinkCopied`; static Storybook via `previewState="copied"`         |
 
 Each state story renders a visually distinct static canvas (no `play`-only differentiation).
 
