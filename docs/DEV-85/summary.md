@@ -63,4 +63,4 @@ Linear tickets filed for pre-existing / shared-infrastructure bugs discovered du
 - Prototype iterations: 2
 - Implementation loop iterations: 7
 - Deep review passes: 3
-- Wall-clock: planning trigger → PR open (invocation 1)
+- Wall-clock: planning trigger → merged via PR #6
