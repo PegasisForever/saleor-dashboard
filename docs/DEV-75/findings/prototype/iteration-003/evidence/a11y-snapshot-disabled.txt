@@ -1,7 +1,0 @@
-uid=9_0 RootWebArea "orders-ordercopylinkbutton--disabled" url="http://local-deploy:11000/36769da2-37de-4179-b663-4eb10cdbeb13/iframe.html?id=orders-ordercopylinkbutton--disabled&viewMode=story"
-  uid=9_1 main
-    uid=9_2 link url="http://local-deploy:11000/orders"
-      uid=9_3 button
-    uid=9_4 StaticText "Order #1234"
-    uid=9_5 button "Copy order link" description="Copy order link" disableable disabled
-    uid=9_6 button "Edit order metadata"
