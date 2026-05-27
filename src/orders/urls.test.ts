@@ -10,7 +10,7 @@ import {
 } from "./urls";
 
 jest.mock("@dashboard/utils/urls", () => ({
-  ...jest.requireActual("@dashboard/utils/urls"),
+  ...(jest.requireActual("@dashboard/utils/urls") as object),
   getAppMountUriForRedirect: jest.fn(),
 }));
 
@@ -89,6 +89,7 @@ describe("Order URLs", () => {
     });
 
     afterEach(() => {
+      // @ts-expect-error - restoring location after mock
       window.location = originalLocation;
     });
 

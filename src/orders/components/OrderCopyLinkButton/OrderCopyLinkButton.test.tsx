@@ -8,7 +8,7 @@ import { OrderCopyLinkButton } from "./OrderCopyLinkButton";
 
 jest.mock("@dashboard/hooks/useClipboard");
 jest.mock("@dashboard/orders/urls", () => ({
-  ...jest.requireActual("@dashboard/orders/urls"),
+  ...(jest.requireActual("@dashboard/orders/urls") as object),
   getOrderShareableUrl: jest.fn(),
 }));
 

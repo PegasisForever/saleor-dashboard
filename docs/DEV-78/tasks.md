@@ -72,9 +72,9 @@ URL encoding note (consistency F-007, non-blocking): `getOrderShareableUrl` pass
 
 ### Acceptance
 
-- [ ] `src/orders/urls.test.ts` includes a `getOrderShareableUrl` describe block with at least: (1) mocked `window.location.origin` + mocked `getAppMountUriForRedirect()` producing an absolute URL containing origin, mount prefix, and order path segment; (2) empty mount URI (root deploy) case
-- [ ] New `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` renders with `Wrapper`, clicks the `data-test-id="copy-order-link"` button, and asserts mocked `copy` is called with the shareable URL for the given `orderId`
-- [ ] Component test asserts `aria-label` is `"Copy order link"` before copy and `"Order link copied"` when `useClipboard` mock returns `[true, mockCopy]`
-- [ ] `pnpm run extract-messages` run and `locale/defaultMessages.json` updated to include `"Copy order link"` and `"Order link copied"` entries for the message IDs from `orderCopyLinkButtonMessages`
-- [ ] `pnpm run test:quiet src/orders/urls.test.ts` and `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` pass
-- [ ] `pnpm run lint` passes on changed files
+- [x] `src/orders/urls.test.ts` includes a `getOrderShareableUrl` describe block with at least: (1) mocked `window.location.origin` + mocked `getAppMountUriForRedirect()` producing an absolute URL containing origin, mount prefix, and order path segment; (2) empty mount URI (root deploy) case
+- [x] New `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` renders with `Wrapper`, clicks the `data-test-id="copy-order-link"` button, and asserts mocked `copy` is called with the shareable URL for the given `orderId`
+- [x] Component test asserts `aria-label` is `"Copy order link"` before copy and `"Order link copied"` when `useClipboard` mock returns `[true, mockCopy]`
+- [x] `pnpm run extract-messages` run and `locale/defaultMessages.json` updated to include `"Copy order link"` and `"Order link copied"` entries for the message IDs from `orderCopyLinkButtonMessages`
+- [x] `pnpm run test:quiet src/orders/urls.test.ts` and `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` pass
+- [x] `pnpm run lint` passes on changed files
