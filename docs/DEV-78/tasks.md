@@ -1,13 +1,15 @@
 # DEV-78 Tasks
 
 ## T-986e6e35: Add tests and extract i18n for OrderCopyLinkButton
-- Status: pending
+
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: —
 - Supersedes: —
 
 ### Context
+
 Prototype loop shipped the copy-link feature (component, URL helper, TopNav wiring, Storybook). PRD acceptance criteria for UI behavior are satisfied in the cumulative diff. Remaining work is test coverage and locale catalog sync deferred by the tech plan and flagged in consistency review (F-003, F-010).
 
 Tech plan testing notes:
@@ -69,6 +71,7 @@ Follow existing test patterns: extend `src/orders/urls.test.ts` for URL helpers;
 URL encoding note (consistency F-007, non-blocking): `getOrderShareableUrl` passes raw `orderId` to `orderPath` (same as `orderFulfillPath`); `orderUrl` uses `encodeURIComponent`. GraphQL global IDs are URL-safe; tests should assert the constructed URL shape rather than changing encoding unless a test proves otherwise.
 
 ### Acceptance
+
 - [ ] `src/orders/urls.test.ts` includes a `getOrderShareableUrl` describe block with at least: (1) mocked `window.location.origin` + mocked `getAppMountUriForRedirect()` producing an absolute URL containing origin, mount prefix, and order path segment; (2) empty mount URI (root deploy) case
 - [ ] New `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` renders with `Wrapper`, clicks the `data-test-id="copy-order-link"` button, and asserts mocked `copy` is called with the shareable URL for the given `orderId`
 - [ ] Component test asserts `aria-label` is `"Copy order link"` before copy and `"Order link copied"` when `useClipboard` mock returns `[true, mockCopy]`

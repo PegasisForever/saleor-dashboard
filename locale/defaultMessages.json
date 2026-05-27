@@ -3399,6 +3399,10 @@
   "GyXEWS": {
     "string": "App created"
   },
+  "GyfpSu": {
+    "context": "order details TopNav copy-link button feedback after copy",
+    "string": "Order link copied"
+  },
   "Gz+4CI": {
     "context": "info text",
     "string": "Preordered products will be available in all warehouses. You can set a threshold for sold quantity. Leaving input blank will be interpreted as no limit to sale. Sold items will be allocated at the warehouse assigned to chosen shipping zone."
@@ -8829,6 +8833,10 @@
   "kyOwDW": {
     "context": "aria-label for the error icon inside a channel issue badge",
     "string": "Error"
+  },
+  "l+hZ1x": {
+    "context": "order details TopNav copy-link button label",
+    "string": "Copy order link"
   },
   "l0a2tU": {
     "context": "onboarding step description",
