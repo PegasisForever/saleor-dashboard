@@ -206,7 +206,7 @@ Order fixtures available at `src/orders/fixtures.ts`. Follow existing test patte
 
 ## T-f14eb8c7: Add Playwright E2E for copy-order-link button
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-001 (correctness-order-copy-link-button/F-002)
@@ -246,11 +246,11 @@ Follow existing orders E2E patterns: `test.use({ permissionName: "admin" })`, `O
 
 ### Acceptance
 
-- [ ] `playwright/tests/orders.spec.ts` (or a co-located spec) includes a test that navigates to an existing order details page via `goToExistingOrderPage`
-- [ ] Test asserts `[data-test-id="copy-order-link"]` is visible on the order details TopNav
-- [ ] Test clicks `[data-test-id="copy-order-link"]` and asserts success feedback (accessible name changes to "Order link copied" and/or check icon appears)
-- [ ] Test asserts `[data-test-id="copy-order-link"]` precedes `[data-test-id="show-order-metadata"]` in DOM order
-- [ ] Playwright test passes when run against a configured backend (follow repo's existing E2E invocation pattern)
+- [x] `playwright/tests/orders.spec.ts` (or a co-located spec) includes a test that navigates to an existing order details page via `goToExistingOrderPage`
+- [x] Test asserts `[data-test-id="copy-order-link"]` is visible on the order details TopNav
+- [x] Test clicks `[data-test-id="copy-order-link"]` and asserts success feedback (accessible name changes to "Order link copied" and/or check icon appears)
+- [x] Test asserts `[data-test-id="copy-order-link"]` precedes `[data-test-id="show-order-metadata"]` in DOM order
+- [x] Playwright test passes when run against a configured backend (follow repo's existing E2E invocation pattern)
 
 ## T-04b2dd15: Add OrderCopyLinkButton unit tests and sync i18n catalog
 
