@@ -16,16 +16,17 @@ PRD AC3 requires the check icon and copied label for 2 seconds after each succes
 
 **Finding desktop-ux-order-copy-link-button/F-002:** PRD AC requires the check icon and copied label for 2 seconds after each successful copy. `useClipboard` schedules a reset timer on every successful write but does not clear a prior timer before assigning a new one. A second click within the first 2s window orphans the earlier timer; when it fires, it clears the newer timer ref and forces `copied` false prematurely—shortening or flickering the success state.
 
-Suggested fix: Call `clear()` at the start of each successful `.then()` before scheduling a new timeout (or reset the timer on every copy invocation). Add a test that copies twice within 2s and asserts `copied` stays true until 2s after the *last* successful copy.
+Suggested fix: Call `clear()` at the start of each successful `.then()` before scheduling a new timeout (or reset the timer on every copy invocation). Add a test that copies twice within 2s and asserts `copied` stays true until 2s after the _last_ successful copy.
 
 Location: `src/hooks/useClipboard.ts:12-21`
 
 Evidence:
+
 ```typescript
-        timeout.current = window.setTimeout(() => {
-          clear();
-          setCopyStatus(false);
-        }, 2000);
+timeout.current = window.setTimeout(() => {
+  clear();
+  setCopyStatus(false);
+}, 2000);
 ```
 
 **Finding mobile-ux-order-copy-link-button/F-001:** PRD AC3 requires copied icon/labels for 2 seconds after a successful copy. On mobile, users often tap twice when feedback is subtle. `useClipboard` assigns a new `setTimeout` on each success without calling `clear()` first; the first tap's timer can fire after a second tap and reset `copied` to `false` while the user still expects success feedback from the latest tap.
@@ -61,13 +62,13 @@ Current hook implementation (gap: no `clear()` before rescheduling):
 Existing test `"should handle multiple copy calls"` never advances timers between copies, so the orphan-timer path is untested:
 
 ```typescript
-    await act(async () => {
-      copy("second text");
-      await Promise.resolve();
-    });
+await act(async () => {
+  copy("second text");
+  await Promise.resolve();
+});
 
-    // Assert - should still be true after second copy
-    expect(result.current[0]).toBe(true);
+// Assert - should still be true after second copy
+expect(result.current[0]).toBe(true);
 ```
 
 [Source: src/hooks/useClipboard.test.ts:105-130]
@@ -75,13 +76,13 @@ Existing test `"should handle multiple copy calls"` never advances timers betwee
 ### Acceptance
 
 - [ ] `useClipboard.copy` calls `clear()` at the start of the successful `.then()` handler before `setCopyStatus(true)` and before scheduling a new timeout
-- [ ] `useClipboard.test.ts` includes a test that copies twice within 2s, advances fake timers, and asserts `copied` remains `true` until 2s after the *second* copy (not prematurely reset by the first timer)
+- [ ] `useClipboard.test.ts` includes a test that copies twice within 2s, advances fake timers, and asserts `copied` remains `true` until 2s after the _second_ copy (not prematurely reset by the first timer)
 - [ ] `pnpm run test:quiet src/hooks/useClipboard.test.ts` exits 0
 - [ ] `pnpm run lint` and `pnpm run check-types` exit 0 with no new errors in touched files
 
 ## T-f8cfd2f7: Add aria-live screen reader feedback for copy success
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-001 (desktop-ux-order-copy-link-button/F-001)
@@ -102,6 +103,7 @@ Suggested fix: Add a visually hidden `aria-live="polite"` element that renders `
 Location: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButtonContent.tsx:21-39`
 
 Evidence:
+
 ```typescript
   const label = copied
     ? intl.formatMessage(messages.orderLinkCopied)
@@ -142,11 +144,11 @@ export const OrderCopyLinkButtonContent = ({
 
 ### Acceptance
 
-- [ ] When `copied === true`, `OrderCopyLinkButtonContent` renders a visually hidden element with `aria-live="polite"` whose text is `messages.orderLinkCopied` (via react-intl)
-- [ ] When `copied === false`, the live region does not announce stale success text (empty or absent content)
-- [ ] `OrderCopyLinkButton.test.tsx` asserts the live region exists and contains "Order link copied" when the mocked hook returns `[true, …]`
-- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` exits 0
-- [ ] `pnpm run lint` and `pnpm run check-types` exit 0 with no new errors in touched files
+- [x] When `copied === true`, `OrderCopyLinkButtonContent` renders a visually hidden element with `aria-live="polite"` whose text is `messages.orderLinkCopied` (via react-intl)
+- [x] When `copied === false`, the live region does not announce stale success text (empty or absent content)
+- [x] `OrderCopyLinkButton.test.tsx` asserts the live region exists and contains "Order link copied" when the mocked hook returns `[true, …]`
+- [x] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` exits 0
+- [x] `pnpm run lint` and `pnpm run check-types` exit 0 with no new errors in touched files
 
 ## T-d1daf9c7: Add OrderDetailsPage TopNav placement integration test
 
@@ -171,6 +173,7 @@ Suggested fix: Add a focused test (e.g. render `OrderDetailsPage` with minimal o
 Location: `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx:210-219`
 
 Evidence:
+
 ```tsx
   <TopNav href={backLinkUrl} title={<Title order={order} />}>
     <OrderCopyLinkButton />

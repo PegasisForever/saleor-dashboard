@@ -1,9 +1,11 @@
 import { iconSize, iconStrokeWidth } from "@dashboard/components/icons";
 import { Button } from "@saleor/macaw-ui-next";
+import { Fragment } from "react";
 import { useIntl } from "react-intl";
 
 import { ClipboardCopyIcon } from "../OrderCardTitle/ClipboardCopyIcon";
 import { messages } from "./messages";
+import styles from "./OrderCopyLinkButtonContent.module.css";
 
 interface OrderCopyLinkButtonContentProps {
   copied: boolean;
@@ -23,21 +25,28 @@ export const OrderCopyLinkButtonContent = ({
     : intl.formatMessage(messages.copyOrderLink);
 
   return (
-    <Button
-      variant="secondary"
-      disabled={disabled}
-      icon={
-        <ClipboardCopyIcon
-          hasBeenClicked={copied}
-          size={iconSize.medium}
-          strokeWidth={iconStrokeWidth}
-        />
-      }
-      onClick={onCopy}
-      data-test-id="copy-order-link"
-      title={label}
-      aria-label={label}
-      marginRight={3}
-    />
+    <Fragment>
+      <Button
+        variant="secondary"
+        disabled={disabled}
+        icon={
+          <ClipboardCopyIcon
+            hasBeenClicked={copied}
+            size={iconSize.medium}
+            strokeWidth={iconStrokeWidth}
+          />
+        }
+        onClick={onCopy}
+        data-test-id="copy-order-link"
+        title={label}
+        aria-label={label}
+        marginRight={3}
+      />
+      {copied ? (
+        <span aria-live="polite" className={styles.visuallyHidden}>
+          {intl.formatMessage(messages.orderLinkCopied)}
+        </span>
+      ) : null}
+    </Fragment>
   );
 };
