@@ -120,7 +120,7 @@ Orphan entries still present in `locale/defaultMessages.json`:
 
 ## T-6a8e4f2c: Add copied-feedback Jest coverage and reset copied state on order navigation
 
-- Status: pending
+- Status: done
 - Priority: medium
 - Blocked by: none
 - Discovered from: —
@@ -171,6 +171,6 @@ Current integration:
 
 ### Acceptance
 
-- [ ] `OrderCopyLinkButton.test.tsx` includes a test using Jest fake timers that, after a successful mocked clipboard write, asserts `aria-label`/`title` become `"Order link copied"`, then revert to `"Copy order link"` after advancing timers by 2000 ms
-- [ ] `OrderDetailsPage.tsx` passes `key={order.id}` to `OrderCopyLinkButton` so copied feedback does not carry over when switching orders
-- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` and `pnpm run test:quiet src/orders/components/OrderDetailsPage/OrderDetailsPage.test.tsx` both pass
+- [x] `OrderCopyLinkButton.test.tsx` includes a test using Jest fake timers that, after a successful mocked clipboard write, asserts `aria-label`/`title` become `"Order link copied"`, then revert to `"Copy order link"` after advancing timers by 2000 ms
+- [x] `OrderDetailsPage.tsx` passes `key={order.id}` to `OrderCopyLinkButton` so copied feedback does not carry over when switching orders
+- [x] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` and `pnpm run test:quiet src/orders/components/OrderDetailsPage/OrderDetailsPage.test.tsx` both pass

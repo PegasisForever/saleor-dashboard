@@ -208,7 +208,7 @@ const OrderDetailsPage = (props: OrderDetailsPageProps) => {
         return (
           <DetailPageLayout>
             <TopNav href={backLinkUrl} title={<Title order={order} />}>
-              <OrderCopyLinkButton orderId={order.id} />
+              <OrderCopyLinkButton key={order.id} orderId={order.id} />
               <Button
                 variant="secondary"
                 icon={<Code size={iconSize.medium} strokeWidth={iconStrokeWidth} />}
