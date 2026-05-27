@@ -223,4 +223,22 @@ describe("useClipboard", () => {
       "Failed to use clipboard, ensure browser permission is enabled.",
     );
   });
+
+  it("should log warning and skip write when clipboard API is unavailable", () => {
+    // Arrange
+    Object.assign(navigator, { clipboard: undefined });
+
+    const { result } = renderHook(() => useClipboard());
+    const [, copy] = result.current;
+
+    // Act
+    copy("Hello, World!");
+
+    // Assert
+    expect(mockWriteText).not.toHaveBeenCalled();
+    expect(result.current[0]).toBe(false);
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      "Failed to use clipboard, ensure browser permission is enabled.",
+    );
+  });
 });

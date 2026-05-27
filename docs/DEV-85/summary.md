@@ -2,48 +2,60 @@
 
 ## What shipped
 
-Order managers can now copy a shareable link to the current order page directly from the order details TopNav. A secondary icon button placed immediately before the metadata button copies `window.location.href` on click, shows a check icon and updated label for two seconds on success, and falls back silently on clipboard failure. The feature reuses the existing `useClipboard` hook and `ClipboardCopyIcon` component, includes full i18n, unit tests, Playwright E2E (`TC: SALEOR_218`), and Storybook state coverage.
+Order details now includes a one-click **Copy order link** icon button in the TopNav, placed immediately before the metadata button. Clicking copies the current page URL (`window.location.href`) to the clipboard; on success the icon switches to a check mark and the accessible name updates to "Order link copied" for two seconds, then reverts. The feature reuses `useClipboard`, `ClipboardCopyIcon`, and react-intl messages, with container/presentational split for Storybook. Iteration-6 loop-back fixes hardened the shared hook (timer `clear()` before reschedule, `copyGeneration` for screen-reader re-announce on rapid re-copy) and extended Playwright `TC: SALEOR_218` to assert clipboard payload and 2s revert. PR-agent Copilot gate applied a trivial guard for missing `navigator.clipboard` API.
 
 ## Architectural decisions (worth preserving)
 
-- **Current URL over canonical path:** `window.location.href` preserves query-driven modal/view state the sharer may intend to include; canonical `orderUrl(id)` was rejected per PRD.
-- **Container/content split:** `OrderCopyLinkButton` wires clipboard side effects; `OrderCopyLinkButtonContent` is presentational — enables Storybook state stories without mocking clipboard in every story.
-- **`copyGeneration` in shared hook:** Third tuple element from `useClipboard` keys the `aria-live` region so screen readers re-announce on rapid re-copy within the 2s window (iter-6 fix for desktop-ux SHOULD-FIX).
-- **Story-only interaction preview:** Hover/focus/active Storybook states use `OrderCopyLinkButtonStoryPreview` with Macaw CSS variable snapshots — production files stay free of preview props.
-- **Timer `clear()` before reschedule:** Shared `useClipboard` now cancels orphan timers on rapid re-copy so feedback persists 2s from the last successful copy.
+- **Current URL over canonical path:** `window.location.href` preserves query-driven view state the user may want to share; canonical `orderUrl(id)` was rejected in tech plan.
+- **Icon + label feedback only (no toast):** Matches existing orders-domain clipboard patterns (`CopyableText`, `TrackingNumberDisplay`).
+- **Container/content split:** `OrderCopyLinkButton` wires clipboard; `OrderCopyLinkButtonContent` is presentational — enables Storybook state stories without mocking clipboard in every story.
+- **`copyGeneration` in shared `useClipboard`:** Third tuple element increments on each successful write so `aria-live` region remounts on rapid re-copy within the 2s window (desktop-ux pass-002 SHOULD-FIX).
+- **Story-only interaction preview:** Hover/focus/active Storybook states use `OrderCopyLinkButtonStoryPreview` + CSS module Macaw token snapshots because static Storybook cannot persist pseudo-states from play functions.
 
 ## Code changes
 
-- `src/orders/components/OrderCopyLinkButton/` (new, ~350 lines) — container, presentational layer, messages, Storybook stories + preview, unit tests
+- `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx` (new, 29 lines) — container; `useClipboard` + optional `url` for tests/stories
+- `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButtonContent.tsx` (new, 54 lines) — secondary icon button, `aria-live` live region keyed by `copyGeneration`
+- `src/orders/components/OrderCopyLinkButton/messages.ts` (new, 14 lines) — `copyOrderLink` / `orderLinkCopied` i18n
+- `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` (new, 127 lines) — unit tests mirroring `CopyableText` pattern
+- `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` (new, 78 lines) — state coverage + TopNav composition story
+- `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButtonStoryPreview.tsx` (new, 35 lines) — story-only hover/focus/active wrapper
+- `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.module.css` (new, 17 lines) — story-only Macaw token snapshots
+- `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButtonContent.module.css` (new, 11 lines) — visually hidden live region
 - `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx` (modified, +2) — renders `<OrderCopyLinkButton />` before metadata button
-- `src/orders/components/OrderDetailsPage/OrderDetailsPage.test.tsx` (new, 110 lines) — TopNav DOM-order placement test
-- `src/hooks/useClipboard.ts` (modified, +7/-2) — `clear()` before reschedule, `copyGeneration` third tuple element
-- `src/hooks/useClipboard.test.ts` (modified, +69) — orphan timer, generation increment, rapid re-copy tests
-- `src/orders/components/OrderCardTitle/ClipboardCopyIcon.tsx` (modified, +12/-6) — optional `size`/`strokeWidth` props
-- `playwright/tests/orders.spec.ts` (modified, +37) — `TC: SALEOR_218` E2E with clipboard payload + 2s revert
-- `locale/defaultMessages.json` (modified, +8) — extracted message IDs `bqtu1/`, `FzcMi0`
+- `src/orders/components/OrderDetailsPage/OrderDetailsPage.test.tsx` (new, 110 lines) — TopNav DOM order assertion
+- `src/orders/components/OrderCardTitle/ClipboardCopyIcon.tsx` (modified, +12/-6) — optional `size` / `strokeWidth` props
+- `src/hooks/useClipboard.ts` (modified, +11/-4) — `clear()` before reschedule, `copyGeneration`, 3-tuple return, clipboard API guard
+- `src/hooks/useClipboard.test.ts` (modified, +69+) — timer orphan, generation, unavailable API tests
+- `playwright/tests/orders.spec.ts` (modified, +37) — `TC: SALEOR_218` clipboard payload + 2s revert
+- `playwright/pages/ordersPage.ts` (modified, +2) — `copyOrderLinkButton` locator
+- `locale/defaultMessages.json` (modified, +8) — extracted message catalog entries
 
 ## Deep review verdicts
 
-- **Security**: pass — no auth bypass or new attack surface; route gated by `MANAGE_ORDERS`; 3 WARNINGs on accepted query-param sharing and shared-hook failure UX
-- **Performance**: pass — +305 B gzip on orders lazy chunk; INP 40 ms; 4 WARNINGs on shared-hook re-render coupling and Form render-prop pattern
-- **Correctness**: pass — all PRD ACs satisfied; iter-6 fixes verified; 2 WARNINGs on pre-existing shared-hook promise races
-- **Desktop UX**: pass — aria-live + copyGeneration remount landed; 2 WARNINGs on missing keyboard/rapid-re-copy E2E
-- **Mobile UX**: pass — 32×32 touch targets match TopNav convention; 2 WARNINGs on missing mobile-viewport E2E
-- **Simplify**: pass — container/content split is PRD-mandated; 7 WARNINGs on useCallback debt, dead props, hook API expansion
+- **Security**: pass — no auth bypass or new attack surface; copies current URL behind existing `MANAGE_ORDERS` gates (3 WARNINGs on accepted PRD tradeoffs + shared-hook edge case)
+- **Performance**: pass — negligible bundle delta; iter-6 timer fix removes orphan-timeout churn (4 WARNINGs on Form render-prop coupling and hook API expansion)
+- **Correctness**: pass — all PRD ACs satisfied in source; E2E statically verified (2 WARNINGs on pre-existing shared-hook promise/unmount races)
+- **Desktop UX**: pass — iter-6 SR re-announce + E2E clipboard/revert landed (2 WARNINGs on keyboard/rapid-re-copy E2E gaps)
+- **Mobile UX**: pass — touch targets and placement correct; iter-6 timer fix helps double-tap (2 WARNINGs on mobile viewport E2E + Storybook proxy fidelity)
+- **Simplify**: pass — PRD-mandated split is intentional; remaining debt is style/API WARNINGs only
 
 ## Open WARNINGs (non-blocking)
 
-- **Shared `useClipboard` promise races** — out-of-order resolution and post-unmount setState (`useClipboard.ts:13-28`); tracked in [DEV-86](https://linear.app/talktomedi/issue/DEV-86)
-- **Failed re-copy leaves stale success UI** — `.catch` does not reset `copied` after prior success (`useClipboard.ts:26-28`)
-- **E2E coverage gaps** — no keyboard activation test, no mobile viewport, no rapid re-copy E2E (`playwright/tests/orders.spec.ts`)
-- **Full URL includes query params** — accepted per tech plan; copies modal/workflow state in URL
-- **Simplification debt** — ineffective `useCallback`, dead `disabled` container prop, duplicate `formatMessage`, `marginRight` vs TopNav `gap`
-- **Macaw 32×32 touch target** — org-wide compact button sizing below 44×44 recommendation; tracked in [DEV-88](https://linear.app/talktomedi/issue/DEV-88)
+Twenty WARNINGs across pass-003 (0 BLOCKER / 0 SHOULD-FIX). Highlights for human review:
+
+- **Shared `useClipboard` races** (`useClipboard.ts:20-34`): out-of-order `writeText` resolution can desync timer/`copyGeneration`; late resolution after unmount can call `setState`; failed re-copy after prior success leaves stale success UI — filed as out-of-scope follow-up
+- **E2E coverage gaps**: no keyboard-activation or rapid-re-copy E2E (`desktop-ux` F-001/F-002); no mobile viewport run (`mobile-ux` F-001)
+- **Intentional PRD choices**: full URL includes query params (`security` F-001); no toast on clipboard failure
+- **Simplification debt**: ineffective `useCallback`, dead `disabled` prop in production, `marginRight` vs TopNav `gap`, fragmented Storybook surface (`simplify` F-001–F-007)
+- **Macaw 32×32 touch target** — org-wide compact button sizing below 44×44 recommendation
 
 ## Out-of-scope follow-ups
 
-- [DEV-86](https://linear.app/talktomedi/issue/DEV-86) — Harden shared `useClipboard` promise races, unmount guard, and failure-after-success reset
+Linear tickets filed for pre-existing / shared-infrastructure bugs discovered during review:
+
+- [DEV-86](https://linear.app/talktomedi/issue/DEV-86) — Harden shared `useClipboard` (promise ordering, unmount guard, failure-after-success reset)
+- [DEV-87](https://linear.app/talktomedi/issue/DEV-87) — TopNav `app-header-back-button` missing accessible name (pre-existing Lighthouse finding)
 - [DEV-88](https://linear.app/talktomedi/issue/DEV-88) — Increase Macaw compact icon-button touch target to 44×44px (design-system)
 
 ## Pipeline metadata
@@ -51,4 +63,4 @@ Order managers can now copy a shareable link to the current order page directly 
 - Prototype iterations: 2
 - Implementation loop iterations: 7
 - Deep review passes: 3
-- Wall-clock: ~2026-05-27 21:00 UTC → PR open
+- Wall-clock: planning trigger → PR open (invocation 1)
