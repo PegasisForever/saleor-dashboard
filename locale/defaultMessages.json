@@ -4052,6 +4052,10 @@
     "context": "charge status partial",
     "string": "Partial"
   },
+  "KQKqAj": {
+    "context": "order details top nav button to copy shareable order URL",
+    "string": "Copy order link"
+  },
   "KRqgfo": {
     "string": "User is out of your permissions scope"
   },
@@ -6882,6 +6886,10 @@
   "a2o5uc": {
     "context": "custom extension page create, tooltip",
     "string": "Permission cannot be chosen, because you don't have it yourself"
+  },
+  "a54LHM": {
+    "context": "order details top nav button label after link copied to clipboard",
+    "string": "Order link copied"
   },
   "a55zOn": {
     "context": "section header",

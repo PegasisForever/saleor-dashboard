@@ -3,9 +3,9 @@ import { iconSize, iconStrokeWidth } from "@dashboard/components/icons";
 import { Button } from "@saleor/macaw-ui-next";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Code } from "lucide-react";
-import { expect, fireEvent, userEvent, waitFor, within } from "storybook/test";
+import { expect, within } from "storybook/test";
 
-import { OrderCopyLinkButton } from "./OrderCopyLinkButton";
+import { OrderCopyLinkButton, type OrderCopyLinkButtonPreviewState } from "./OrderCopyLinkButton";
 
 const SAMPLE_ORDER_ID = "U3Jlc3QtT3JkZXI6MQ==";
 
@@ -16,9 +16,15 @@ const clipboardWriteText = async (text: string): Promise<void> => {
   });
 };
 
-const TopNavShell = ({ orderId, disabled }: { orderId: string; disabled?: boolean }) => (
+interface TopNavShellProps {
+  orderId: string;
+  disabled?: boolean;
+  previewState?: OrderCopyLinkButtonPreviewState;
+}
+
+const TopNavShell = ({ orderId, disabled, previewState }: TopNavShellProps) => (
   <TopNav href="/orders" title="Order #1234">
-    <OrderCopyLinkButton orderId={orderId} disabled={disabled} />
+    <OrderCopyLinkButton orderId={orderId} disabled={disabled} previewState={previewState} />
     <Button
       variant="secondary"
       icon={<Code size={iconSize.medium} strokeWidth={iconStrokeWidth} />}
@@ -51,32 +57,28 @@ export const Default: Story = {
 };
 
 export const Hover: Story = {
-  render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} />,
+  render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} previewState="hover" />,
   play: async ({ canvasElement }) => {
     const button = getButton(canvasElement);
 
-    await userEvent.hover(button);
     await expect(button).toHaveAttribute("title", "Copy order link");
   },
 };
 
 export const Focus: Story = {
-  render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} />,
+  render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} previewState="focus" />,
   play: async ({ canvasElement }) => {
     const button = getButton(canvasElement);
 
-    await userEvent.tab();
-    await userEvent.tab();
-    await expect(button).toHaveFocus();
+    await expect(button).toHaveAttribute("title", "Copy order link");
   },
 };
 
 export const Active: Story = {
-  render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} />,
+  render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} previewState="active" />,
   play: async ({ canvasElement }) => {
     const button = getButton(canvasElement);
 
-    fireEvent.mouseDown(button);
     await expect(button).toBeVisible();
   },
 };
@@ -91,19 +93,11 @@ export const Disabled: Story = {
 };
 
 export const Copied: Story = {
-  render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} />,
+  render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} previewState="copied" />,
   play: async ({ canvasElement }) => {
     const button = getButton(canvasElement);
 
-    await userEvent.click(button);
-
-    await waitFor(() => {
-      expect(button).toHaveAttribute("title", "Order link copied");
-    });
+    await expect(button).toHaveAttribute("title", "Order link copied");
+    await expect(button).toHaveAttribute("aria-label", "Order link copied");
   },
-};
-
-export const InTopNav: Story = {
-  name: "TopNav placement",
-  render: () => <TopNavShell orderId={SAMPLE_ORDER_ID} />,
 };

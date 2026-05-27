@@ -24,12 +24,13 @@ N/A — client-only clipboard write via `navigator.clipboard.writeText`.
 
 ## Affected components
 
-- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx` — new icon button component
-- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` — `:focus-visible` ring (≥3:1 contrast)
-- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` — Storybook states + TopNav placement story
+- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx` — icon button with optional `previewState` for Storybook static renders
+- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` — `:focus-visible`, `:active`, and `.buttonPreview*` mirror classes for Storybook states
+- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` — six distinct static state stories + TopNav shell (removed duplicate `InTopNav` export)
 - File: `src/orders/components/OrderCopyLinkButton/messages.ts` — `copyOrderLink`, `orderLinkCopied` i18n messages
-- File: `src/orders/components/OrderCopyLinkButton/getOrderAbsoluteUrl.ts` — absolute URL builder using `orderPath` + mount URI
-- File: `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx` — **integration (downstream task):** import and render `<OrderCopyLinkButton orderId={order.id} />` before metadata button; pass `disabled={loading}` if order not yet loaded
+- File: `src/orders/components/OrderCopyLinkButton/getOrderAbsoluteUrl.ts` — absolute URL builder using `orderPath(encodeURIComponent(orderId))` + mount URI
+- File: `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx` — import and render `<OrderCopyLinkButton orderId={order.id} />` before metadata button
+- File: `locale/defaultMessages.json` — extracted messages from `messages.ts`
 
 ## Dependencies
 
@@ -37,10 +38,10 @@ No new packages.
 
 ## Risks
 
-| Risk                                                        | Mitigation                                                                                    |
-| ----------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `APP_MOUNT_URI` non-default breaks share URL                | Reuse `getAppMountUriForRedirect()` pattern from auth/staff flows                             |
-| Clipboard API denied in browser                             | Matches existing `useClipboard` behavior (`console.warn`); no toast unless product asks later |
-| `orderUrl()` vs `orderPath()` — query suffix on share links | Use `orderPath(id)` only (no dialog query params)                                             |
-| Metadata button title still hardcoded English               | Out of scope for DEV-75; new button uses i18n                                                 |
-| Prototype not wired into `OrderDetailsPage` yet             | Storybook TopNav story demonstrates placement; integration listed above for task agent        |
+| Risk                                                        | Mitigation                                                                                                   |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `APP_MOUNT_URI` non-default breaks share URL                | Reuse `getAppMountUriForRedirect()` pattern from auth/staff flows                                            |
+| Clipboard API denied in browser                             | Matches existing `useClipboard` behavior (`console.warn`); no toast unless product asks later                |
+| `orderUrl()` vs `orderPath()` — query suffix on share links | Use `orderPath(encodeURIComponent(orderId))` only (same path segment as `orderUrl(id)` without query params) |
+| Metadata button title still hardcoded English               | Out of scope for DEV-75; new button uses i18n                                                                |
+| `previewState` prop could leak to production                | Optional prop ignored unless passed; integration task should not pass it                                     |
