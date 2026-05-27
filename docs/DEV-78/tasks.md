@@ -5,6 +5,7 @@ Loop-back re-entry after PR #5 Copilot review. Prototype and implementation loop
 ---
 
 ## T-9f4c2a8e: Consolidate shareable order URL helper and encode order IDs
+
 - Status: pending
 - Priority: high
 - Blocked by: none
@@ -12,6 +13,7 @@ Loop-back re-entry after PR #5 Copilot review. Prototype and implementation loop
 - Supersedes: —
 
 ### Context
+
 PR #5 Copilot review (substantive loop-back trigger):
 
 > `orderId` is interpolated into the path without encoding, diverging from every other order URL helper in `src/orders/urls.ts` (`orderUrl`, `orderFulfillUrl`, `orderPaymentRefundUrl`, `orderReturnUrl`, `orderTransactionRefundUrl`, `orderManualTransactionRefundUrl`, all of which wrap the id with `encodeURIComponent`). Although the PRD calls out raw `orderPath`, the resulting shareable link will be malformed for any order id that contains characters such as `/`, `?`, `#`, or `+` (Saleor global IDs are base64 and can contain `+` and `/`). Recommend wrapping with `encodeURIComponent(orderId)` for parity with the rest of the file and to produce a valid URL in all cases.
@@ -51,6 +53,7 @@ Original PRD AC#3 (superseded for encoding — loop-back requires parity with `o
 [Source: ./docs/DEV-78/prd.md#acceptance-criteria]
 
 ### Acceptance
+
 - [ ] Exactly one shareable-order URL helper remains in the codebase; `getOrderShareableUrl` is removed from `src/orders/urls.ts` along with its dedicated tests in `src/orders/urls.test.ts`, and all callers/tests import the surviving helper
 - [ ] The surviving helper builds URLs as `urlJoin(window.location.origin, getAppMountUriForRedirect(), orderPath(encodeURIComponent(orderId)))` with no query string
 - [ ] `pnpm run test:quiet src/orders/utils/getShareableOrderUrl.test.ts` passes and includes at least one assertion that an order ID containing `+` or `/` is encoded in the output path segment
@@ -59,13 +62,15 @@ Original PRD AC#3 (superseded for encoding — loop-back requires parity with `o
 ---
 
 ## T-3b7d1e5f: Remove merge-artifact locale entries and unused CSS module
-- Status: pending
+
+- Status: done
 - Priority: medium
 - Blocked by: none
 - Discovered from: —
 - Supersedes: —
 
 ### Context
+
 PR #5 Copilot review on stale locale IDs:
 
 > The new locale entries `GyfpSu` and `l+hZ1x` duplicate the strings already registered under `BLmn1V` and `ThVxK6` but are not referenced by any `defineMessages` id in the codebase.
@@ -106,13 +111,15 @@ Orphan entries still present in `locale/defaultMessages.json`:
 [Source: ./docs/DEV-78/logs/021-step-9-pr-invocation-1.md#concerns--warnings]
 
 ### Acceptance
-- [ ] `GyfpSu` and `l+hZ1x` entries are removed from `locale/defaultMessages.json`; `BLmn1V` and `ThVxK6` remain unchanged
-- [ ] `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` is deleted
-- [ ] `pnpm run knip` reports no new unused-file findings for paths under `OrderCopyLinkButton/`
+
+- [x] `GyfpSu` and `l+hZ1x` entries are removed from `locale/defaultMessages.json`; `BLmn1V` and `ThVxK6` remain unchanged
+- [x] `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` is deleted
+- [x] `pnpm run knip` reports no new unused-file findings for paths under `OrderCopyLinkButton/`
 
 ---
 
 ## T-6a8e4f2c: Add copied-feedback Jest coverage and reset copied state on order navigation
+
 - Status: pending
 - Priority: medium
 - Blocked by: none
@@ -120,6 +127,7 @@ Orphan entries still present in `locale/defaultMessages.json`:
 - Supersedes: —
 
 ### Context
+
 PRD AC#4 (not covered by existing Jest tests):
 
 > After successful copy, button icon switches to check (`ClipboardCopyIcon hasBeenClicked={true}`) and `aria-label`/`title` show `messages.orderLinkCopied` for ~2 seconds, then revert
@@ -162,6 +170,7 @@ Current integration:
 [Source: ./docs/DEV-78/summary.md#open-warnings-non-blocking]
 
 ### Acceptance
+
 - [ ] `OrderCopyLinkButton.test.tsx` includes a test using Jest fake timers that, after a successful mocked clipboard write, asserts `aria-label`/`title` become `"Order link copied"`, then revert to `"Copy order link"` after advancing timers by 2000 ms
 - [ ] `OrderDetailsPage.tsx` passes `key={order.id}` to `OrderCopyLinkButton` so copied feedback does not carry over when switching orders
 - [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` and `pnpm run test:quiet src/orders/components/OrderDetailsPage/OrderDetailsPage.test.tsx` both pass
