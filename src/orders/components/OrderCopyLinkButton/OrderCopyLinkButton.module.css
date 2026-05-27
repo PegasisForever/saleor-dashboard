@@ -1,0 +1,11 @@
+.button:focus-visible {
+  outline: 2px solid var(--mu-colors-text-default1);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 2px var(--mu-colors-background-default1),
+    0 0 0 4px var(--mu-colors-text-default1);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
