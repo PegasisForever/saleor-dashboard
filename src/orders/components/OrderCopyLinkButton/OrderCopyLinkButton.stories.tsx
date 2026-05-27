@@ -7,6 +7,7 @@ import { fn } from "storybook/test";
 
 import { OrderCopyLinkButton } from "./OrderCopyLinkButton";
 import { OrderCopyLinkButtonContent } from "./OrderCopyLinkButtonContent";
+import { OrderCopyLinkButtonStoryPreview } from "./OrderCopyLinkButtonStoryPreview";
 
 const SAMPLE_ORDER_URL = "https://demo.saleor.io/dashboard/orders/T3JkZXI6MQ%3D%3D";
 
@@ -27,15 +28,15 @@ type Story = StoryObj<typeof OrderCopyLinkButton>;
 export const Default: Story = {};
 
 export const Hover: Story = {
-  render: () => <OrderCopyLinkButtonContent copied={false} interactionPreview="hover" />,
+  render: () => <OrderCopyLinkButtonStoryPreview interactionState="hover" />,
 };
 
 export const Focus: Story = {
-  render: () => <OrderCopyLinkButtonContent copied={false} interactionPreview="focus" />,
+  render: () => <OrderCopyLinkButtonStoryPreview interactionState="focus" />,
 };
 
 export const Active: Story = {
-  render: () => <OrderCopyLinkButtonContent copied={false} interactionPreview="active" />,
+  render: () => <OrderCopyLinkButtonStoryPreview interactionState="active" />,
 };
 
 export const Disabled: Story = {
@@ -43,7 +44,17 @@ export const Disabled: Story = {
 };
 
 export const Error: Story = {
-  render: () => <OrderCopyLinkButtonContent copied={false} onCopy={fn()} />,
+  args: {
+    url: SAMPLE_ORDER_URL,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Clipboard write failure leaves the button visually identical to Default (copy icon, "Copy order link"). No error affordance by design.',
+      },
+    },
+  },
 };
 
 export const Copied: Story = {

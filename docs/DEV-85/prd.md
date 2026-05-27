@@ -13,12 +13,14 @@ Order managers frequently need to share a direct link to a specific order with t
   - Reuses existing `useClipboard` hook and `ClipboardCopyIcon` component
   - Accessible labels via react-intl messages (`messages.copyOrderLink`, `messages.orderLinkCopied`)
   - `data-test-id="copy-order-link"` for E2E targeting
+  - Implementation splits into container (`OrderCopyLinkButton`) and presentational layer (`OrderCopyLinkButtonContent`) so Storybook can render state stories without clipboard side effects
 - Out of scope:
   - Copying a canonical URL without query parameters (current URL is the shareable link)
   - Toast notification on copy (icon + label change is sufficient feedback, matching existing clipboard patterns)
   - Copy link on other pages (orders list, draft orders, etc.)
   - Backend or API changes
   - New clipboard utilities or copy-icon components
+  - Production use of `disabled` on this button (Macaw disabled state is supported for Storybook coverage only; TopNav integration does not pass `disabled`)
 
 ## User stories
 
@@ -33,5 +35,5 @@ Order managers frequently need to share a direct link to a specific order with t
 - [ ] After a successful copy, the button `aria-label` and `title` read "Order link copied" (via `messages.orderLinkCopied`); before copy they read "Copy order link" (via `messages.copyOrderLink`)
 - [ ] When clipboard write fails, the button remains in the default (copy icon, "Copy order link") state and `useClipboard` logs a console warning — no unhandled promise rejection
 - [ ] Button uses `variant="secondary"` and `iconSize.medium` to visually match the adjacent metadata button
-- [ ] Button is keyboard-focusable; focus ring is visible with ≥3:1 contrast against the TopNav background (WCAG 2.5.5)
+- [ ] Button is keyboard-focusable; focus indicator matches Macaw secondary `:focus-visible` styling (background + shadow change; icon/text contrast ≥4.5:1 on the focused button surface)
 - [ ] All user-visible strings are defined in `src/orders/components/OrderCopyLinkButton/messages.ts` and rendered through react-intl

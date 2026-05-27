@@ -1,0 +1,17 @@
+/* Story-only Macaw token snapshots for static Storybook state coverage.
+   Production OrderCopyLinkButtonContent relies on Macaw Button pseudo-states. */
+
+.storyHover :global(button[data-test-id="copy-order-link"]) {
+  background-color: var(--mu-colors-background-button-default-secondary-hovered);
+  box-shadow: var(--mu-box-shadow-default-hovered);
+}
+
+.storyFocus :global(button[data-test-id="copy-order-link"]) {
+  background-color: var(--mu-colors-background-button-default-secondary-focused);
+  box-shadow: var(--mu-box-shadow-default-hovered);
+}
+
+.storyActive :global(button[data-test-id="copy-order-link"]) {
+  background-color: var(--mu-colors-background-button-default-secondary-pressed);
+  box-shadow: none;
+}
