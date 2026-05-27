@@ -3,14 +3,20 @@ import { CheckIcon, CopyIcon } from "lucide-react";
 
 interface ClipboardCopyIconProps {
   hasBeenClicked: boolean;
+  size?: number;
+  strokeWidth?: number;
 }
 
-export const ClipboardCopyIcon = ({ hasBeenClicked }: ClipboardCopyIconProps): JSX.Element => {
+export const ClipboardCopyIcon = ({
+  hasBeenClicked,
+  size = 16,
+  strokeWidth,
+}: ClipboardCopyIconProps): JSX.Element => {
   const className = sprinkles({ color: "default2" });
 
   return hasBeenClicked ? (
-    <CheckIcon size={16} className={className} />
+    <CheckIcon size={size} strokeWidth={strokeWidth} className={className} />
   ) : (
-    <CopyIcon size={16} className={className} />
+    <CopyIcon size={size} strokeWidth={strokeWidth} className={className} />
   );
 };
