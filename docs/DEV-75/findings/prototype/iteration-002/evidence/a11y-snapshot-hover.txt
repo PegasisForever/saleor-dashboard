@@ -1,0 +1,7 @@
+uid=3_0 RootWebArea "orders-ordercopylinkbutton--hover" url="http://local-deploy:11000/3707029a-aa19-4e82-a21f-d1df94121785/iframe.html?id=orders-ordercopylinkbutton--hover&viewMode=story"
+  uid=3_1 main
+    uid=3_2 link url="http://local-deploy:11000/orders"
+      uid=3_3 button
+    uid=3_4 StaticText "Order #1234"
+    uid=3_5 button "Copy order link" description="Copy order link"
+    uid=3_6 button "Edit order metadata"
