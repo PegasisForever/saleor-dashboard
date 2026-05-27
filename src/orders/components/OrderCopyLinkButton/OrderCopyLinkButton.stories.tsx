@@ -1,13 +1,20 @@
+import { iconSize, iconStrokeWidthBySize } from "@dashboard/components/icons";
+import { ClipboardCopyIcon } from "@dashboard/orders/components/OrderCardTitle/ClipboardCopyIcon";
+import { Button } from "@saleor/macaw-ui-next";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { userEvent, within } from "storybook/test";
+import { useIntl } from "react-intl";
 
+import { orderCopyLinkButtonMessages } from "./messages";
 import { OrderCopyLinkButton } from "./OrderCopyLinkButton";
+import componentStyles from "./OrderCopyLinkButton.module.css";
 
 const ORDER_ID = "T3JkZXI6MQ==";
 
 const mockClipboard = () => {
-  Object.assign(navigator, {
-    clipboard: {
+  Object.defineProperty(navigator, "clipboard", {
+    configurable: true,
+    writable: true,
+    value: {
       writeText: () => Promise.resolve(),
     },
   });
@@ -37,27 +44,27 @@ type Story = StoryObj<typeof OrderCopyLinkButton>;
 export const Default: Story = {};
 
 export const Hover: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole("button", { name: /copy order link/i });
-
-    await userEvent.hover(button);
-  },
+  render: args => (
+    <div data-state="hover">
+      <OrderCopyLinkButton {...args} />
+    </div>
+  ),
 };
 
 export const Focus: Story = {
-  play: async () => {
-    await userEvent.tab();
-  },
+  render: args => (
+    <div data-state="focus">
+      <OrderCopyLinkButton {...args} />
+    </div>
+  ),
 };
 
 export const Active: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole("button", { name: /copy order link/i });
-
-    await userEvent.pointer({ keys: "[MouseLeft>]", target: button });
-  },
+  render: args => (
+    <div data-state="active">
+      <OrderCopyLinkButton {...args} />
+    </div>
+  ),
 };
 
 export const Disabled: Story = {
@@ -66,11 +73,31 @@ export const Disabled: Story = {
   },
 };
 
-export const Copied: Story = {
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole("button", { name: /copy order link/i });
+/** Settled copied-state preview — same markup as production after successful copy. */
+const OrderCopyLinkButtonCopiedPreview = (): JSX.Element => {
+  const intl = useIntl();
+  const label = intl.formatMessage(orderCopyLinkButtonMessages.orderLinkCopied);
 
-    await userEvent.click(button);
-  },
+  return (
+    <Button
+      className={componentStyles.button}
+      variant="secondary"
+      icon={
+        <ClipboardCopyIcon
+          hasBeenClicked
+          size={iconSize.medium}
+          strokeWidth={iconStrokeWidthBySize.medium}
+        />
+      }
+      onClick={() => undefined}
+      data-test-id="copy-order-link"
+      title={label}
+      aria-label={label}
+      marginRight={3}
+    />
+  );
+};
+
+export const Copied: Story = {
+  render: () => <OrderCopyLinkButtonCopiedPreview />,
 };

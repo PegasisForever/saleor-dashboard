@@ -33,15 +33,15 @@ N/A — no network calls. Clipboard via `navigator.clipboard.writeText` (same as
 
 ## Affected components
 
-| File                                                                        | Change                                                        |
-| --------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx`         | **New** — copy-link button component                          |
-| `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css`  | **New** — focus-visible, active, disabled styles              |
-| `src/orders/components/OrderCopyLinkButton/messages.ts`                     | **New** — `orderCopyLinkButtonMessages`                       |
-| `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` | **New** — state stories + clipboard mock decorator            |
-| `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx`               | Wire `OrderCopyLinkButton` into TopNav before metadata button |
-| `src/orders/urls.ts`                                                        | Add `getOrderShareableUrl`                                    |
-| `src/orders/components/OrderCardTitle/ClipboardCopyIcon.tsx`                | Optional `size` / `strokeWidth` props for TopNav icon sizing  |
+| File                                                                        | Change                                                             |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx`         | **New** — copy-link button component                               |
+| `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css`  | focus-visible, active, disabled, Storybook `[data-state]` previews |
+| `src/orders/components/OrderCopyLinkButton/messages.ts`                     | **New** — `orderCopyLinkButtonMessages`                            |
+| `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` | State stories with settled-state wrappers + copied preview         |
+| `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx`               | Wire `OrderCopyLinkButton` into TopNav before metadata button      |
+| `src/orders/urls.ts`                                                        | Add `getOrderShareableUrl`                                         |
+| `src/orders/components/OrderCardTitle/ClipboardCopyIcon.tsx`                | Optional `size` / `strokeWidth` props for TopNav icon sizing       |
 
 ## Dependencies
 
@@ -54,7 +54,7 @@ None — reuses existing `useClipboard`, `ClipboardCopyIcon`, macaw-ui-next `But
 | Clipboard API denied (non-HTTPS / permission)    | Same as existing hooks — `useClipboard` logs warning; no crash; consider follow-up toast (out of scope) |
 | Subpath mount URI edge cases                     | Reuses proven `getAppMountUriForRedirect()` pattern from auth/staff flows                               |
 | `OrderDetailsPage` is `@ts-strict-ignore` legacy | New component written strict; minimal touch to legacy page (single import + JSX)                        |
-| Storybook clipboard unavailable                  | Stories mock `navigator.clipboard.writeText` in decorator                                               |
+| Storybook clipboard unavailable                  | Stories use `Object.defineProperty(navigator, "clipboard", …)` decorator (configurable mock)            |
 
 ## Testing notes (deferred to task agent)
 

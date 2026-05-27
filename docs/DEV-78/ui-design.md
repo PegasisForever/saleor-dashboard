@@ -2,7 +2,7 @@
 
 ## Storybook URL
 
-http://localhost:11000/a5701849-a43a-46cb-849a-3f5d168c7314
+http://localhost:11000/529cf26a-0456-4a1b-a2ec-85509a5d52cc
 
 Component stories: `Orders/OrderCopyLinkButton` — e.g. `?path=/story/orders-ordercopylinkbutton--default`
 
@@ -21,7 +21,7 @@ Component stories: `Orders/OrderCopyLinkButton` — e.g. `?path=/story/orders-or
      ↑ copy-link (new)   ↑ metadata (existing)
 ```
 
-- Storybook: [Default story](http://localhost:11000/a5701849-a43a-46cb-849a-3f5d168c7314/?path=/story/orders-ordercopylinkbutton--default)
+- Storybook: [Default story](http://localhost:11000/529cf26a-0456-4a1b-a2ec-85509a5d52cc/?path=/story/orders-ordercopylinkbutton--default)
 - Components used:
   - `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx`
   - `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx`
@@ -37,13 +37,13 @@ Component stories: `Orders/OrderCopyLinkButton` — e.g. `?path=/story/orders-or
 | default  | Secondary icon button, copy icon (`ClipboardCopyIcon`), white background               | Text/icon on bg ≥ 4.5:1 (measured ~14.9:1)        |
 | hover    | Macaw secondary hover: `--mu-colors-background-default2` tint, elevated shadow         | Non-text delta vs default (bg `rgb(246,247,249)`) |
 | focus    | 2px `--mu-colors-text-default1` outline, 2px offset (`OrderCopyLinkButton.module.css`) | Focus ring ≥ 3:1 vs surrounding bg                |
-| active   | Pressed: `--mu-colors-background-default2` background                                  | Distinct from default white                       |
+| active   | Pressed: `--mu-colors-background-default2` background, `box-shadow: none`, no outline  | Distinct from focus (ring) and hover (shadow)     |
 | disabled | `opacity: 0.4`, `cursor: not-allowed`                                                  | —                                                 |
 | copied   | Check icon replaces copy icon; label → "Order link copied"                             | Icon shape change + label change vs default       |
 
 ## Mobile considerations
 
-- TopNav action buttons use macaw secondary sizing (44×44 pt touch target via default Button padding)
+- TopNav icon buttons use macaw secondary sizing (~32×32 px measured), matching the existing metadata `Button` neighbor — org-wide macaw follow-up if 44×44 pt is required
 - Copy action is icon-only to preserve TopNav horizontal space on narrow viewports
 - No additional responsive breakpoints required — single icon button matches existing metadata control
 
