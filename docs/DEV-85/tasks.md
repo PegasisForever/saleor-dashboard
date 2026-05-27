@@ -152,7 +152,7 @@ export const OrderCopyLinkButtonContent = ({
 
 ## T-d1daf9c7: Add OrderDetailsPage TopNav placement integration test
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-001 (correctness-order-copy-link-button/F-001)
@@ -198,11 +198,11 @@ Order fixtures available at `src/orders/fixtures.ts`. Follow existing test patte
 
 ### Acceptance
 
-- [ ] A new test file (e.g. `OrderDetailsPage.test.tsx`) renders `OrderDetailsPage` with a minimal order fixture sufficient to mount the TopNav action cluster
-- [ ] Test queries `[data-test-id="copy-order-link"]` and `[data-test-id="show-order-metadata"]` and asserts both are present
-- [ ] Test asserts `copy-order-link` precedes `show-order-metadata` in document order (e.g. `compareDocumentPosition` or `toBeBefore` pattern)
-- [ ] `pnpm run test:quiet` on the new test file exits 0
-- [ ] `pnpm run lint` and `pnpm run check-types` exit 0 with no new errors in touched files
+- [x] A new test file (e.g. `OrderDetailsPage.test.tsx`) renders `OrderDetailsPage` with a minimal order fixture sufficient to mount the TopNav action cluster
+- [x] Test queries `[data-test-id="copy-order-link"]` and `[data-test-id="show-order-metadata"]` and asserts both are present
+- [x] Test asserts `copy-order-link` precedes `show-order-metadata` in document order (e.g. `compareDocumentPosition` or `toBeBefore` pattern)
+- [x] `pnpm run test:quiet` on the new test file exits 0
+- [x] `pnpm run lint` and `pnpm run check-types` exit 0 with no new errors in touched files
 
 ## T-f14eb8c7: Add Playwright E2E for copy-order-link button
 
