@@ -1,0 +1,9 @@
+.previewHover {
+  background-color: var(--mu-colors-background-default2) !important;
+  box-shadow: rgba(24, 40, 58, 0.1) 0px 2px 3px 0px !important;
+}
+
+.previewActive {
+  background-color: var(--mu-colors-background-default2) !important;
+  box-shadow: rgba(24, 40, 58, 0.16) 0px 1px 2px 0px inset !important;
+}
