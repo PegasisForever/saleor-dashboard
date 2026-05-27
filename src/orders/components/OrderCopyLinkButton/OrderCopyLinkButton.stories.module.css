@@ -1,0 +1,14 @@
+.previewHover button {
+  background-color: var(--mu-colors-background-default2) !important;
+  box-shadow: 0 2px 3px color-mix(in srgb, var(--mu-colors-text-default1) 10%, transparent) !important;
+}
+
+.previewActive button {
+  background-color: var(--mu-colors-background-default2) !important;
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--mu-colors-text-default1) 16%, transparent) !important;
+}
+
+.previewFocus button {
+  outline: 2px solid var(--mu-colors-text-default1);
+  outline-offset: 2px;
+}

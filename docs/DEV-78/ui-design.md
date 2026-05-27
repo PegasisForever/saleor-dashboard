@@ -2,7 +2,7 @@
 
 ## Storybook URL
 
-http://localhost:11000/ced5a50a-8962-4084-ba5d-267f52ba8ae5
+http://localhost:11000/b29d7b77-62e3-42f7-920c-ac93e11fcb29
 
 ## Screens / surfaces
 
@@ -47,4 +47,4 @@ http://localhost:11000/ced5a50a-8962-4084-ba5d-267f52ba8ae5
 - **Canonical URL without query params:** Dialog/modal query strings would produce brittle share links; `orderPath` only. Alternatives considered: `window.location.href` (rejected — includes transient dialog state). <!-- source: agent -->
 - **Inline icon feedback vs toast:** Consistent with `TrackingNumberDisplay` and ticket scope (“show feedback when copied” without requesting toasts). <!-- source: agent -->
 - **Contrast targets:** Focus ring and icon affordance ≥ 3:1 (WCAG 2.5.5 non-text) for interactive states; disabled state inherits macaw secondary disabled palette (~2:1, inactive control exemption). <!-- source: agent -->
-- **Hover/Active Storybook stories:** Use optional `previewState` on `OrderCopyLinkButtonView` with production CSS module tokens matching measured macaw secondary button hover/active styles; production TopNav integration never passes `previewState`. <!-- source: agent -->
+- **Hover/Focus/Active Storybook stories:** Story-only wrapper classes in `OrderCopyLinkButton.stories.module.css` simulate macaw secondary button states (background, elevation via `color-mix`, focus outline via `--mu-colors-text-default1`); production `OrderCopyLinkButtonView` has no preview props or story CSS imports. <!-- source: agent -->

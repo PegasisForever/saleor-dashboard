@@ -29,8 +29,8 @@ N/A — client-only clipboard interaction. Clipboard failure surfaces via `conso
 
 ## Affected components
 
-- File: `./src/orders/components/OrderCopyLinkButton/OrderCopyLinkButtonView.tsx` — presentational button (copied/disabled/onCopy props) shared by container and state stories
-- File: `./src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` — preview hover/active tokens for Storybook (`previewState` prop only)
+- File: `./src/orders/components/OrderCopyLinkButton/OrderCopyLinkButtonView.tsx` — presentational button (copied/disabled/onCopy props) shared by container and state stories; no Storybook-only props or CSS imports
+- File: `./src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.module.css` — Storybook-only hover/focus/active preview wrappers using macaw tokens (`color-mix` + `--mu-colors-*`)
 - File: `./src/orders/components/OrderCopyLinkButton/messages.ts` — i18n messages (`messages.copyOrderLink`, `messages.orderLinkCopied`)
 - File: `./src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx` — container wiring `useClipboard` + URL helper to view
 - File: `./src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` — Storybook prototype with TopNav context and state stories

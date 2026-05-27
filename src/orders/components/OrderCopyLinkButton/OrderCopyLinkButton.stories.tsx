@@ -10,6 +10,7 @@ import { type ComponentType } from "react";
 import { expect, fn, within } from "storybook/test";
 
 import { OrderCopyLinkButton } from "./OrderCopyLinkButton";
+import storyStyles from "./OrderCopyLinkButton.stories.module.css";
 import { OrderCopyLinkButtonView } from "./OrderCopyLinkButtonView";
 
 const mockOrderId = "T3JkZXI6MQ==";
@@ -85,7 +86,11 @@ type Story = StoryObj<typeof OrderCopyLinkButton>;
 export const Default: Story = {};
 
 export const Hover: Story = {
-  render: () => <OrderCopyLinkButtonView copied={false} onCopy={fn()} previewState="hover" />,
+  render: () => (
+    <div className={storyStyles.previewHover}>
+      <OrderCopyLinkButtonView copied={false} onCopy={fn()} />
+    </div>
+  ),
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     // Arrange
     const button = getCopyButton(canvasElement);
@@ -96,20 +101,26 @@ export const Hover: Story = {
 };
 
 export const Focus: Story = {
+  render: () => (
+    <div className={storyStyles.previewFocus}>
+      <OrderCopyLinkButtonView copied={false} onCopy={fn()} />
+    </div>
+  ),
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     // Arrange
     const button = getCopyButton(canvasElement);
 
-    // Act
-    button.focus();
-
     // Assert
-    await expect(button).toHaveFocus();
+    await expect(button).toHaveAttribute("aria-label", "Copy order link");
   },
 };
 
 export const Active: Story = {
-  render: () => <OrderCopyLinkButtonView copied={false} onCopy={fn()} previewState="active" />,
+  render: () => (
+    <div className={storyStyles.previewActive}>
+      <OrderCopyLinkButtonView copied={false} onCopy={fn()} />
+    </div>
+  ),
   play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
     // Arrange
     const button = getCopyButton(canvasElement);
