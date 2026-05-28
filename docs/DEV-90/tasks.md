@@ -1,3 +1,127 @@
+## T-691827db: Add remount guard test for order-navigation copy-state reset
+
+- Status: pending
+- Priority: high
+- Blocked by: none
+- Discovered from: deep-review pass-002 [FIX] desktop-ux/F-001, deep-review pass-002 [FIX] correctness/F-001
+- Supersedes: —
+
+### Context
+
+**desktop-ux/F-001** — Production wire-up remounts `OrderCopyLinkButton` when `order.id` changes so stale checkmark/label state cannot carry across orders, but no unit or integration test exercises an `orderId` prop change or parent key remount.
+
+- Location: `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx:211`; `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx`
+- Trigger: Staff copies the link on order A (check icon + "Order link copied" label visible), then navigates to order B within the ~2 s feedback window via in-app order link or browser history (~200–500 ms navigation latency). Order B's TopNav should show default copy affordance, not order A's copied state.
+- Impact: A regression removing `key={order.id}` would ship without CI signal; users could briefly see the wrong order's "copied" confirmation on a different order's header.
+- Evidence: Parent passes `key={order.id}` at `OrderDetailsPage.tsx:211`. Grep shows no test references `key={order.id}` or remount-on-id-change. Shallow review iter-3 noted the same gap.
+- Suggested fix: Add a test rendering `OrderCopyLinkButton` with `useClipboard` mocked to `[true, jest.fn()]`, then `rerender` with a new `key`/`orderId` and assert `aria-label` returns to "Copy order link" and check icon state resets.
+
+**correctness/F-001** — T-473f727d added `key={order.id}` so navigating between orders remounts `OrderCopyLinkButton` and clears stale `useClipboard` copied feedback. The fix is correct in production code but has zero automated coverage — removing the `key` while keeping `orderId={order.id}` would not fail CI.
+
+- Location: `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx:211`; test gap across `src/orders/components/OrderCopyLinkButton/`
+- Trigger: Staff user copies order A's link (check icon + "Order link copied" appear). Within ~2000 ms, navigates to order B via order list click, browser back/forward, or in-app link. Developer later refactors TopNav and drops the `key` prop.
+- Impact: User sees "Order link copied" checkmark on order B's TopNav and may believe B's URL is in the clipboard when only A's URL was copied.
+- Evidence:
+
+```211:211:src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx
+              {order?.id ? <OrderCopyLinkButton key={order.id} orderId={order.id} /> : null}
+```
+
+Grep for `key={order.id}` / navigation reset in `**/*.{test,spec}*` → 0 matches. Shallow review iter-3 F-002 documents the same gap. Component tests render `OrderCopyLinkButton` in isolation without key-based remount (`OrderCopyLinkButton.test.tsx:57-60`).
+
+- Suggested fix: Add a test that renders `<OrderCopyLinkButton key="order-a" … />`, simulates copied state, rerenders with `key="order-b"`, and asserts default copy icon/label (or add a focused Playwright step on order-details navigation).
+
+Production integration (T-473f727d fix already landed):
+
+```210:211:src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx
+            <TopNav href={backLinkUrl} title={<Title order={order} />}>
+              {order?.id ? <OrderCopyLinkButton key={order.id} orderId={order.id} /> : null}
+```
+
+PRD requires the button to show default copy affordance on each order — navigation must not inherit prior copy state.
+
+[Source: docs/DEV-90/findings/deep-review/pass-002/desktop-ux-order-copy-link-button.md#F-001]
+[Source: docs/DEV-90/findings/deep-review/pass-002/correctness-order-copy-link-button.md#F-001]
+[Source: docs/DEV-90/prd.md#Acceptance criteria]
+
+### Acceptance
+
+- [ ] `OrderCopyLinkButton.test.tsx` includes a test that renders the button with `useClipboard` mocked to `[true, jest.fn()]` and a first `key`/`orderId`, then `rerender`s with a different `key` and `orderId`, and asserts the button's `aria-label` (and `title`) return to "Copy order link"
+- [ ] The same test (or companion assertion) verifies copied feedback does not persist after remount — e.g. `getByRole("status")` is absent or button accessible name is no longer "Order link copied"
+- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
+- [ ] `pnpm run lint` passes on touched files
+
+## T-339596b4: Assert copied-state aria-label and title on copy button
+
+- Status: pending
+- Priority: high
+- Blocked by: none
+- Discovered from: deep-review pass-002 [FIX] desktop-ux/F-002
+- Supersedes: —
+
+### Context
+
+**desktop-ux/F-002** — PRD AC3 requires `aria-label` and `title` to update to "Order link copied" after success. The copied-state test asserts only the `role="status"` region text, not the button's accessible name attributes that keyboard and screen-reader users rely on when focus remains on the button.
+
+- Location: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx:70-86`; `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx:38-40,56-57`
+- Trigger: User activates copy with Enter while focus is on `[data-test-id="copy-order-link"]`; clipboard write succeeds within ~10 ms. Inspect button `aria-label`/`title` in the DOM.
+- Impact: A regression that updates only the icon or live region but not `aria-label`/`title` would pass CI while violating PRD AC3 for assistive-tech users focused on the control.
+- Evidence: Label swap is implemented at `OrderCopyLinkButton.tsx:38-40,56-57`. Test at `:70-86` checks `getByRole("status")` text only. Storybook `Copied` story shows button name "Order link copied" in the a11y tree (verified in chrome walkthrough).
+- Suggested fix: In the existing copied-state test, add `expect(screen.getByTestId("copy-order-link")).toHaveAttribute("aria-label", "Order link copied")` and matching `title` assertion.
+
+Label derivation and button attributes (runtime already correct):
+
+```38:40:src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx
+  const label = isCopied
+    ? intl.formatMessage(messages.orderLinkCopied)
+    : intl.formatMessage(messages.copyOrderLink);
+```
+
+```56:57:src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx
+        title={label}
+        aria-label={label}
+```
+
+PRD AC3:
+
+> After a successful copy, the button icon switches from copy to check (`ClipboardCopyIcon`) for ~2 seconds and `aria-label` / `title` update to the `orderCopyLinkButtonMessages.orderLinkCopied` string ("Order link copied")
+
+UI design screen-reader flow:
+
+> Screen-reader flow: "Copy order link, button" → after click → "Order link copied, button" (label persists while check icon visible)
+
+Existing copied-state test gap:
+
+```70:86:src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx
+  it("renders an aria-live status region when copied", () => {
+    // Arrange
+    mockUseClipboard.mockReturnValue([true, jest.fn()]);
+
+    // Act
+    render(
+      <Wrapper>
+        <OrderCopyLinkButton orderId="T3JkZXI6MQ==" />
+      </Wrapper>,
+    );
+
+    // Assert
+    const statusRegion = screen.getByRole("status");
+
+    expect(statusRegion).toHaveAttribute("aria-live", "polite");
+    expect(statusRegion).toHaveTextContent("Order link copied");
+  });
+```
+
+[Source: docs/DEV-90/findings/deep-review/pass-002/desktop-ux-order-copy-link-button.md#F-002]
+[Source: docs/DEV-90/prd.md#Acceptance criteria]
+[Source: docs/DEV-90/ui-design.md#Accessibility]
+
+### Acceptance
+
+- [ ] The copied-state test in `OrderCopyLinkButton.test.tsx` (mock `useClipboard` → `[true, jest.fn()]`) asserts `screen.getByTestId("copy-order-link")` has `aria-label="Order link copied"` and `title="Order link copied"`
+- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
+- [ ] `pnpm run lint` passes on touched files
+
 ## T-fe1adbc0: Clear useClipboard timer before scheduling reset on re-click
 
 - Status: done
