@@ -1,3 +1,70 @@
+## T-eabc6a89: Add real-hook click→copied feedback transition test
+
+- Status: pending
+- Priority: high
+- Blocked by: none
+- Discovered from: deep-review pass-003 [FIX] correctness/F-002
+- Supersedes: —
+
+### Context
+
+**correctness/F-002** — PRD AC3 requires that after a successful copy the icon switches to check and `aria-label`/`title` update to "Order link copied" for ~2 seconds. The click test mocks `useClipboard` and only asserts the URL argument; the copied-state test seeds `[true, jest.fn()]` statically. Neither proves the click handler drives the runtime transition through the real hook.
+
+- Location: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx:48-89`; `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx:30-64`
+- Trigger: Developer breaks the wiring between `useClipboard`'s `copied` state and `isCopied` / label / `ClipboardCopyIcon` (e.g., stops passing `copied` to `hasBeenClicked`) while keeping `handleCopy` calling `copy(...)` — the mocked click test at `:48-68` stays green.
+- Impact: Staff click "Copy order link", clipboard receives the correct URL, but the button never shows the check icon or "Order link copied" label — user cannot confirm success without pasting manually.
+- Evidence:
+
+```48:68:src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx
+  it("copies shareable order URL when clicked", async () => {
+    mockUseClipboard.mockReturnValue([false, mockCopy]);
+    // ...
+    await user.click(screen.getByTestId("copy-order-link"));
+    expect(mockCopy).toHaveBeenCalledWith(expectedUrl);
+  });
+```
+
+```70:72:src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx
+  it("renders an aria-live status region when copied", () => {
+    mockUseClipboard.mockReturnValue([true, jest.fn()]);
+```
+
+Hook-level 2s reset is tested in `useClipboard.test.ts:59-141` but not at the component boundary. No assertion on `ClipboardCopyIcon` / check icon swap (contrast: `CopyableText.test.tsx` asserts icon change).
+
+- Suggested fix: Add a component test that does **not** mock `useClipboard`, uses `jest.useFakeTimers()` + mocked `navigator.clipboard.writeText`, clicks the button, asserts default label → "Order link copied" + check icon, advances timers 2000ms, asserts revert to default.
+
+PRD AC3:
+
+> After a successful copy, the button icon switches from copy to check (`ClipboardCopyIcon`) for ~2 seconds and `aria-label` / `title` update to the `orderCopyLinkButtonMessages.orderLinkCopied` string ("Order link copied")
+
+Component wiring under test:
+
+```30:64:src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx
+  const [copied, copy] = useClipboard();
+
+  const handleCopy = useCallback((): void => {
+    copy(getShareableOrderUrl(orderId));
+  }, [copy, orderId]);
+
+  const isCopied = forceCopied || copied;
+
+  const label = isCopied
+    ? intl.formatMessage(messages.orderLinkCopied)
+    : intl.formatMessage(messages.copyOrderLink);
+```
+
+[Source: docs/DEV-90/findings/deep-review/pass-003/correctness-order-copy-link-button.md#F-002]
+[Source: docs/DEV-90/prd.md#Acceptance criteria]
+
+### Acceptance
+
+- [ ] `OrderCopyLinkButton.test.tsx` includes a test that does **not** mock `@dashboard/hooks/useClipboard`, mocks `navigator.clipboard.writeText` to resolve, uses `jest.useFakeTimers()`, clicks `[data-test-id="copy-order-link"]`, and asserts the button transitions from `aria-label`/`title` "Copy order link" to "Order link copied"
+- [ ] The same test asserts a check icon is present after click (e.g. `.lucide-check` inside the button, matching `CopyableText.test.tsx` pattern)
+- [ ] After advancing fake timers by 2000 ms, the test asserts `aria-label`/`title` revert to "Copy order link" and the check icon is absent
+- [ ] Existing mocked `useClipboard` tests in the same file continue to pass unchanged
+- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
+- [ ] `pnpm run lint` passes on touched files
+
 ## T-691827db: Add remount guard test for order-navigation copy-state reset
 
 - Status: done
@@ -46,10 +113,10 @@ PRD requires the button to show default copy affordance on each order — naviga
 
 ### Acceptance
 
-- [ ] `OrderCopyLinkButton.test.tsx` includes a test that renders the button with `useClipboard` mocked to `[true, jest.fn()]` and a first `key`/`orderId`, then `rerender`s with a different `key` and `orderId`, and asserts the button's `aria-label` (and `title`) return to "Copy order link"
-- [ ] The same test (or companion assertion) verifies copied feedback does not persist after remount — e.g. `getByRole("status")` is absent or button accessible name is no longer "Order link copied"
-- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
-- [ ] `pnpm run lint` passes on touched files
+- [x] `OrderCopyLinkButton.test.tsx` includes a test that renders the button with `useClipboard` mocked to `[true, jest.fn()]` and a first `key`/`orderId`, then `rerender`s with a different `key` and `orderId`, and asserts the button's `aria-label` (and `title`) return to "Copy order link"
+- [x] The same test (or companion assertion) verifies copied feedback does not persist after remount — e.g. `getByRole("status")` is absent or button accessible name is no longer "Order link copied"
+- [x] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
+- [x] `pnpm run lint` passes on touched files
 
 ## T-339596b4: Assert copied-state aria-label and title on copy button
 
@@ -118,9 +185,9 @@ Existing copied-state test gap:
 
 ### Acceptance
 
-- [ ] The copied-state test in `OrderCopyLinkButton.test.tsx` (mock `useClipboard` → `[true, jest.fn()]`) asserts `screen.getByTestId("copy-order-link")` has `aria-label="Order link copied"` and `title="Order link copied"`
-- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
-- [ ] `pnpm run lint` passes on touched files
+- [x] The copied-state test in `OrderCopyLinkButton.test.tsx` (mock `useClipboard` → `[true, jest.fn()]`) asserts `screen.getByTestId("copy-order-link")` has `aria-label="Order link copied"` and `title="Order link copied"`
+- [x] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
+- [x] `pnpm run lint` passes on touched files
 
 ## T-fe1adbc0: Clear useClipboard timer before scheduling reset on re-click
 
