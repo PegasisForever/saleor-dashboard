@@ -17,7 +17,7 @@
       "title": "test(e2e): Playwright copy-order-link on order details"
     }
   ],
-  "copilotReviewRequested": false,
+  "copilotReviewRequested": true,
   "ciProbeDone": false,
   "ciGreen": false,
   "copilotReviewed": false,
