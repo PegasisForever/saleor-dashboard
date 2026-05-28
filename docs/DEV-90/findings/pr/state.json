@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "prUrl": null,
-  "phase": "A",
-  "phaseACompletedAt": null,
+  "prUrl": "https://github.com/PegasisForever/saleor-dashboard/pull/7",
+  "phase": "B",
+  "phaseACompletedAt": "2026-05-28T05:32:30.000Z",
   "oosTicketsFiled": [
     {
       "id": "DEV-91",
