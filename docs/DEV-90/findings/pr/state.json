@@ -18,8 +18,8 @@
     }
   ],
   "copilotReviewRequested": true,
-  "ciProbeDone": false,
-  "ciGreen": false,
+  "ciProbeDone": true,
+  "ciGreen": true,
   "copilotReviewed": false,
   "mergeDecisionThreadId": null,
   "lastSummaryUpdatedAt": "2026-05-28T05:31:47.000Z",
