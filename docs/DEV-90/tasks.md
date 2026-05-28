@@ -1,6 +1,6 @@
 ## T-691827db: Add remount guard test for order-navigation copy-state reset
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-002 [FIX] desktop-ux/F-001, deep-review pass-002 [FIX] correctness/F-001
