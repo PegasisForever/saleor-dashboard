@@ -53,7 +53,7 @@ PRD requires the button to show default copy affordance on each order — naviga
 
 ## T-339596b4: Assert copied-state aria-label and title on copy button
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-002 [FIX] desktop-ux/F-002

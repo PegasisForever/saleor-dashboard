@@ -79,8 +79,11 @@ describe("OrderCopyLinkButton", () => {
     );
 
     // Assert
+    const copyButton = screen.getByTestId("copy-order-link");
     const statusRegion = screen.getByRole("status");
 
+    expect(copyButton).toHaveAttribute("aria-label", "Order link copied");
+    expect(copyButton).toHaveAttribute("title", "Order link copied");
     expect(statusRegion).toHaveAttribute("aria-live", "polite");
     expect(statusRegion).toHaveTextContent("Order link copied");
   });
