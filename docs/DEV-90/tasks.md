@@ -154,7 +154,7 @@ Copied-state messages:
 
 ## T-9dcb0344: Add unit tests for shareable URL builder and copy button click path
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-001 [FIX] correctness/F-001, deep-review pass-001 [FIX] correctness/F-002
@@ -210,8 +210,8 @@ Tech plan URL shape:
 
 ### Acceptance
 
-- [ ] `src/orders/components/OrderCopyLinkButton/getShareableOrderUrl.test.ts` exists and asserts absolute URL output for default mount (`getAppMountUriForRedirect` → `""`), custom subpath mount, and `encodeURIComponent` on order id (trailing `?` from `orderUrl`)
-- [ ] `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` mocks `useClipboard`, clicks `[data-test-id="copy-order-link"]`, and asserts `mockCopy` was called with the same URL `getShareableOrderUrl(orderId)` would produce for the rendered `orderId`
-- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/getShareableOrderUrl.test.ts` passes
-- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
-- [ ] `pnpm run lint` passes on touched files
+- [x] `src/orders/components/OrderCopyLinkButton/getShareableOrderUrl.test.ts` exists and asserts absolute URL output for default mount (`getAppMountUriForRedirect` → `""`), custom subpath mount, and `encodeURIComponent` on order id (trailing `?` from `orderUrl`)
+- [x] `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` mocks `useClipboard`, clicks `[data-test-id="copy-order-link"]`, and asserts `mockCopy` was called with the same URL `getShareableOrderUrl(orderId)` would produce for the rendered `orderId`
+- [x] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/getShareableOrderUrl.test.ts` passes
+- [x] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
+- [x] `pnpm run lint` passes on touched files
