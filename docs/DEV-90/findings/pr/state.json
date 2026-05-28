@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "prUrl": null,
+  "phase": "A",
+  "phaseACompletedAt": null,
+  "oosTicketsFiled": [
+    {
+      "id": "DEV-91",
+      "title": "test(orders): OrderCopyLinkButton keyboard Enter/Space activation"
+    }
+  ],
+  "copilotReviewRequested": false,
+  "ciProbeDone": false,
+  "ciGreen": false,
+  "copilotReviewed": false,
+  "mergeDecisionThreadId": null,
+  "lastSummaryUpdatedAt": "2026-05-28T05:31:40.000Z",
+  "directFixCommits": []
+}
