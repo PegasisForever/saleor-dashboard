@@ -1,3 +1,0 @@
-uid=1_0 RootWebArea "orders-ordercopylinkbutton--default" url="http://local-deploy:11000/e8853c41-6817-4bb0-9682-d9979f52ce1d/iframe.html?id=orders-ordercopylinkbutton--default&viewMode=story"
-  uid=1_1 main
-    uid=1_2 button "Copy order link" description="Copy order link"

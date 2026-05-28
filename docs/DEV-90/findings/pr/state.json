@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "prUrl": "https://github.com/PegasisForever/saleor-dashboard/pull/7",
-  "phase": "C",
+  "phase": "terminal",
   "phaseACompletedAt": "2026-05-28T05:32:30.000Z",
   "oosTicketsFiled": [
     {
@@ -22,6 +22,6 @@
   "ciGreen": true,
   "copilotReviewed": true,
   "mergeDecisionThreadId": "linear:b9684d80-31ce-4803-8ce9-6358def47963:c:6572fa87-b183-45a5-99a4-3c23191daf30",
-  "lastSummaryUpdatedAt": "2026-05-28T05:31:47.000Z",
+  "lastSummaryUpdatedAt": "2026-05-28T05:40:00.000Z",
   "directFixCommits": []
 }
