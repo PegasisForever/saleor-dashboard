@@ -1,6 +1,6 @@
 ## T-eabc6a89: Add real-hook click→copied feedback transition test
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-003 [FIX] correctness/F-002
@@ -58,12 +58,12 @@ Component wiring under test:
 
 ### Acceptance
 
-- [ ] `OrderCopyLinkButton.test.tsx` includes a test that does **not** mock `@dashboard/hooks/useClipboard`, mocks `navigator.clipboard.writeText` to resolve, uses `jest.useFakeTimers()`, clicks `[data-test-id="copy-order-link"]`, and asserts the button transitions from `aria-label`/`title` "Copy order link" to "Order link copied"
-- [ ] The same test asserts a check icon is present after click (e.g. `.lucide-check` inside the button, matching `CopyableText.test.tsx` pattern)
-- [ ] After advancing fake timers by 2000 ms, the test asserts `aria-label`/`title` revert to "Copy order link" and the check icon is absent
-- [ ] Existing mocked `useClipboard` tests in the same file continue to pass unchanged
-- [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
-- [ ] `pnpm run lint` passes on touched files
+- [x] `OrderCopyLinkButton.test.tsx` includes a test that does **not** mock `@dashboard/hooks/useClipboard`, mocks `navigator.clipboard.writeText` to resolve, uses `jest.useFakeTimers()`, clicks `[data-test-id="copy-order-link"]`, and asserts the button transitions from `aria-label`/`title` "Copy order link" to "Order link copied"
+- [x] The same test asserts a check icon is present after click (e.g. `.lucide-check` inside the button, matching `CopyableText.test.tsx` pattern)
+- [x] After advancing fake timers by 2000 ms, the test asserts `aria-label`/`title` revert to "Copy order link" and the check icon is absent
+- [x] Existing mocked `useClipboard` tests in the same file continue to pass unchanged
+- [x] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` passes
+- [x] `pnpm run lint` passes on touched files
 
 ## T-691827db: Add remount guard test for order-navigation copy-state reset
 
