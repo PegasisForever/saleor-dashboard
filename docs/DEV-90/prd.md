@@ -34,3 +34,5 @@ Staff users reviewing an order often need to share a direct link to that order w
 - [ ] Button exposes `data-test-id="copy-order-link"`
 - [ ] No new clipboard hook or copy-icon component is introduced; implementation reuses `useClipboard` and `ClipboardCopyIcon`
 - [ ] User-visible strings are defined in `src/orders/components/OrderCopyLinkButton/messages.ts` (not inline literals)
+- [ ] Active-state icon contrast on pressed button is ≥3:1 (WCAG 2.5.5 non-text): `OrderCopyLinkButton.module.css` darkens icon to `--mu-colors-text-default1` on `:active` / `buttonForceActive`
+- [ ] `Disabled` Storybook story documents disabled styling only; production TopNav does not pass `disabled` when `order.id` is present (button omitted when id missing)

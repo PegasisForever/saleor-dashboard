@@ -28,13 +28,13 @@ N/A — client-only clipboard interaction. Shareable URL shape:
 {window.location.origin}{APP_MOUNT_URI}/orders/{encodedOrderId}?
 ```
 
-Built by `getShareableOrderUrl(orderId)` using `orderUrl`, `getAppMountUriForRedirect`, and `urlJoin`.
+Built by `getShareableOrderUrl(orderId)` composing `orderUrl(orderId)` (includes `encodeURIComponent` and trailing `?` via `stringifyQs`), `getAppMountUriForRedirect()`, and `urlJoin` with `window.location.origin`.
 
 ## Affected components
 
 - File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx` — new button component; optional `forceCopied` / `forceHovered` / `forceFocused` / `forceActive` props default `false` (Storybook visual pinning only)
-- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` — hover/focus/active/disabled styles on production button
-- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` — Storybook state stories
+- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.module.css` — hover/focus/active/disabled styles on production button; `:active svg` / `.buttonForceActive svg` use `--mu-colors-text-default1` for ≥3:1 icon contrast on default3 background
+- File: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx` — state stories plus `InOrderDetailsTopNav` / `InOrderDetailsTopNavNarrow` composition stories
 - File: `src/orders/components/OrderCopyLinkButton/getShareableOrderUrl.ts` — URL builder utility
 - File: `src/orders/components/OrderCopyLinkButton/messages.ts` — `orderCopyLinkButtonMessages` i18n catalog
 - File: `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx` — render `OrderCopyLinkButton` in TopNav before metadata button

@@ -2,7 +2,7 @@
 
 ## Storybook URL
 
-http://localhost:11000/0812aa44-9245-4f3d-a207-2b0b083b3342
+http://localhost:11000/e8853c41-6817-4bb0-9682-d9979f52ce1d
 
 ## Screens / surfaces
 
@@ -18,7 +18,7 @@ http://localhost:11000/0812aa44-9245-4f3d-a207-2b0b083b3342
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-- Storybook: `Orders/OrderCopyLinkButton` (`src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.stories.tsx`)
+- Storybook: `Orders/OrderCopyLinkButton` (`OrderCopyLinkButton.stories.tsx`); composition: `InOrderDetailsTopNav`, `InOrderDetailsTopNavNarrow`
 - Components used:
   - `OrderCopyLinkButton` — primary interactive control
   - `ClipboardCopyIcon` — icon swap on copied state (reused from `OrderCardTitle`)
@@ -31,7 +31,7 @@ http://localhost:11000/0812aa44-9245-4f3d-a207-2b0b083b3342
 ## Mobile considerations
 
 - TopNav action cluster wraps on narrow viewports; copy button remains in the header action row
-- Touch target: Macaw `Button` secondary variant meets ≥44×44 pt minimum
+- Touch target: Macaw secondary icon button renders **32×32 px**, matching adjacent TopNav secondary controls (metadata, overflow); not enlarged for this ticket
 - Responsive breakpoints: inherits dashboard TopNav layout (no custom breakpoint logic)
 
 ## Accessibility
@@ -46,15 +46,16 @@ http://localhost:11000/0812aa44-9245-4f3d-a207-2b0b083b3342
 - **Placement before metadata button** — matches ticket spec; groups share + metadata actions before overflow menu (per ticket text).
 - **Secondary icon-only button** — matches existing metadata button (`variant="secondary"`, medium icon size via `ClipboardCopyIcon` at 16px inside shared icon component).
 - **Copied feedback via icon + label** — reuses established orders-domain pattern (`TrackingNumberDisplay`, `ClipboardCopyIcon`); no toast to avoid notification noise for a frequent action.
-- **Focus/hover/active styling in production CSS module** — `OrderCopyLinkButton.module.css` targets `.button` pseudo-states so Storybook matches integration rendering (no story-only CSS).
+- **Focus/hover/active styling in production CSS module** — `OrderCopyLinkButton.module.css` targets `.button` pseudo-states (including `:active svg` icon darken) so Storybook matches integration rendering (no story-only CSS).
+- **TopNav composition stories** — `InOrderDetailsTopNav` and `InOrderDetailsTopNavNarrow` render copy + metadata + menu inside `TopNav` for layout verification (addresses iter-001 UI F-003).
 - **Storybook `force*` props** — optional `forceHovered`, `forceFocused`, `forceActive`, `forceCopied` args (default `false`) pin transient interaction states for visual regression; production TopNav usage omits them.
 - **Alternatives considered:** `CopyableText` rejected — TopNav needs compact icon button, not inline text + hover-reveal copy.
 
 ## Contrast commitments
 
-| Element           | Token / rule                                                       | Minimum ratio             |
-| ----------------- | ------------------------------------------------------------------ | ------------------------- |
-| Focus ring        | `--mu-colors-text-default1` on `--mu-colors-background-default1`   | ≥3:1 (WCAG 2.5.5)         |
-| Hover background  | `--mu-colors-background-default2` vs default1                      | Visible delta (non-text)  |
-| Active background | `--mu-colors-background-default3` vs default1                      | Visible delta (non-text)  |
-| Icon color        | `--mu-colors-text-default2` via `sprinkles({ color: "default2" })` | ≥3:1 vs button background |
+| Element           | Token / rule                                                                                                                               | Minimum ratio                            |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------- |
+| Focus ring        | `--mu-colors-text-default1` on `--mu-colors-background-default1`                                                                           | ≥3:1 (WCAG 2.5.5)                        |
+| Hover background  | `--mu-colors-background-default2` vs default1                                                                                              | Visible delta (non-text)                 |
+| Active background | `--mu-colors-background-default3` vs default1                                                                                              | Visible delta (non-text)                 |
+| Icon color        | `--mu-colors-text-default2` via `ClipboardCopyIcon`; **active** uses `--mu-colors-text-default1` on button `:active` / `buttonForceActive` | ≥3:1 vs button background in every state |
