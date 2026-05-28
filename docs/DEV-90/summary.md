@@ -47,7 +47,10 @@ Staff users on order details can copy a shareable absolute URL for the current o
 
 ## Out-of-scope follow-ups
 
-Linear tickets filed during PR open for deferred deep-review items (see PR description for links).
+Linear tickets filed for deferred deep-review test hardening:
+- [DEV-91](https://linear.app/talktomedi/issue/DEV-91) — keyboard Enter/Space activation test (`desktop-ux/F-001`)
+- [DEV-92](https://linear.app/talktomedi/issue/DEV-92) — `OrderDetailsPage` TopNav placement integration test (`correctness/F-001`)
+- [DEV-93](https://linear.app/talktomedi/issue/DEV-93) — Playwright E2E copy-order-link flow (`correctness/F-002`)
 
 ## Pipeline metadata
 
