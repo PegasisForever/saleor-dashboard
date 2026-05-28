@@ -1,0 +1,107 @@
+uid=12_0 RootWebArea "Orders / OrderCopyLinkButton - In Order Details Top Nav Narrow ⋅ Storybook" url="http://local-deploy:11000/e8853c41-6817-4bb0-9682-d9979f52ce1d/?path=/story/orders-ordercopylinkbutton--in-order-details-top-nav-narrow"
+  uid=13_0 ignored
+    uid=13_1 generic
+      uid=13_2 generic
+        uid=13_3 ignored
+          uid=13_4 generic
+            uid=12_1 banner "Navigation controls"
+              uid=12_2 heading "Navigation controls" level="2"
+                uid=13_5 StaticText "Navigation controls"
+                  uid=13_6 InlineTextBox "Navigation controls"
+              uid=12_3 button "Open navigation menu" expandable
+                uid=13_7 image
+                uid=13_8 paragraph
+                  uid=13_9 StaticText "In Order Details Top Nav Narrow"
+                    uid=13_6 InlineTextBox "In Order Details Top Nav Narrow"
+              uid=13_10 generic
+                uid=12_4 StaticText "In Order Details Top Nav Narrow"
+                  uid=13_6 InlineTextBox "In Order Details Top Nav Narrow"
+              uid=12_5 button "Open addon panel" expandable
+                uid=13_11 image
+          uid=13_12 generic
+            uid=13_13 ignored
+              uid=12_6 region "Toolbar"
+                uid=12_7 heading "Toolbar" level="2"
+                  uid=13_14 StaticText "Toolbar"
+                    uid=13_6 InlineTextBox "Toolbar"
+                uid=13_15 toolbar orientation="horizontal"
+                  uid=13_16 ignored
+                    uid=12_8 button "Reload story"
+                      uid=13_17 image
+                    uid=12_9 switch "Grid visibility"
+                      uid=13_18 image
+                    uid=12_10 button "Preview background" expandable haspopup="listbox"
+                      uid=13_19 image
+                    uid=12_11 switch "Measure tool"
+                      uid=13_20 image
+                    uid=12_12 switch "Outline tool"
+                      uid=13_21 image
+                    uid=12_13 button "Viewport size" expandable haspopup="listbox"
+                      uid=13_22 image
+                    uid=13_23 ignored
+                    uid=12_14 button "Macaw UI theme Light" expandable haspopup="listbox"
+                      uid=13_24 image
+                      uid=13_25 StaticText "Light"
+                        uid=13_6 InlineTextBox "Light"
+                  uid=13_26 ignored
+                    uid=12_15 switch "Change zoom level" expandable
+                      uid=13_27 StaticText "100"
+                        uid=13_6 InlineTextBox "100"
+                      uid=13_28 StaticText "%"
+                        uid=13_6 InlineTextBox "%"
+                    uid=12_16 button "Share" expandable
+                      uid=13_29 image
+              uid=12_17 main "Main preview area"
+                uid=12_18 heading "Main preview area" level="2"
+                  uid=13_30 StaticText "Main preview area"
+                    uid=13_6 InlineTextBox "Main preview area"
+                uid=13_31 generic
+                  uid=13_32 generic
+                    uid=13_33 ignored
+                      uid=13_34 generic
+                        uid=13_35 ignored
+                          uid=12_19 Iframe "storybook-preview-iframe"
+                            uid=12_20 RootWebArea "orders-ordercopylinkbutton--in-order-details-top-nav-narrow" url="http://local-deploy:11000/e8853c41-6817-4bb0-9682-d9979f52ce1d/iframe.html?id=orders-ordercopylinkbutton--in-order-details-top-nav-narrow&viewMode=story&globals="
+                              uid=13_36 ignored
+                                uid=13_37 ignored
+                                  uid=13_38 generic
+                                  uid=13_39 ignored
+                                    uid=13_40 ignored
+                                      uid=13_41 ignored
+                                      uid=13_42 ignored
+                                      uid=13_43 ignored
+                                      uid=13_44 ignored
+                                    uid=13_45 ignored
+                                      uid=13_46 ignored
+                                        uid=13_47 ignored
+                                        uid=13_48 ignored
+                                        uid=13_49 ignored
+                                        uid=13_50 ignored
+                                      uid=13_51 ignored
+                                        uid=13_52 ignored
+                                        uid=13_53 ignored
+                                        uid=13_54 ignored
+                                        uid=13_55 ignored
+                                      uid=13_56 ignored
+                                        uid=13_57 ignored
+                                        uid=13_58 ignored
+                                        uid=13_59 ignored
+                                        uid=13_60 ignored
+                                  uid=13_61 generic
+                                    uid=12_21 main
+                                      uid=13_62 ignored
+                                        uid=13_63 generic
+                                          uid=13_64 ignored
+                                            uid=12_22 link url="http://local-deploy:11000/orders"
+                                              uid=12_23 button
+                                            uid=13_65 generic
+                                              uid=13_66 ignored
+                                                uid=12_24 StaticText "Order #1234"
+                                                  uid=13_67 InlineTextBox "Order #1234"
+                                                  uid=13_67 InlineTextBox "Order "
+                                                  uid=13_67 InlineTextBox "…"
+                                            uid=13_68 ignored
+                                              uid=12_25 button "Order link copied" description="Order link copied"
+                                              uid=12_26 button "Edit order metadata"
+                                              uid=12_27 button expandable haspopup="menu"
+                                  uid=13_69 generic
