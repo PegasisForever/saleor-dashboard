@@ -1,4 +1,5 @@
 ## T-fe1adbc0: Clear useClipboard timer before scheduling reset on re-click
+
 - Status: pending
 - Priority: high
 - Blocked by: none
@@ -6,6 +7,7 @@
 - Supersedes: —
 
 ### Context
+
 **desktop-ux/F-002** — `copy()` schedules a new 2s reset timeout without clearing a prior pending timeout. A second click before the first timeout fires leaves two timers running; when the earlier timer fires, it clears the later timer and sets `copied` false prematurely.
 
 - Location: `src/hooks/useClipboard.ts:12-21`, `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx:32-34`
@@ -60,19 +62,22 @@ Existing hook implementation for reference:
 [Source: docs/DEV-90/findings/deep-review/pass-001/correctness-order-copy-link-button.md#F-003]
 
 ### Acceptance
+
 - [ ] `copy()` in `src/hooks/useClipboard.ts` calls `clear()` before scheduling a new 2s reset timeout on each successful write
 - [ ] `src/hooks/useClipboard.test.ts` includes a test that advances fake timers after two rapid `copy()` calls and asserts `copied` remains `true` for a full 2s from the **second** click (not shortened by the first timer)
 - [ ] `pnpm run test:quiet src/hooks/useClipboard.test.ts` passes
 - [ ] `pnpm run lint` passes on touched files
 
 ## T-473f727d: Reset copied feedback when navigating between orders
-- Status: pending
+
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-001 [FIX] desktop-ux/F-001
 - Supersedes: —
 
 ### Context
+
 **desktop-ux/F-001** — `OrderCopyLinkButton` holds `useClipboard` state locally and is mounted without a `key` on `order.id`. When the user navigates from order A to order B within the 2s feedback window, the same component instance keeps `copied=true` and shows the check icon plus "Order link copied" label on order B's page even though the user never copied B's link.
 
 - Location: `src/orders/components/OrderDetailsPage/OrderDetailsPage.tsx:211`, `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx:30-36`
@@ -94,10 +99,12 @@ PRD states the button is omitted when `order.id` is missing; navigation between 
 [Source: docs/DEV-90/prd.md#Acceptance criteria]
 
 ### Acceptance
+
 - [ ] `OrderDetailsPage.tsx` renders `<OrderCopyLinkButton key={order.id} orderId={order.id} />` (or equivalent `useEffect` reset on `orderId` change in the button component) so navigating to a different order within the 2s feedback window shows default copy icon and "Copy order link" label
 - [ ] `pnpm run lint` passes on touched files
 
 ## T-4c7d375b: Add aria-live status region for copy confirmation
+
 - Status: pending
 - Priority: high
 - Blocked by: none
@@ -105,6 +112,7 @@ PRD states the button is omitted when `order.id` is missing; navigation between 
 - Supersedes: —
 
 ### Context
+
 **desktop-ux/F-003** — Success feedback updates `aria-label` and `title` on the button only. There is no `aria-live` / `role="status"` element to announce "Order link copied" independently of focus. UI design specifies an SR flow where activation is followed by hearing the copied confirmation.
 
 - Location: `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.tsx:38-57`
@@ -139,11 +147,13 @@ Copied-state messages:
 ```
 
 ### Acceptance
+
 - [ ] `OrderCopyLinkButton` renders a visually hidden element with `role="status"` and `aria-live="polite"` that contains `orderCopyLinkButtonMessages.orderLinkCopied` text while `isCopied` is true
 - [ ] `OrderCopyLinkButton.test.tsx` (or new test in same file once T-9dcb0344 lands) asserts the live region is present in the DOM when copied state is mocked true
 - [ ] `pnpm run lint` passes on touched files
 
 ## T-9dcb0344: Add unit tests for shareable URL builder and copy button click path
+
 - Status: pending
 - Priority: high
 - Blocked by: none
@@ -151,6 +161,7 @@ Copied-state messages:
 - Supersedes: —
 
 ### Context
+
 **correctness/F-001** — The exported URL builder is the sole source of clipboard payload (PRD AC2) but has zero Jest coverage. Mount-URI branches (`getAppMountUriForRedirect` returning `""` vs a subpath) and composition with `orderUrl` are untested.
 
 - Location: `src/orders/components/OrderCopyLinkButton/getShareableOrderUrl.ts`
@@ -198,6 +209,7 @@ Tech plan URL shape:
 [Source: docs/DEV-90/findings/deep-review/pass-001/correctness-order-copy-link-button.md#F-002]
 
 ### Acceptance
+
 - [ ] `src/orders/components/OrderCopyLinkButton/getShareableOrderUrl.test.ts` exists and asserts absolute URL output for default mount (`getAppMountUriForRedirect` → `""`), custom subpath mount, and `encodeURIComponent` on order id (trailing `?` from `orderUrl`)
 - [ ] `src/orders/components/OrderCopyLinkButton/OrderCopyLinkButton.test.tsx` mocks `useClipboard`, clicks `[data-test-id="copy-order-link"]`, and asserts `mockCopy` was called with the same URL `getShareableOrderUrl(orderId)` would produce for the rendered `orderId`
 - [ ] `pnpm run test:quiet src/orders/components/OrderCopyLinkButton/getShareableOrderUrl.test.ts` passes
