@@ -102,6 +102,45 @@ describe("useClipboard", () => {
     expect(jest.getTimerCount()).toBe(0);
   });
 
+  it("should keep copied true for 2s from the latest rapid copy call", async () => {
+    // Arrange
+    mockWriteText.mockResolvedValue(undefined);
+
+    const { result } = renderHook(() => useClipboard());
+    const [, copy] = result.current;
+
+    // Act — first copy, then second copy before the first reset fires
+    await act(async () => {
+      copy("first text");
+      await Promise.resolve();
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(500);
+    });
+
+    await act(async () => {
+      copy("second text");
+      await Promise.resolve();
+    });
+
+    // Assert — still within 2s window from the second click
+    expect(result.current[0]).toBe(true);
+
+    act(() => {
+      jest.advanceTimersByTime(1500);
+    });
+
+    expect(result.current[0]).toBe(true);
+
+    act(() => {
+      jest.advanceTimersByTime(500);
+    });
+
+    // Assert — full 2s elapsed since the second click
+    expect(result.current[0]).toBe(false);
+  });
+
   it("should handle multiple copy calls", async () => {
     // Arrange
     mockWriteText.mockResolvedValue(undefined);

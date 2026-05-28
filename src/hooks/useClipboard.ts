@@ -13,6 +13,7 @@ export function useClipboard(): [boolean, (text: string) => void] {
     navigator.clipboard
       .writeText(text)
       .then(() => {
+        clear();
         setCopyStatus(true);
 
         timeout.current = window.setTimeout(() => {
