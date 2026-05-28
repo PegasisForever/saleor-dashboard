@@ -40,21 +40,28 @@ export const OrderCopyLinkButton = ({
     : intl.formatMessage(messages.copyOrderLink);
 
   return (
-    <Button
-      variant="secondary"
-      disabled={disabled}
-      className={clsx(
-        styles.button,
-        forceHovered && styles.buttonForceHover,
-        forceActive && styles.buttonForceActive,
-        forceFocused && styles.buttonForceFocus,
-      )}
-      icon={<ClipboardCopyIcon hasBeenClicked={isCopied} />}
-      onClick={handleCopy}
-      data-test-id="copy-order-link"
-      title={label}
-      aria-label={label}
-      marginRight={3}
-    />
+    <>
+      <Button
+        variant="secondary"
+        disabled={disabled}
+        className={clsx(
+          styles.button,
+          forceHovered && styles.buttonForceHover,
+          forceActive && styles.buttonForceActive,
+          forceFocused && styles.buttonForceFocus,
+        )}
+        icon={<ClipboardCopyIcon hasBeenClicked={isCopied} />}
+        onClick={handleCopy}
+        data-test-id="copy-order-link"
+        title={label}
+        aria-label={label}
+        marginRight={3}
+      />
+      {isCopied ? (
+        <span role="status" aria-live="polite" className={styles.statusRegion}>
+          {intl.formatMessage(messages.orderLinkCopied)}
+        </span>
+      ) : null}
+    </>
   );
 };
