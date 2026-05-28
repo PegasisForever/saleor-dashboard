@@ -20,7 +20,7 @@
   "copilotReviewRequested": true,
   "ciProbeDone": true,
   "ciGreen": true,
-  "copilotReviewed": false,
+  "copilotReviewed": true,
   "mergeDecisionThreadId": null,
   "lastSummaryUpdatedAt": "2026-05-28T05:31:47.000Z",
   "directFixCommits": []
