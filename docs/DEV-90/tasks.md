@@ -70,7 +70,7 @@ Existing hook implementation for reference:
 
 ## T-473f727d: Reset copied feedback when navigating between orders
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-001 [FIX] desktop-ux/F-001
