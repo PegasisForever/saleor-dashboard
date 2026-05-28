@@ -84,4 +84,40 @@ describe("OrderCopyLinkButton", () => {
     expect(statusRegion).toHaveAttribute("aria-live", "polite");
     expect(statusRegion).toHaveTextContent("Order link copied");
   });
+
+  it("resets copied feedback when remounted with a different key (order navigation)", () => {
+    // Arrange — order A shows copied state (simulates copy before navigating away)
+    mockUseClipboard.mockReturnValue([true, jest.fn()]);
+
+    const orderIdA = "T3JkZXI6MQ==";
+    const orderIdB = "T3JkZXI6Mg==";
+
+    const { rerender } = render(
+      <Wrapper>
+        <OrderCopyLinkButton key={orderIdA} orderId={orderIdA} />
+      </Wrapper>,
+    );
+
+    const buttonBeforeNavigation = screen.getByTestId("copy-order-link");
+
+    expect(buttonBeforeNavigation).toHaveAttribute("aria-label", "Order link copied");
+    expect(buttonBeforeNavigation).toHaveAttribute("title", "Order link copied");
+    expect(screen.getByRole("status")).toBeInTheDocument();
+
+    // Act — parent remounts via key={order.id} when staff navigates to order B
+    mockUseClipboard.mockReturnValue([false, jest.fn()]);
+
+    rerender(
+      <Wrapper>
+        <OrderCopyLinkButton key={orderIdB} orderId={orderIdB} />
+      </Wrapper>,
+    );
+
+    // Assert — fresh instance shows default copy affordance, not order A's feedback
+    const buttonAfterNavigation = screen.getByTestId("copy-order-link");
+
+    expect(buttonAfterNavigation).toHaveAttribute("aria-label", "Copy order link");
+    expect(buttonAfterNavigation).toHaveAttribute("title", "Copy order link");
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
 });
