@@ -105,7 +105,7 @@ PRD states the button is omitted when `order.id` is missing; navigation between 
 
 ## T-4c7d375b: Add aria-live status region for copy confirmation
 
-- Status: pending
+- Status: done
 - Priority: high
 - Blocked by: none
 - Discovered from: deep-review pass-001 [FIX] desktop-ux/F-003, deep-review pass-001 [PROMOTE-TO-FIX from WARNING] mobile-ux/F-001
