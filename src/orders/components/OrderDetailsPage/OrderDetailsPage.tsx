@@ -35,6 +35,7 @@ import { useIntl } from "react-intl";
 
 import { getMutationErrors, maybe } from "../../../misc";
 import OrderChannelSectionCard from "../OrderChannelSectionCard";
+import { OrderCopyLinkButton } from "../OrderCopyLinkButton/OrderCopyLinkButton";
 import OrderCustomer from "../OrderCustomer";
 import OrderCustomerNote from "../OrderCustomerNote";
 import OrderDraftDetails from "../OrderDraftDetails/OrderDraftDetails";
@@ -207,6 +208,7 @@ const OrderDetailsPage = (props: OrderDetailsPageProps) => {
         return (
           <DetailPageLayout>
             <TopNav href={backLinkUrl} title={<Title order={order} />}>
+              {order?.id ? <OrderCopyLinkButton orderId={order.id} /> : null}
               <Button
                 variant="secondary"
                 icon={<Code size={iconSize.medium} strokeWidth={iconStrokeWidth} />}

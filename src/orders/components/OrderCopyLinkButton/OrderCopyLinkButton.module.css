@@ -1,0 +1,30 @@
+.button:hover:not(:disabled) {
+  background-color: var(--mu-colors-background-default2);
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--mu-colors-text-default1) !important;
+  outline-offset: 2px;
+}
+
+.button:active:not(:disabled) {
+  background-color: var(--mu-colors-background-default3);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.buttonForceHover {
+  background-color: var(--mu-colors-background-default2);
+}
+
+.buttonForceActive {
+  background-color: var(--mu-colors-background-default3);
+}
+
+.buttonForceFocus {
+  outline: 2px solid var(--mu-colors-text-default1) !important;
+  outline-offset: 2px;
+}
