@@ -1,9 +1,23 @@
+import * as dashboardUrls from "@dashboard/utils/urls";
+
 import {
+  getAbsoluteOrderUrl,
   orderListPath,
   orderListUrl,
   orderListUrlWithCustomerEmail,
   orderListUrlWithCustomerId,
 } from "./urls";
+
+jest.mock("@dashboard/utils/urls", () => {
+  const actualModule = jest.requireActual<typeof dashboardUrls>("@dashboard/utils/urls");
+
+  return {
+    ...actualModule,
+    getAppMountUriForRedirect: jest.fn(),
+  };
+});
+
+const mockedGetAppMountUriForRedirect = dashboardUrls.getAppMountUriForRedirect as jest.Mock;
 
 describe("Order URLs", () => {
   describe("orderListUrl", () => {
@@ -46,6 +60,46 @@ describe("Order URLs", () => {
       expect(result).toContain("/orders?");
       expect(result).toContain("userEmail");
       expect(result).toContain("test%40example.com");
+    });
+  });
+
+  describe("getAbsoluteOrderUrl", () => {
+    const { location } = window;
+
+    beforeEach(() => {
+      delete (window as { location?: unknown }).location;
+      Object.defineProperty(window, "location", {
+        value: new URL("https://dashboard.example.com"),
+        writable: true,
+        configurable: true,
+      });
+      mockedGetAppMountUriForRedirect.mockReturnValue("");
+    });
+
+    afterAll(() => {
+      Object.defineProperty(window, "location", {
+        value: location,
+        writable: true,
+        configurable: true,
+      });
+    });
+
+    it("includes encoded order ID in path without query params", () => {
+      const orderId = "T3JkZXI6MS8=";
+
+      const result = getAbsoluteOrderUrl(orderId);
+
+      expect(result).toBe("https://dashboard.example.com/orders/T3JkZXI6MS8%3D");
+      expect(result).not.toContain("?");
+    });
+
+    it("includes mount URI segment when mount differs from default", () => {
+      mockedGetAppMountUriForRedirect.mockReturnValue("/dashboard/");
+
+      const result = getAbsoluteOrderUrl("fulfilled-order-id");
+
+      expect(result).toBe("https://dashboard.example.com/dashboard/orders/fulfilled-order-id");
+      expect(result).not.toContain("?");
     });
   });
 

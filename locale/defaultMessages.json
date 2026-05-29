@@ -7579,6 +7579,10 @@
     "context": "products export type label",
     "string": "products"
   },
+  "dgOk7n": {
+    "context": "copy order link button",
+    "string": "Copy order link"
+  },
   "dnbJKr": {
     "string": "This transaction doesn't have any events"
   },
@@ -8508,6 +8512,10 @@
   "jUuHVn": {
     "context": "description",
     "string": "No members found"
+  },
+  "jWwD8U": {
+    "context": "copy order link success feedback",
+    "string": "Link copied"
   },
   "jXf/9p": {
     "context": "product availability",
